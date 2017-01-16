@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<phpunit backupGlobals="false"
+         colors="true"
+         bootstrap="vendor/miaoxing/plugin/tests/bootstrap.php"
+>
+
+  <testsuites>
+    <testsuite name="Default Test Suite">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+
+  <filter>
+    <whitelist>
+      <directory>src</directory>
+      <directory>resource</directory>
+      <exclude>
+        <directory>src/Lib</directory>
+      </exclude>
+    </whitelist>
+  </filter>
+</phpunit>

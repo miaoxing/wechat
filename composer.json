@@ -1,0 +1,23 @@
+{
+  "name": "miaoxing/wechat",
+  "description": "Miaoxing Wechat Plugin",
+  "keywords": [
+    "miaoxing", "wechat"
+  ],
+  "license": "MIT",
+  "require": {
+    "miaoxing/app": "dev-master@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "Miaoxing\\Wechat\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "MiaoxingTest\\Wechat\\": "tests"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
+}
