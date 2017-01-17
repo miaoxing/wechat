@@ -99,7 +99,7 @@
 
 <script id="table-actions" type="text/html">
   <div class="action-buttons">
-    <a class="text-danger delete-record" href="javascript:;" data-href="<%= $.url('admin/wechat/menu/destroy', {id: id}) %>" title="删除">
+    <a class="text-danger delete-record" href="javascript:;" data-href="<%= $.url('admin/wechat-menu/destroy', {id: id}) %>" title="删除">
       <i class="fa fa-trash-o bigger-130"></i>
     </a>
   </div>

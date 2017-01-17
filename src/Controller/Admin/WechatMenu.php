@@ -1,10 +1,8 @@
 <?php
 
-namespace Miaoxing\Wechat\Controller\Admin\Wechat;
+namespace Miaoxing\Wechat\Controller\Admin;
 
-use Miaoxing\Wechat\Controller\Admin\Wechat\Base;
-
-class Menu extends Base
+class WechatMenu extends Base
 {
     protected $controllerName = '微信菜单管理';
 

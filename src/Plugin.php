@@ -44,7 +44,7 @@ class Plugin extends \miaoxing\plugin\BasePlugin
 
         $navs[] = [
             'parentId' => 'wechat-account',
-            'url' => 'admin/wechat/reply/index',
+            'url' => 'admin/wechat-reply/index',
             'name' => '回复管理',
             'sort' => 900,
         ];
@@ -58,7 +58,7 @@ class Plugin extends \miaoxing\plugin\BasePlugin
 
         $navs[] = [
             'parentId' => 'wechat-account',
-            'url' => 'admin/wechat/qrcode/index',
+            'url' => 'admin/wechat-qrcode/index',
             'name' => '二维码管理',
             'sort' => 700,
         ];

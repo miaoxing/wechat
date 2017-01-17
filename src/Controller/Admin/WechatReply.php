@@ -1,8 +1,8 @@
 <?php
 
-namespace Miaoxing\Wechat\Controller\Admin\Wechat;
+namespace Miaoxing\Wechat\Controller\Admin;
 
-class Reply extends Base
+class WechatReply extends Base
 {
     protected $controllerName = '微信回复管理';
 

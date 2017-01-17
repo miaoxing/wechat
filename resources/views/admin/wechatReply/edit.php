@@ -9,12 +9,12 @@
 
     <?php if (!$reply->isNew()) : ?>
       <a class="btn btn-danger delete-record" href="javascript:;"
-         data-href="<?= $url('admin/wechat/reply/destroy', ['id' => $reply['id']]) ?>">
+         data-href="<?= $url('admin/wechat-reply/destroy', ['id' => $reply['id']]) ?>">
         删除
       </a>
     <?php endif ?>
 
-    <a class="btn btn-default" href="<?= $url('admin/wechat/reply/index', ['accountId' => $req['accountId']]) ?>">返回列表</a>
+    <a class="btn btn-default" href="<?= $url('admin/wechat-reply/index', ['accountId' => $req['accountId']]) ?>">返回列表</a>
   </div>
   <h1>
     微信管理
@@ -30,7 +30,7 @@
   <div class="col-xs-12">
     <!-- PAGE CONTENT BEGINS -->
     <form class="reply-form form-horizontal" method="post" role="form"
-          action="<?= $url('admin/wechat/reply/' . $reply->getFormAction()) ?>">
+          action="<?= $url('admin/wechat-reply/' . $reply->getFormAction()) ?>">
 
       <?php if (isset($formConfig['showScene']) && $formConfig['showScene'] == true) : ?>
         <div class="form-group">
@@ -146,7 +146,7 @@
             提交
           </button>
           &nbsp; &nbsp; &nbsp;
-          <a class="btn btn-default" href="<?= $url('admin/wechat/reply/index', ['accountId' => $req['accountId']]) ?>">
+          <a class="btn btn-default" href="<?= $url('admin/wechat-reply/index', ['accountId' => $req['accountId']]) ?>">
             <i class="fa fa-undo bigger-110"></i>
             返回列表
           </a>

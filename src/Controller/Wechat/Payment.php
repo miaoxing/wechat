@@ -2,7 +2,6 @@
 
 namespace Miaoxing\Wechat\Controller\Wechat;
 
-use Miaoxing\Wechat\Controller\Wechat\Base;
 use Wei\Request;
 
 class Payment extends Base

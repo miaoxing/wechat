@@ -5,7 +5,7 @@ define([], function(){
 
     self.data = {};
     self.articles = [];
-    self.returnUrl = $.url('admin/wechat/reply/index');
+    self.returnUrl = $.url('admin/wechat-reply/index');
     self.articleTable = $('.article-table');
     self.articleList = $('.article-list');
     self.articleTableModal = $('#article-table-modal');

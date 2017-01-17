@@ -21,7 +21,7 @@
 <script>
   $('body').on('click', '.js-qrcode-show', function () {
     $.ajax({
-      url: $.url('admin/wechat/qrcode/show', {sceneId: $(this).data('scene-id')}),
+      url: $.url('admin/wechat-qrcode/show', {sceneId: $(this).data('scene-id')}),
       dataType: 'json',
       success: function (ret) {
         if (ret.code !== 1) {

@@ -7,7 +7,7 @@
 <!-- /.page-header -->
 <div class="page-header">
   <div class="pull-right">
-    <a class="btn btn-default" href="<?= $url('admin/wechat/qrcode/index') ?>">返回列表</a>
+    <a class="btn btn-default" href="<?= $url('admin/wechat-qrcode/index') ?>">返回列表</a>
   </div>
   <h1>
     二维码数据统计

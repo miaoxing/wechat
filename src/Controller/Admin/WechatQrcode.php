@@ -1,11 +1,11 @@
 <?php
 
-namespace Miaoxing\Wechat\Controller\Admin\Wechat;
+namespace Miaoxing\Wechat\Controller\Admin;
 
-use Miaoxing\Wechat\Controller\Admin\Wechat\Base;
+use Miaoxing\Wechat\Controller\Admin\Base;
 use ZipArchive;
 
-class Qrcode extends Base
+class WechatQrcode extends Base
 {
     protected $controllerName = '微信二维码管理';
 
@@ -136,7 +136,7 @@ class Qrcode extends Base
     public function showAction($req)
     {
         $weChatQrcode = wei()->weChatQrcode()->findOne(['sceneId' => $req['sceneId']]);
-        $image = $this->url('admin/wechat/qrcode/showImage', ['sceneId' => $weChatQrcode['sceneId']]);
+        $image = $this->url('admin/wechat-qrcode/showImage', ['sceneId' => $weChatQrcode['sceneId']]);
 
         return $this->suc([
             'data' => $weChatQrcode->toArray() + ['image' => $image],

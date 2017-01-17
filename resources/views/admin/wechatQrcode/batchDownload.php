@@ -17,7 +17,7 @@
       var sceneIds = $.map($checked, function (checkbox) {
         return $(checkbox).val();
       });
-      window.location = $.url('admin/wechat/qrcode/batchDownload', {sceneIds: sceneIds});
+      window.location = $.url('admin/wechat-qrcode/batchDownload', {sceneIds: sceneIds});
     });
 
     $('.js-record-table').on('draw', function () {

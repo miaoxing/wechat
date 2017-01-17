@@ -3,7 +3,7 @@
 <!-- /.page-header -->
 <div class="page-header">
   <div class="pull-right">
-    <a class="btn btn-success" href="<?= $url('admin/wechat/qrcode/new', ['accountId' => $req['accountId']]) ?>">添加二维码</a>
+    <a class="btn btn-success" href="<?= $url('admin/wechat-qrcode/new', ['accountId' => $req['accountId']]) ?>">添加二维码</a>
   </div>
   <h1>
     二维码管理
@@ -75,20 +75,20 @@
     <a href="javascript:;" class="js-qrcode-show" data-scene-id="<%= sceneId %>" title="查看二维码">
       <i class="fa fa-qrcode bigger-130"></i>
     </a>
-    <a href="<%= $.url('admin/wechat/qrcode/showDetail', {sceneId: sceneId}) %>" target="_blank" title="查看">
+    <a href="<%= $.url('admin/wechat-qrcode/showDetail', {sceneId: sceneId}) %>" target="_blank" title="查看">
       <i class="fa fa-search-plus bigger-130"></i>
     </a>
-    <a href="<%= $.url('admin/wechat/qrcode/edit', {accountId: accountId, id: id}) %>" title="编辑">
+    <a href="<%= $.url('admin/wechat-qrcode/edit', {accountId: accountId, id: id}) %>" title="编辑">
       <i class="fa fa-edit bigger-130"></i>
     </a>
-    <a class="text-danger delete-record" href="javascript:;" data-href="<%= $.url('admin/wechat/qrcode/destroy', {id: id}) %>" title="删除">
+    <a class="text-danger delete-record" href="javascript:;" data-href="<%= $.url('admin/wechat-qrcode/destroy', {id: id}) %>" title="删除">
       <i class="fa fa-trash-o bigger-130"></i>
     </a>
   </div>
 </script>
 
-<?php require $view->getFile('wechat:admin/wechat/qrcode/qrcodeModal.php') ?>
-<?php require $view->getFile('wechat:admin/wechat/qrcode/batchDownload.php') ?>
+<?php require $view->getFile('wechat:admin/wechatQrcode/qrcodeModal.php') ?>
+<?php require $view->getFile('wechat:admin/wechatQrcode/batchDownload.php') ?>
 <?php require $view->getFile('user:admin/user/richInfo.php') ?>
 
 <?= $block('js') ?>
@@ -96,7 +96,7 @@
   require(['dataTable', 'form', 'jquery-deparam', 'template'], function () {
     var recordTable = $('#record-table').dataTable({
       ajax: {
-        url: $.queryUrl('admin/wechat/qrcode/index?_format=json')
+        url: $.queryUrl('admin/wechat-qrcode/index?_format=json')
       },
       columns: [
         {

@@ -23,7 +23,7 @@ define(['bootbox'], function (bootbox) {
         var ret;
         $.ajax({
           async: false,
-          url: $.queryUrl('admin/wechat/menu/create'),
+          url: $.queryUrl('admin/wechat-menu/create'),
           data: $.extend({name: name}, data),
           dataType: 'json'
         })
@@ -58,7 +58,7 @@ define(['bootbox'], function (bootbox) {
       // 找到同一级同一父节点
       if (parentId == handlerParentId) {
         $.ajax({
-          url: $.url('admin/wechat/menu/bulkUpdate'),
+          url: $.url('admin/wechat-menu/bulkUpdate'),
           type: 'post',
           dataType: 'json',
           traditional: false,
@@ -106,7 +106,7 @@ define(['bootbox'], function (bootbox) {
         }
 
         $.post(
-          $.url('admin/wechat/menu/update'),
+          $.url('admin/wechat-menu/update'),
           {id: $handler.data('id'), sort: sort, parentId: findParentId},
           function (result) {
             $.msg(result);
@@ -147,7 +147,7 @@ define(['bootbox'], function (bootbox) {
     var recordTable = $('table.menu-table').dataTable({
       dom: "t<'row hide'<'col-sm-6'ir><'col-sm-6'pl>>",
       ajax: {
-        url: $.queryUrl('admin/wechat/menu/index?_format=json')
+        url: $.queryUrl('admin/wechat-menu/index?_format=json')
       },
       columns: [
         {
@@ -202,7 +202,7 @@ define(['bootbox'], function (bootbox) {
             },
             update: function (data) {
               $.ajax({
-                url: $.url('admin/wechat/menu/update'),
+                url: $.url('admin/wechat-menu/update'),
                 type: 'post',
                 dataType: 'json',
                 data: {
@@ -224,7 +224,7 @@ define(['bootbox'], function (bootbox) {
 
     // 启用/禁用菜单
     menuTable.on('change', '.enable', function () {
-      $.post($.url('admin/wechat/menu/update', {
+      $.post($.url('admin/wechat-menu/update', {
         id: $(this).val(),
         enable: +$(this).prop('checked')
       }), function (result) {
@@ -234,7 +234,7 @@ define(['bootbox'], function (bootbox) {
 
     // 更新名称
     menuTable.on('change', '.name', function () {
-      $.post($.url('admin/wechat/menu/update', {
+      $.post($.url('admin/wechat-menu/update', {
         id: $(this).data('id'),
         name: $(this).val()
       }));
@@ -250,7 +250,7 @@ define(['bootbox'], function (bootbox) {
     // 从微信加载菜单
     $('.load-menu-from-wechat').click(function () {
       $.confirm('从微信加载菜单,本地菜单将会被清空,确认加载?', function () {
-        $.post($.queryUrl('admin/wechat/menu/loadFromWeChat'), function (result) {
+        $.post($.queryUrl('admin/wechat-menu/loadFromWeChat'), function (result) {
           $.msg(result);
           $('table.menu-table').dataTable().reload();
         }, 'json');

@@ -6,7 +6,7 @@
 
 <div class="page-header">
   <a class="btn btn-default pull-right"
-    href="<?= $url('admin/wechat/qrcode/index', ['accountId' => $req['accountId']]) ?>">返回列表</a>
+    href="<?= $url('admin/wechat-qrcode/index', ['accountId' => $req['accountId']]) ?>">返回列表</a>
 
   <h1>
     二维码管理
@@ -18,7 +18,7 @@
   <div class="col-xs-12">
     <!-- PAGE detail BEGINS -->
     <form class="wechat-qrcode-form form-horizontal js-wechat-qrcode-form" method="post" role="form"
-      action="<?= $url('admin/wechat/qrcode/' . $qrcode->getFormAction()) ?>">
+      action="<?= $url('admin/wechat-qrcode/' . $qrcode->getFormAction()) ?>">
       <div class="form-group">
         <label class="col-lg-2 control-label" for="sceneId">
           <span class="text-warning">*</span>
@@ -102,7 +102,7 @@
           </button>
 
           &nbsp; &nbsp; &nbsp;
-          <a class="btn btn-default" href="<?= $url('admin/wechat/qrcode/index', ['accountId' => $req['accountId']]) ?>">
+          <a class="btn btn-default" href="<?= $url('admin/wechat-qrcode/index', ['accountId' => $req['accountId']]) ?>">
             <i class="fa fa-undo"></i>
             返回列表
           </a>
@@ -113,7 +113,7 @@
   <!-- PAGE detail ENDS -->
 </div><!-- /.col -->
 <!-- /.row -->
-<?php require $view->getFile('wechat:admin/wechat/qrcode/article-select-modal.php') ?>
+<?php require $view->getFile('wechat:admin/wechatQrcode/article-select-modal.php') ?>
 <?php require $this->getFile('award:admin/award/editor.php') ?>
 <?php require $view->getFile('wechat:wechat/media/tpls.php') ?>
 
@@ -125,7 +125,7 @@
     var data = <?= json_encode($data, JSON_UNESCAPED_SLASHES); ?>;
     reply.initForm({
       data: data,
-      returnUrl: $.url('admin/wechat/qrcode/index'),
+      returnUrl: $.url('admin/wechat-qrcode/index'),
       form: $('.js-wechat-qrcode-form')
     });
 
