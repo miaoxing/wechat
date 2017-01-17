@@ -61,7 +61,7 @@ class Wechat extends \miaoxing\plugin\BaseController
                     'platformMsgId' => $app->getMsgId(),
                     'content' => $app->getMsgType() === 'text' ? $app->getContent() : json_encode($app->getAttrs()),
                     'source' => 1,
-                    'fromKeyword' => $reply->isFromKeyword(),
+                    'fromKeyword' => (int) $reply->isFromKeyword(),
                     'createTimestamp' => $app->getCreateTime(),
                 ]);
             }
