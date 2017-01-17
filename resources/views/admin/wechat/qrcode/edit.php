@@ -1,7 +1,7 @@
 <?php $view->layout() ?>
 
 <?= $block('css') ?>
-<link rel="stylesheet" href="<?= $asset('plugins/wechat/assets/admin/reply.css') ?>"/>
+<link rel="stylesheet" href="<?= $asset('plugins/wechat/css/admin/wechat-replies.css') ?>"/>
 <?= $block->end() ?>
 
 <div class="page-header">
@@ -119,7 +119,7 @@
 
 <?= $block('js') ?>
 <script>
-  require(['plugins/wechat/assets/admin/reply', 'form', 'assets/apps/admin/award/editor',
+  require(['plugins/wechat/js/admin/wechat-replies', 'form', 'assets/apps/admin/award/editor',
     'jquery-deparam', 'dataTable', 'template', 'validator'
   ], function (reply, form, awardEditor) {
     var data = <?= json_encode($data, JSON_UNESCAPED_SLASHES); ?>;

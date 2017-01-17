@@ -1,0 +1,115 @@
+.message-editor {
+  border: 1px solid #ddd;
+}
+
+/* 头部类型切换 */
+.message-editor-nav {
+  padding: 0;
+  border-bottom: 1px solid #ddd;
+  top: 0;
+}
+
+.message-editor-nav > li > a {
+  border: 0;
+  padding: 10px 16px;
+  background: none;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.message-editor-nav > li {
+  margin-bottom: 0;
+}
+
+.message-editor-nav > li > a:hover {
+  color: #393939;
+}
+
+.message-editor-nav > li.active > a,
+.message-editor-nav > li.active > a:hover,
+.message-editor-nav > li.active > a:focus {
+  border: 0;
+  box-shadow: none;
+  margin-top: 0;
+  color: #393939;
+}
+
+.message-editor-tab-content {
+  border: 0;
+  min-height: 281px;
+  padding: 0;
+}
+
+/* 图文选项卡 */
+.message-editor-article-action {
+  display: block;
+  text-align: center;
+  border: 2px dotted #ddd;
+  cursor: pointer;
+  padding: 70px 50px;
+}
+
+.message-editor-article-action:hover {
+  color: #393939;
+}
+
+.message-editor-article-action:focus {
+  outline: none;
+  color: inherit;
+}
+
+.message-editor-article-plus {
+  font-size: 48px;
+}
+
+.message-editor-article-row {
+  padding: 20px 5px 0 5px;
+  margin: 0;
+}
+
+.message-editor-article-list {
+  display: inline-block;
+  max-width: 320px;
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.message-editor-article-actions {
+  display: inline-block;
+  vertical-align: bottom;
+  margin-left: 10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* 文本选项卡 */
+.message-editor-text {
+  width: 100%;
+  height: 244px;
+  border: 0;
+  padding: 5px 9px;
+}
+
+.message-editor-text:focus {
+  box-shadow: none !important;
+}
+
+/* 底部栏 */
+.message-editor-footer {
+  border-top: 1px solid #ddd;
+  height: 32px;
+  line-height: 32px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.message-editor-emoticon {
+  font-size: 16px;
+}
+
+.message-editor-char-counter {
+  float: right;
+  text-align: right;
+  width: 50%;
+}

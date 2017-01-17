@@ -1,5 +1,5 @@
 <?= $block('css') ?>
-<link rel="stylesheet" href="<?= $asset('plugins/wechat/assets/messageEditor.css') ?>"/>
+<link rel="stylesheet" href="<?= $asset('plugins/wechat/css/admin/message-editor.css') ?>"/>
 <?= $block->end() ?>
 
 <?php require $view->getFile('wechat:wechat/media/tpls.php') ?>

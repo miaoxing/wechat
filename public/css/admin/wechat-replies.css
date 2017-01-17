@@ -1,0 +1,10 @@
+.article-list li {
+    font-size: 14px;
+    line-height: 40px;
+    border-bottom: 1px solid #ccc;
+    clear: both;
+}
+
+.article-list .appmsg {
+  margin-bottom: 16px;
+}

@@ -1,0 +1,15 @@
+.menu-table tr .action-buttons {
+    display: none;
+}
+
+.menu-table tr:hover .action-buttons {
+    display: inline;
+}
+
+.menu-table tr .action-buttons .add-menu {
+    font-size: 14px;
+}
+
+.menu-table input.name {
+    width: 160px;
+}
