@@ -2,6 +2,7 @@
 
 namespace Miaoxing\Wechat\Controller\Cli;
 
+use Miaoxing\Plugin\Middleware\Lock;
 use Miaoxing\Plugin\Service\User;
 use Miaoxing\Wechat\Service\WechatApi;
 
@@ -10,6 +11,19 @@ use Miaoxing\Wechat\Service\WechatApi;
  */
 class Wechat extends \miaoxing\plugin\BaseController
 {
+    public function __construct(array $options)
+    {
+        parent::__construct($options);
+
+        $this->middleware(Lock::className(), [
+            'expire' => 60,
+            'onFail' => function () {
+                $path = $this->app->getControllerAction();
+                $this->logger->warning('请求' . $path . '重入,请检查');
+            }
+        ]);
+    }
+
     /**
      * 一次性将所有关注者的OpenID同步到数据库
      *
