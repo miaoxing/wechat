@@ -73,11 +73,10 @@ class Wechat extends \miaoxing\plugin\BaseController
             fastcgi_finish_request();
         }
 
-        $this->logger->info(sprintf(
-            'GetUserOpenIds: total %s, count %s',
-            $userOpenIds['total'],
-            $userOpenIds['count']
-        ));
+        $this->logger->debug('GetUserOpenIds', [
+            'total' => $userOpenIds['total'],
+            'count' =>  $userOpenIds['count'],
+        ]);
 
         // 3. 逐个检查用户是否存在,如果不存在,创建新用户
         foreach ($userOpenIds['data']['openid'] as $index => $openId) {
@@ -103,7 +102,7 @@ class Wechat extends \miaoxing\plugin\BaseController
 
             // 3.4 每同步50个用户,稍作休息0.1秒
             if ($index % 50 == 0) {
-                $this->logger->info('Synced 50 users');
+                $this->logger->debug('Synced 50 users');
                 time_nanosleep(0, 100000000);
             }
         }
