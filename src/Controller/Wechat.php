@@ -13,7 +13,7 @@ class Wechat extends \miaoxing\plugin\BaseController
     {
         // 记录请求日志
         $content = $this->request->getContent();
-        $this->logger->info('Wechat reply request', [
+        $this->logger->debug('Wechat reply request', [
             'url' => $this->request->getUrl(),
             'content' => $content
         ]);
@@ -50,7 +50,7 @@ class Wechat extends \miaoxing\plugin\BaseController
 
         // 5. 发送前,将信息记录到数据库
         $app->setOption('beforeSend', function (WeChatApp $app, &$response) use ($user, $reply, $account) {
-            $this->logger->info('Wechat reply response', $response);
+            $this->logger->debug('Wechat reply response', $response);
 
             // 记录用户输入的信息
             if (!in_array(strtolower($app->getMsgType()), ['event'])) {
