@@ -270,7 +270,6 @@ class WechatAccount extends \miaoxing\plugin\BaseModel
             'timestamp' => $timestamp,
             'url' => $url,
         ];
-        wei()->logger->info($signData);
         $signature = sha1($api->generateSign($signData));
 
         return [
