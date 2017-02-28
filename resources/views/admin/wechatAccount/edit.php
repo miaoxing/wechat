@@ -55,7 +55,7 @@
           </div>
           <div class="col-lg-6 help-text">
             如:gh_fb5e7eb6ad05
-            <a href="<?= $url('admin/wiki/show?title=如何获取公众号原始ID') ?>" title="如何获取公众号原始ID">
+            <a href="https://kf.qq.com/faq/120911VrYVrA141215UfyiuU.html" title="如何获取公众号原始ID" target="_blank">
               <span class="help-button get-source-id-tooltip" style="cursor: pointer">?</span>
             </a>
           </div>
