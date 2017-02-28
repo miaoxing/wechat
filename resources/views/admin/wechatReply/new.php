@@ -1,3 +1,3 @@
 <?php
 
-require $view->getFile('wechat:admin/wechat-reply/edit.php');
+require $view->getFile('wechat:admin/wechatReply/edit.php');
