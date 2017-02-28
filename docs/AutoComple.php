@@ -1,6 +1,7 @@
 <?php
 
 namespace plugins\wechat\docs
+
 {
     /**
      * @property    \Miaoxing\Wechat\Service\WechatAccount $wechatAccount 微信账户
@@ -25,6 +26,7 @@ namespace plugins\wechat\docs
 }
 
 namespace {
+
     /**
      * @return \plugins\wechat\docs\AutoComplete
      */

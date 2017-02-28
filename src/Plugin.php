@@ -92,7 +92,8 @@ class Plugin extends \miaoxing\plugin\BasePlugin
         ];
 
         // 暂不支持
-        /*$decorators['oauth2UserInfo'] = [
+        /*
+            $decorators['oauth2UserInfo'] = [
             'name' => '微信用户信息授权',
         ];*/
     }

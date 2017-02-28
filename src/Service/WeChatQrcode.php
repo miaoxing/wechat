@@ -7,7 +7,6 @@ use miaoxing\plugin\BaseModel;
 use Miaoxing\Plugin\Service\User;
 use Miaoxing\Article\Service\Article;
 
-
 class WeChatQrcode extends BaseModel
 {
     /**
@@ -287,5 +286,4 @@ class WeChatQrcode extends BaseModel
         parent::afterFind();
         $this['articleIds'] = (array) json_decode($this['articleIds'], true);
     }
-
 }

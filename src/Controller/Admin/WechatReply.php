@@ -34,7 +34,6 @@ class WechatReply extends Base
                 $data = array();
 
                 foreach ($replies as $reply) {
-
                     $data[] = $reply->toArray() + [
                             'matchTypeName' => $reply->getMatchTypeName(),
                             'articles' => $reply->getArticles()->toArray()

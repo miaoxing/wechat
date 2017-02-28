@@ -24,7 +24,7 @@ class Payment extends Base
         $this->logger->info('Wechat post data : ' . $this->request->getContent());
 
         // 记录服务器返回信息
-        $this->response->setOption('beforeSend', function($response, $content){
+        $this->response->setOption('beforeSend', function ($response, $content) {
             $this->logger->info('Server response data: ' . $content);
         });
     }

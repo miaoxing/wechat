@@ -220,8 +220,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
         }
 
         if ($this->authed) {
-            $this->accessToken = $this->wechatComponentApi->getAuthorizerAccessToken($this->getAppId(),
-                $this->getRefreshToken());
+            $this->accessToken = $this->wechatComponentApi->getAuthorizerAccessToken(
+                $this->getAppId(),
+                $this->getRefreshToken()
+            );
         } else {
             $this->getAccessToken();
         }
@@ -347,8 +349,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
     public function getApiTicket($type)
     {
         return $this->auth(function () use ($type) {
-            return $this->http->getJson($this->baseUrl . 'cgi-bin/ticket/getticket',
-                ['access_token' => $this->accessToken, 'type' => $type]);
+            return $this->http->getJson(
+                $this->baseUrl . 'cgi-bin/ticket/getticket',
+                ['access_token' => $this->accessToken, 'type' => $type]
+            );
         });
     }
 
@@ -417,8 +421,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
         $groups = json_encode($groups, JSON_UNESCAPED_UNICODE);
 
         return $this->auth(function () use ($groups) {
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/groups/create?access_token=' . $this->accessToken,
-                $groups);
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/groups/create?access_token=' . $this->accessToken,
+                $groups
+            );
         });
     }
 
@@ -441,10 +447,15 @@ class WechatApi extends \miaoxing\plugin\BaseService
     public function getUserGroupId($openId)
     {
         return $this->auth(function () use ($openId) {
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/groups/getid?access_token=' . $this->accessToken,
-                json_encode([
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/groups/getid?access_token=' . $this->accessToken,
+                json_encode(
+                    [
                     'openid' => $openId,
-                ], JSON_UNESCAPED_UNICODE));
+                    ],
+                    JSON_UNESCAPED_UNICODE
+                )
+            );
         });
     }
 
@@ -459,8 +470,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
         $groups = json_encode($groups, JSON_UNESCAPED_UNICODE);
 
         return $this->auth(function () use ($groups) {
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/groups/update?access_token=' . $this->accessToken,
-                $groups);
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/groups/update?access_token=' . $this->accessToken,
+                $groups
+            );
         });
     }
 
@@ -473,11 +486,16 @@ class WechatApi extends \miaoxing\plugin\BaseService
     public function updateMemberGroup($openId, $toGroupId)
     {
         return $this->auth(function () use ($openId, $toGroupId) {
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/groups/members/update?access_token=' . $this->accessToken,
-                json_encode([
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/groups/members/update?access_token=' . $this->accessToken,
+                json_encode(
+                    [
                     'openid' => $openId,
                     'to_groupid' => $toGroupId,
-                ], JSON_UNESCAPED_UNICODE));
+                    ],
+                    JSON_UNESCAPED_UNICODE
+                )
+            );
         });
     }
 
@@ -490,11 +508,16 @@ class WechatApi extends \miaoxing\plugin\BaseService
     public function updateBatchMemberGroup(array $openIdList, $toGroupId)
     {
         return $this->auth(function () use ($openIdList, $toGroupId) {
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/groups/members/batchupdate?access_token=' . $this->accessToken,
-                json_encode([
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/groups/members/batchupdate?access_token=' . $this->accessToken,
+                json_encode(
+                    [
                     'openid_list' => $openIdList,
                     'to_groupid' => $toGroupId,
-                ], JSON_UNESCAPED_UNICODE));
+                    ],
+                    JSON_UNESCAPED_UNICODE
+                )
+            );
         });
     }
 
@@ -506,12 +529,17 @@ class WechatApi extends \miaoxing\plugin\BaseService
     public function deleteGroup($groupId)
     {
         return $this->auth(function () use ($groupId) {
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/groups/delete?access_token=' . $this->accessToken,
-                json_encode([
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/groups/delete?access_token=' . $this->accessToken,
+                json_encode(
+                    [
                     'group' => [
                         'id' => $groupId,
                     ],
-                ], JSON_UNESCAPED_UNICODE));
+                    ],
+                    JSON_UNESCAPED_UNICODE
+                )
+            );
         });
     }
 
@@ -526,8 +554,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
         $buttons = json_encode($buttons, JSON_UNESCAPED_UNICODE);
 
         return $this->auth(function () use ($buttons) {
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/menu/create?access_token=' . $this->accessToken,
-                $buttons);
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/menu/create?access_token=' . $this->accessToken,
+                $buttons
+            );
         });
     }
 
@@ -536,8 +566,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
         $buttons = json_encode($buttons, JSON_UNESCAPED_UNICODE);
 
         return $this->auth(function () use ($buttons) {
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/menu/addconditional?access_token=' . $this->accessToken,
-                $buttons);
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/menu/addconditional?access_token=' . $this->accessToken,
+                $buttons
+            );
         });
     }
 
@@ -644,7 +676,8 @@ class WechatApi extends \miaoxing\plugin\BaseService
     public function createTemporaryQrCode($sceneId)
     {
         return $this->auth(function () use ($sceneId) {
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/qrcode/create?access_token=' . $this->accessToken,
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/qrcode/create?access_token=' . $this->accessToken,
                 json_encode([
                     'expire_seconds' => 1800,
                     'action_name' => 'QR_SCENE',
@@ -653,7 +686,8 @@ class WechatApi extends \miaoxing\plugin\BaseService
                             'scene_id' => $sceneId,
                         ],
                     ],
-                ]));
+                ])
+            );
         });
     }
 
@@ -666,7 +700,8 @@ class WechatApi extends \miaoxing\plugin\BaseService
     public function createPermanentQrCode($sceneId)
     {
         return $this->auth(function () use ($sceneId) {
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/qrcode/create?access_token=' . $this->accessToken,
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/qrcode/create?access_token=' . $this->accessToken,
                 json_encode([
                     'action_name' => 'QR_LIMIT_SCENE',
                     'action_info' => [
@@ -674,7 +709,8 @@ class WechatApi extends \miaoxing\plugin\BaseService
                             'scene_id' => $sceneId,
                         ],
                     ],
-                ]));
+                ])
+            );
         });
     }
 
@@ -708,8 +744,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
     public function createQrCode(array $data)
     {
         return $this->auth(function () use ($data) {
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/qrcode/create?access_token=' . $this->accessToken,
-                json_encode($data));
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/qrcode/create?access_token=' . $this->accessToken,
+                json_encode($data)
+            );
         });
     }
 
@@ -858,8 +896,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
     public function ship($data)
     {
         return $this->auth(function () use ($data) {
-            return $this->http->postJson($this->baseUrl . 'pay/delivernotify?access_token=' . $this->accessToken,
-                json_encode($data));
+            return $this->http->postJson(
+                $this->baseUrl . 'pay/delivernotify?access_token=' . $this->accessToken,
+                json_encode($data)
+            );
         });
     }
 
@@ -931,8 +971,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
         return $this->auth(function () use ($data) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
 
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/message/custom/send?access_token=' . $this->accessToken,
-                $data);
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/message/custom/send?access_token=' . $this->accessToken,
+                $data
+            );
         });
     }
 
@@ -945,8 +987,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
         return $this->auth(function () use ($data) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
 
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/message/mass/send?access_token=' . $this->accessToken,
-                $data);
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/message/mass/send?access_token=' . $this->accessToken,
+                $data
+            );
         });
     }
 
@@ -961,8 +1005,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
         return $this->auth(function () use ($data) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
 
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/media/uploadnews?access_token=' . $this->accessToken,
-                $data);
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/media/uploadnews?access_token=' . $this->accessToken,
+                $data
+            );
         });
     }
 
@@ -1115,8 +1161,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
         return $this->auth(function () use ($data) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
 
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/message/mass/preview?access_token=' . $this->accessToken,
-                $data);
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/message/mass/preview?access_token=' . $this->accessToken,
+                $data
+            );
         });
     }
 
@@ -1133,8 +1181,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
                 $data = json_encode($data, JSON_UNESCAPED_UNICODE);
             }
 
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/message/mass/send?access_token=' . $this->accessToken,
-                $data);
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/message/mass/send?access_token=' . $this->accessToken,
+                $data
+            );
         });
     }
 
@@ -1149,8 +1199,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
         return $this->auth(function () use ($data) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
 
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/message/mass/delete?access_token=' . $this->accessToken,
-                $data);
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/message/mass/delete?access_token=' . $this->accessToken,
+                $data
+            );
         });
     }
 
@@ -1210,8 +1262,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
             ];
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
 
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/message/template/send?access_token=' . $this->accessToken,
-                $data);
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/message/template/send?access_token=' . $this->accessToken,
+                $data
+            );
         });
     }
 
@@ -1226,8 +1280,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
     {
         return $this->auth(function () use ($offset, $count) {
             $data = json_encode(['offset' => $offset, 'count' => $count], JSON_UNESCAPED_UNICODE);
-            $result = $this->http->postJson($this->baseUrl . 'card/location/batchget?access_token=' . $this->accessToken,
-                $data);
+            $result = $this->http->postJson(
+                $this->baseUrl . 'card/location/batchget?access_token=' . $this->accessToken,
+                $data
+            );
 
             return $result;
         });
@@ -1243,8 +1299,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
     {
         return $this->auth(function () use ($data) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
-            $result = $this->http->postJson($this->baseUrl . 'card/location/batchadd?access_token=' . $this->accessToken,
-                $data);
+            $result = $this->http->postJson(
+                $this->baseUrl . 'card/location/batchadd?access_token=' . $this->accessToken,
+                $data
+            );
 
             return $result;
         });
@@ -1315,8 +1373,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
         ], JSON_UNESCAPED_UNICODE);
 
         return $this->auth(function () use ($data) {
-            $result = $this->http->postJson($this->baseUrl . 'card/code/update?access_token=' . $this->accessToken,
-                $data);
+            $result = $this->http->postJson(
+                $this->baseUrl . 'card/code/update?access_token=' . $this->accessToken,
+                $data
+            );
 
             return $result;
         });
@@ -1337,8 +1397,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
         ], JSON_UNESCAPED_UNICODE);
 
         return $this->auth(function () use ($data) {
-            return $this->http->postJson($this->baseUrl . 'card/code/consume?access_token=' . $this->accessToken,
-                $data);
+            return $this->http->postJson(
+                $this->baseUrl . 'card/code/consume?access_token=' . $this->accessToken,
+                $data
+            );
         });
     }
 
@@ -1353,8 +1415,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
         $data = json_encode(['code' => $code]);
 
         return $this->auth(function () use ($data) {
-            return $this->http->postJson($this->baseUrl . 'card/code/consume?access_token=' . $this->accessToken,
-                $data);
+            return $this->http->postJson(
+                $this->baseUrl . 'card/code/consume?access_token=' . $this->accessToken,
+                $data
+            );
         });
     }
 
@@ -1367,8 +1431,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
     public function createCardTestWhitelist($data)
     {
         return $this->auth(function () use ($data) {
-            return $this->http->postJson($this->baseUrl . 'card/testwhitelist/set?access_token=' . $this->accessToken,
-                $data);
+            return $this->http->postJson(
+                $this->baseUrl . 'card/testwhitelist/set?access_token=' . $this->accessToken,
+                $data
+            );
         });
     }
 
@@ -1383,8 +1449,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
                 'encrypt_code' => $encryptCode,
             ]);
 
-            return $this->http->postJson($this->baseUrl . 'card/code/decrypt?access_token=' . $this->accessToken,
-                $data);
+            return $this->http->postJson(
+                $this->baseUrl . 'card/code/decrypt?access_token=' . $this->accessToken,
+                $data
+            );
         });
     }
 
@@ -1427,8 +1495,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
     public function createCardQrCode(array $data)
     {
         return $this->auth(function () use ($data) {
-            return $this->http->postJson($this->baseUrl . 'card/qrcode/create?access_token=' . $this->accessToken,
-                json_encode($data));
+            return $this->http->postJson(
+                $this->baseUrl . 'card/qrcode/create?access_token=' . $this->accessToken,
+                json_encode($data)
+            );
         });
     }
 
@@ -1491,8 +1561,10 @@ class WechatApi extends \miaoxing\plugin\BaseService
         return $this->auth(function () use ($data) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
 
-            return wei()->http->postJson('https://api.weixin.qq.com/datacube/getarticletotal?access_token=' . $this->accessToken,
-                $data);
+            return wei()->http->postJson(
+                'https://api.weixin.qq.com/datacube/getarticletotal?access_token=' . $this->accessToken,
+                $data
+            );
         });
     }
 

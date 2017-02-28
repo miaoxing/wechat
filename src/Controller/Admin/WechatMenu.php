@@ -172,7 +172,8 @@ class WechatMenu extends Base
         $account = wei()->wechatAccount->getCurrentAccount();
         $api = $account->createApiService();
         $result = $api->getMenu();
-        print_r($result->getResponse());die;
+        print_r($result->getResponse());
+        die;
     }
 
     /**
@@ -246,14 +247,14 @@ class WechatMenu extends Base
     protected function createLinkToFromWeChatButton($button)
     {
         switch ($button['type']) {
-            case 'click' :
+            case 'click':
                 return [
                     'type' => 'keyword',
                     'keyword' => $button['key'],
                 ];
                 break;
 
-            case 'view' :
+            case 'view':
                 return [
                     'type' => 'url',
                     'url' => $button['url']

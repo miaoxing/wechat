@@ -152,16 +152,12 @@ class Wechat extends \miaoxing\plugin\BaseController
 
         // 屏蔽一些事件,不返回默认回复
         $app->on('user_get_card', function () {
-
         });
         $app->on('user_del_card', function () {
-
         });
         $app->on('user_consume_card', function () {
-
         });
         $app->on('wifiConnected', function () {
-
         });
 
         // 7. 是否开启多客服
@@ -223,11 +219,11 @@ class Wechat extends \miaoxing\plugin\BaseController
         $this->logger->info('收到第三方平台通知', $app->getAttrs());
 
         switch ($app->getAttr('InfoType')) {
-            case 'component_verify_ticket' :
+            case 'component_verify_ticket':
                 $account->save(['verifyTicket' => $app->getAttr('ComponentVerifyTicket')]);
                 break;
 
-            case 'unauthorized' :
+            case 'unauthorized':
                 $account = wei()->wechatAccount()->find(['applicationId' => $app->getAttr('AuthorizerAppid')]);
                 /** @var \Miaoxing\Wechat\Service\WechatAccount $account */
                 if ($account) {
@@ -237,7 +233,7 @@ class Wechat extends \miaoxing\plugin\BaseController
                 }
                 break;
 
-            case 'authorized' :
+            case 'authorized':
                 // 授权成功,无需处理
                 break;
 
