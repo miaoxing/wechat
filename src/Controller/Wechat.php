@@ -3,7 +3,6 @@
 namespace Miaoxing\Wechat\Controller;
 
 use Miaoxing\Wechat\Service\WechatAccount;
-use Miaoxing\Wechat\Service\WeChatQrcode;
 use Wei\Request;
 use Wei\WeChatApp;
 
@@ -15,7 +14,7 @@ class Wechat extends \miaoxing\plugin\BaseController
         $content = $this->request->getContent();
         $this->logger->debug('Wechat reply request', [
             'url' => $this->request->getUrl(),
-            'content' => $content
+            'content' => $content,
         ]);
 
         // 1. 获取当前回复对应的微信账户,初始化回复
@@ -29,6 +28,7 @@ class Wechat extends \miaoxing\plugin\BaseController
             if ($content) {
                 $this->logger->warning($ret['message'], $ret + ['content' => $content]);
             }
+
             return $this->err($ret);
         }
 
@@ -146,6 +146,7 @@ class Wechat extends \miaoxing\plugin\BaseController
                 // 记录用户手机号码
                 $user->save(['mobile' => $app->getContent()]);
                 $reply = $reply->findByIdFromCache('phone');
+
                 return $reply->send($app);
             });
         }
@@ -166,6 +167,7 @@ class Wechat extends \miaoxing\plugin\BaseController
                 if ($reply->findByKeyword($keyword)) {
                     return $reply->send($app);
                 }
+
                 return $app->sendTransferCustomerService();
             });
         }
@@ -203,7 +205,7 @@ class Wechat extends \miaoxing\plugin\BaseController
         $config = $account->getConfigData([], $url);
 
         return $this->suc([
-            'config' => $config
+            'config' => $config,
         ]);
     }
 
@@ -279,6 +281,7 @@ class Wechat extends \miaoxing\plugin\BaseController
     protected function classify($event)
     {
         $event = strtolower($event);
+
         return str_replace(' ', '', ucwords(strtr($event, '_-', '  ')));
     }
 }

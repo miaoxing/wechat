@@ -47,7 +47,7 @@ class WeChatQrcode extends BaseModel
      */
     protected $data = [
         'awardRule' => 0,
-        'articleIds' => []
+        'articleIds' => [],
     ];
 
     /**

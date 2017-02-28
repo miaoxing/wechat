@@ -35,6 +35,7 @@ class Payment extends Base
     public function nativeAction(Request $req)
     {
         $wechatPay = wei()->payment()->createCurrentWechatPayService();
+
         return $wechatPay->executeNativePay($req->getContent());
     }
 }

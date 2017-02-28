@@ -31,25 +31,25 @@ class WechatMenu extends Base
                 $menus->andWhere(['parentId' => 0]);
 
                 // 先获取一级菜单,再获取下级菜单
-                $data = array();
+                $data = [];
                 foreach ($menus as $menu) {
                     $children = $menu->getChildren();
                     $data[] = $menu->toArray() + [
-                            'hasChild' => (bool)$children->length()
+                            'hasChild' => (bool) $children->length(),
                         ];
                     foreach ($children as $child) {
                         $data[] = $child->toArray() + [
-                                'hasChild' => false
+                                'hasChild' => false,
                             ];
                     }
                 }
 
-                return $this->json('读取列表成功', 1, array(
+                return $this->json('读取列表成功', 1, [
                     'data' => $data,
                     'page' => $req['page'],
                     'rows' => $req['rows'],
                     'records' => $menus->count(),
-                ));
+                ]);
 
             default:
                 return get_defined_vars();
@@ -74,9 +74,9 @@ class WechatMenu extends Base
      */
     public function bulkUpdateAction($req)
     {
-        foreach ((array)$req['menus'] as $menu) {
+        foreach ((array) $req['menus'] as $menu) {
             $record = wei()->weChatMenu()->findOneById(isset($menu['id']) ? $menu['id'] : null);
-            $record->save((array)$menu);
+            $record->save((array) $menu);
         }
 
         return $this->suc();
@@ -116,7 +116,7 @@ class WechatMenu extends Base
         $menuCategories = wei()->wechatMenuCategory()->curApp()->andWhere(['isDefault' => 0])->enabled()->asc('sort')->findAll();
         foreach ($menuCategories as $menuCategory) {
             $buttons = $menuCategory->getFirstLevelMenus()->toButtons() + [
-                    'matchrule' => []
+                    'matchrule' => [],
                 ];
 
             $conditionKeys = wei()->wechatMenuCategory->getConditionKeys();
@@ -257,7 +257,7 @@ class WechatMenu extends Base
             case 'view':
                 return [
                     'type' => 'url',
-                    'url' => $button['url']
+                    'url' => $button['url'],
                 ];
                 break;
 

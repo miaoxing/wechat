@@ -31,12 +31,12 @@ class WechatReply extends Base
                 // 排序
                 $replies->desc('id');
 
-                $data = array();
+                $data = [];
 
                 foreach ($replies as $reply) {
                     $data[] = $reply->toArray() + [
                             'matchTypeName' => $reply->getMatchTypeName(),
-                            'articles' => $reply->getArticles()->toArray()
+                            'articles' => $reply->getArticles()->toArray(),
                         ];
                 }
 
@@ -67,8 +67,8 @@ class WechatReply extends Base
                 'showPlainKeywords' => true,
                 'hideMatchType' => true,
                 'defaultData' => [
-                    'keywords' => '默认回复'
-                ]
+                    'keywords' => '默认回复',
+                ],
             ],
             'subscribe' => [
                 'showScene' => true,
@@ -77,8 +77,8 @@ class WechatReply extends Base
                 'hideMatchType' => true,
                 'contentTips' => '"{关注顺序}"会被替换为用户的关注顺序',
                 'defaultData' => [
-                    'keywords' => '关注时回复'
-                ]
+                    'keywords' => '关注时回复',
+                ],
             ],
             'phone' => [
                 'showScene' => true,
@@ -86,7 +86,7 @@ class WechatReply extends Base
                 'hideMatchType' => true,
                 'defaultData' => [
                     'keywords' => '输入手机号码',
-                ]
+                ],
             ],
             'scan' => [
                 'showScene' => true,
@@ -95,8 +95,8 @@ class WechatReply extends Base
                 'hideMatchType' => true,
                 'defaultData' => [
                     'keywords' => '扫码',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $reply = wei()->weChatReply()->findOrInit(['id' => $req['id']])->fromArray($req);
@@ -128,6 +128,7 @@ class WechatReply extends Base
     public function destroyAction($req)
     {
         wei()->weChatReply()->findOneById($req['id'])->destroy();
+
         return $this->suc();
     }
 }
