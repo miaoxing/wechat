@@ -118,6 +118,14 @@ class WechatApi extends \miaoxing\plugin\BaseService
         return $this->message;
     }
 
+    public function getMainMessage()
+    {
+        $message = explode(' hint', $this->message)[0];
+        $message = rtrim($message, ',');
+
+        return $message;
+    }
+
     /**
      * 获取返回结果
      *

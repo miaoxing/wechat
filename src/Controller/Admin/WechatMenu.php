@@ -109,7 +109,7 @@ class WechatMenu extends Base
         $buttons = $menuDefaultCategory->getFirstLevelMenus()->toButtons();
         $result = $api->createMenu($buttons);
         if (!$result) {
-            return $this->err('发布默认菜单失败,微信返回：' . $api->getMessage(), $api->getCode());
+            return $this->err('发布默认菜单失败,微信返回：' . $api->getMainMessage(), $api->getCode());
         }
 
         // 2. 发布个性化菜单
@@ -142,7 +142,7 @@ class WechatMenu extends Base
 
             $result = $api->addConditionalMenu($buttons);
             if (!$result) {
-                return $this->err('发布个性化菜单失败,微信返回：' . $api->getMessage(), $api->getCode());
+                return $this->err('发布个性化菜单失败,微信返回：' . $api->getMainMessage(), $api->getCode());
             }
         }
 
@@ -161,7 +161,7 @@ class WechatMenu extends Base
         $result = $api->deleteMenu();
 
         if (!$result) {
-            return $this->err('微信返回消息：' . $api->getMessage(), $api->getCode());
+            return $this->err('删除失败,微信返回消息：' . $api->getMainMessage(), $api->getCode());
         } else {
             return $this->suc('删除菜单成功!');
         }
