@@ -2,7 +2,7 @@
 
 namespace Miaoxing\Wechat\Service;
 
-use plugins\award\services\Award;
+use Miaoxing\Award\Service\Award;
 use miaoxing\plugin\BaseModel;
 use Miaoxing\Plugin\Service\User;
 use Miaoxing\Article\Service\Article;
@@ -78,7 +78,7 @@ class WeChatQrcode extends BaseModel
     /**
      * Record: 获取二维码的奖励
      *
-     * @return Award
+     * @return \Miaoxing\Award\Service\Award
      */
     public function getAward()
     {
