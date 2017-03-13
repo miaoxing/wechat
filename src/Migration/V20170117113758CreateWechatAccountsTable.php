@@ -31,8 +31,8 @@ class V20170117113758CreateWechatAccountsTable extends BaseMigration
             ->string('verifyTicket', 128)->comment('component_verify_ticket')
             ->text('funcInfo')
             ->text('businessInfo')
-            ->timestamps()
-            ->userstamps()
+            ->timestampsV1()
+            ->userstampsV1()
             ->exec();
     }
 
