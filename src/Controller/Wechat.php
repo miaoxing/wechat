@@ -30,6 +30,10 @@ class Wechat extends \miaoxing\plugin\BaseController
             }
 
             return $this->err($ret);
+        } else {
+            $this->logger->debug('Wechat reply request', [
+                'content' => $app->getAttrs()
+            ]);
         }
 
         if ($app->isVerifyToken()) {
@@ -179,10 +183,6 @@ class Wechat extends \miaoxing\plugin\BaseController
 
         // 也允许只捕获某种事件
         if (in_array($app->getMsgType(), ['event'])) {
-            if ($app->getEvent() == 'subscribe' or $app->getEvent() == 'unsubscribe') {
-                wei()->logger->info('测试惠氏接收关注事件', ['event' => $app->getEvent()]);
-            }
-
             $event = $this->classify($app->getEvent());
             $this->event->trigger('wechat' . $event, [$app, $user, $account]);
         }
