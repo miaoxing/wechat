@@ -32,7 +32,7 @@ class Wechat extends \miaoxing\plugin\BaseController
             return $this->err($ret);
         } else {
             $this->logger->debug('Wechat reply request', [
-                'content' => $app->getAttrs()
+                'content' => $app->getAttrs(),
             ]);
         }
 
