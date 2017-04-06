@@ -9,7 +9,7 @@ use Wei\Http;
  * @property \Wei\Http $http
  * @method \Wei\Http http(array $options = [])
  * @property \Wei\Cache $cache
- * @property \services\Logger $logger
+ * @property \Miaoxing\App\Service\Logger $logger
  * @property WechatComponentApi $wechatComponentApi
  * @link http://mp.weixin.qq.com/wiki/home/index.html
  */

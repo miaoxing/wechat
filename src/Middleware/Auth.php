@@ -7,7 +7,7 @@ use Wei\Request;
 /**
  * @property \Wei\Session $session
  * @property \Wei\Ret $ret
- * @property \services\Logger $logger
+ * @property \Miaoxing\App\Service\Logger $logger
  */
 class Auth extends \Miaoxing\Plugin\Middleware\Base
 {

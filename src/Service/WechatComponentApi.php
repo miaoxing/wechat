@@ -10,7 +10,7 @@ use Wei\Http;
  *
  * @method Http http(array $options = [])
  * @property \Wei\Cache $cache
- * @property \services\Logger $logger
+ * @property \Miaoxing\App\Service\Logger $logger
  * @link https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318587&token=&lang=zh_CN
  */
 class WechatComponentApi extends BaseService
