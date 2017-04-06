@@ -39,6 +39,7 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
             if ($queries) {
                 $newUrl .= '?' . http_build_query($queries);
             }
+
             return $this->response->redirect($newUrl);
         }
 
@@ -47,6 +48,7 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
             $account = wei()->wechatAccount->getCurrentAccount();
             if ($account->isVerifiedService()) {
                 $url = $this->getRedirectUrl();
+
                 return $this->response->redirect($url);
             }
         }
@@ -103,6 +105,7 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
         // 3. 如果错误是invalid code,且还有重试次数,重新跳转获得新的code
         if ($ret['errcode'] == 40029 && $retries = $this->getRetries()) {
             $url = $this->getRedirectUrl(['wechatRetries' => $retries - 1]);
+
             return $this->response->redirect($url);
         }
 
@@ -144,6 +147,7 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
         $account = wei()->wechatAccount->getCurrentAccount();
         if (!$account->isVerifiedService()) {
             $this->logger->info('Got OAuth code, but wechat account is not verified service');
+
             return false;
         }
 
@@ -163,7 +167,7 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
     {
         return wei()->linkTo->getFullUrl([
             'value' => wei()->url->append($this->request->getUrl(), $params),
-            'decorator' => 'oauth2Base'
+            'decorator' => 'oauth2Base',
         ]);
     }
 
@@ -174,6 +178,6 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
      */
     protected function getRetries()
     {
-        return isset($this->request['wechatRetries']) ? (int)$this->request['wechatRetries'] : 2;
+        return isset($this->request['wechatRetries']) ? (int) $this->request['wechatRetries'] : 2;
     }
 }

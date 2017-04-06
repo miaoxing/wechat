@@ -87,6 +87,7 @@ class WechatComponentApi extends BaseService
     protected function getCredential()
     {
         $cacheKey = $this->getAccessTokenCacheKey();
+
         return $this->cache->get($cacheKey);
     }
 
@@ -100,6 +101,7 @@ class WechatComponentApi extends BaseService
     {
         $cacheKey = $this->getAccessTokenCacheKey();
         $this->cache->set($cacheKey, $credential);
+
         return $this;
     }
 
@@ -124,7 +126,7 @@ class WechatComponentApi extends BaseService
                 // 存储到缓存,方便下个请求获取
                 $this->setCredential([
                     'accessToken' => $ret['component_access_token'],
-                    'expireTime' => time() + $ret['expires_in']
+                    'expireTime' => time() + $ret['expires_in'],
                 ]);
             }
 
@@ -133,6 +135,7 @@ class WechatComponentApi extends BaseService
 
         $ret = $fn();
         $this->logger->info('第三方平台调用结果', $ret);
+
         return $ret;
     }
 
@@ -148,8 +151,8 @@ class WechatComponentApi extends BaseService
             'data' => [
                 'component_appid' => $this->getAppId(),
                 'component_appsecret' => $this->getAppSecret(),
-                'component_verify_ticket' => $this->getVerifyTicket()
-            ]
+                'component_verify_ticket' => $this->getVerifyTicket(),
+            ],
         ]);
     }
 
@@ -165,7 +168,7 @@ class WechatComponentApi extends BaseService
                 'url' => 'api_create_preauthcode?component_access_token=' . $this->accessToken,
                 'data' => [
                     'component_appid' => $this->getAppId(),
-                ]
+                ],
             ]);
         });
     }
@@ -199,8 +202,8 @@ class WechatComponentApi extends BaseService
                 'url' => 'api_query_auth?component_access_token=' . $this->accessToken,
                 'data' => [
                     'component_appid' => $this->getAppId(),
-                    'authorization_code' => $authCode
-                ]
+                    'authorization_code' => $authCode,
+                ],
             ]);
         });
     }
@@ -218,8 +221,8 @@ class WechatComponentApi extends BaseService
                 'url' => 'api_get_authorizer_info?component_access_token=' . $this->accessToken,
                 'data' => [
                     'component_appid' => $this->getAppId(),
-                    'authorizer_appid' => $authorizerAppId
-                ]
+                    'authorizer_appid' => $authorizerAppId,
+                ],
             ]);
         });
     }
@@ -240,7 +243,7 @@ class WechatComponentApi extends BaseService
                     'component_appid' => $this->getAppId(),
                     'authorizer_appid' => $authorizerAppId,
                     'authorizer_refresh_token' => $authorizerRefreshToken,
-                ]
+                ],
             ]);
         });
     }
@@ -278,6 +281,7 @@ class WechatComponentApi extends BaseService
                 $this->cache->set($cacheKey, $credential);
             }
         }
+
         return $credential['accessToken'];
     }
 
@@ -292,8 +296,9 @@ class WechatComponentApi extends BaseService
     {
         $this->cache->set($this->getAuthorizerAccessTokenCacheKey($appId), [
             'accessToken' => $authInfo['authorizer_access_token'],
-            'expireTime' => time() + $authInfo['expires_in']
+            'expireTime' => time() + $authInfo['expires_in'],
         ]);
+
         return $this;
     }
 
@@ -306,6 +311,7 @@ class WechatComponentApi extends BaseService
     public function removeAuthorizerAccessToken($appId)
     {
         $this->cache->remove($this->getAuthorizerAccessTokenCacheKey($appId));
+
         return $this;
     }
 
@@ -328,9 +334,10 @@ class WechatComponentApi extends BaseService
                         'appid' => '', // 需传入参数
                         'grant_type' => 'authorization_code',
                         'component_appid' => $this->appId,
-                        'component_access_token' => $this->accessToken
-                    ]
+                        'component_access_token' => $this->accessToken,
+                    ],
             ]);
+
             return $this->parseResponse($http);
         });
     }
@@ -368,6 +375,7 @@ class WechatComponentApi extends BaseService
         // 1. 处理HTTP请求失败
         if (!$http->isSuccess()) {
             $this->logError($http, $options);
+
             return ['code' => -1, 'message' => '很抱歉,请求失败,请重试'];
         }
 
@@ -381,6 +389,7 @@ class WechatComponentApi extends BaseService
         if (isset($res['errcode']) && $res['errcode'] !== 0) {
             $this->logError($http, $options);
             $message = isset($this->messages[$res['errcode']]) ? $this->messages[$res['errcode']] : '很抱歉,请求失败,请重试';
+
             return ['code' => -abs($http['errcode']), 'message' => $message];
         }
 
@@ -399,7 +408,7 @@ class WechatComponentApi extends BaseService
             'options' => $options,
             'status' => $http->getErrorStatus(),
             'response' => $http->getResponseText(),
-            'exception' => (string)$http->getErrorException(),
+            'exception' => (string) $http->getErrorException(),
         ]);
     }
 }
