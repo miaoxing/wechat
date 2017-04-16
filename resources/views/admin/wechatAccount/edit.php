@@ -91,14 +91,9 @@
           </label>
 
           <div class="col-lg-4">
-            <div class="input-group">
-              <input type="text" class="form-control" id="headImg" name="headImg">
-                            <span class="input-group-btn">
-                                <button id="select-thumb" class="btn btn-white" type="button">
-                                  <i class="fa fa-picture-o"></i>
-                                  选择图片
-                                </button>
-                            </span>
+            <div class="input-group js-upload-container">
+              <input type="file" class="js-image-upload"/>
+              <input type="hidden" id="headImg" name="headImg" class="js-image-url"/>
             </div>
           </div>
         </div>
@@ -194,7 +189,7 @@
 
 <?= $block('js') ?>
 <script>
-  require(['form', 'ueditor', 'jquery-deparam', 'validator'], function () {
+  require(['form', 'ueditor', 'jquery-deparam', 'validator', 'plugins/admin/js/image-input'], function () {
     $('.js-account-form')
       .loadJSON(<?= $account->toJson() ?>)
       .loadParams()
@@ -215,7 +210,7 @@
       .validate();
 
     // 点击选择图片
-    $('#headImg').imageInput();
+    $('input[type="file"].js-image-upload').imageUploadInput();
   });
 </script>
 <?= $block->end() ?>
