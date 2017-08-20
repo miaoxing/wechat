@@ -188,6 +188,19 @@ class WechatApi extends \miaoxing\plugin\BaseService
         return $this->prepareError($http, $credential);
     }
 
+    protected function authRet($fn)
+    {
+        $http = $this->auth($fn);
+        if (!$http) {
+            return $this->getResult();
+        }
+
+        return [
+            'code' => 1,
+            'message' => '操作成功',
+        ] + $http->getResponse();
+    }
+
     /**
      * 告警微信接口失败
      *
@@ -1749,6 +1762,79 @@ class WechatApi extends \miaoxing\plugin\BaseService
                 'method' => 'post',
                 'dataType' => 'json',
                 'data' => $data,
+            ]);
+        });
+    }
+
+    /**
+     * 创建门店
+     *
+     * @param array $data
+     * @return array
+     */
+    public function addPoi(array $data)
+    {
+        return $this->authRet(function () use ($data) {
+            $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+
+            return $this->http([
+                'url' => $this->baseUrl . 'cgi-bin/poi/addpoi?access_token=' . $this->accessToken,
+                'method' => 'post',
+                'dataType' => 'json',
+                'data' => $data,
+            ]);
+        });
+    }
+
+    public function updatePoi(array $data)
+    {
+        return $this->authRet(function () use ($data) {
+            $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+
+            return $this->http([
+                'url' => $this->baseUrl . 'cgi-bin/poi/updatepoi?access_token=' . $this->accessToken,
+                'method' => 'post',
+                'dataType' => 'json',
+                'data' => $data,
+            ]);
+        });
+    }
+
+    public function delPoi(array $data)
+    {
+        return $this->authRet(function () use ($data) {
+            $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+
+            return $this->http([
+                'url' => $this->baseUrl . 'cgi-bin/poi/delpoi?access_token=' . $this->accessToken,
+                'method' => 'post',
+                'dataType' => 'json',
+                'data' => $data,
+            ]);
+        });
+    }
+
+    public function getPoi(array $data)
+    {
+        return $this->authRet(function () use ($data) {
+            $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+
+            return $this->http([
+                'url' => $this->baseUrl . 'cgi-bin/poi/getpoi?access_token=' . $this->accessToken,
+                'method' => 'post',
+                'dataType' => 'json',
+                'data' => $data,
+            ]);
+        });
+    }
+
+    public function getWxCategory()
+    {
+        return $this->authRet(function () {
+            return $this->http([
+                'url' => $this->baseUrl . 'cgi-bin/poi/getwxcategory?access_token=' . $this->accessToken,
+                'method' => 'get',
+                'dataType' => 'json',
             ]);
         });
     }
