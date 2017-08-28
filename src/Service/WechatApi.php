@@ -99,6 +99,16 @@ class WechatApi extends \miaoxing\plugin\BaseService
     protected $message;
 
     /**
+     * 指定返回的errcode对应的日志等级
+     *
+     * @var array
+     */
+    protected $logLevels = [
+        43004 => 'info',
+        -1000 => 'info',
+    ];
+
+    /**
      * 获取返回代码
      *
      * @return int
@@ -219,7 +229,8 @@ class WechatApi extends \miaoxing\plugin\BaseService
         // 移除结尾的请求ID,使相同信息合并成一条
         $message = explode(' hint', $http['errmsg'])[0];
         $message = rtrim($message, ',');
-        $this->logger->warning('微信接口失败: ' . $http['errcode'] . ' ' . $message, [
+        $level = isset($this->logLevels[$http['errcode']]) ? $this->logLevels[$http['errcode']] : 'warning';
+        $this->logger->log($level, '微信接口失败: ' . $http['errcode'] . ' ' . $message, [
             'url' => $http->getUrl(),
             'data' => $http->getData(),
             'res' => $http->getResponse(),
