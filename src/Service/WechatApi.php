@@ -200,7 +200,11 @@ class WechatApi extends \miaoxing\plugin\BaseService
 
     protected function authRet($fn)
     {
-        $http = $this->auth($fn);
+        return $this->processRet($this->auth($fn));
+    }
+
+    protected function processRet($http)
+    {
         if (!$http) {
             return $this->getResult();
         }
@@ -1356,6 +1360,14 @@ class WechatApi extends \miaoxing\plugin\BaseService
     }
 
     /**
+     * @todo ret逐步替代原来的方法
+     */
+    public function createCardRet(array $data)
+    {
+        return $this->processRet($this->createCard($data));
+    }
+
+    /**
      * 更新卡券
      *
      * @param array $data
@@ -1369,6 +1381,11 @@ class WechatApi extends \miaoxing\plugin\BaseService
 
             return $result;
         });
+    }
+
+    public function updateCardRet(array $data)
+    {
+        return $this->processRet($this->updateCard($data));
     }
 
     /**
