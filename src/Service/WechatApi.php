@@ -1540,6 +1540,11 @@ class WechatApi extends \miaoxing\plugin\BaseService
         });
     }
 
+    public function getCardRet($id)
+    {
+        return $this->processRet($this->getCard($id));
+    }
+
     public function createCardQrCode(array $data)
     {
         return $this->auth(function () use ($data) {
