@@ -3,6 +3,7 @@
 namespace Miaoxing\Wechat\Service;
 
 use Miaoxing\Article\Service\Article;
+use Miaoxing\Plugin\Service\User;
 use Wei\WeChatApp;
 
 /**
@@ -313,5 +314,30 @@ class WeChatReply extends \miaoxing\plugin\BaseModel
         }
 
         return $articles;
+    }
+
+    /**
+     * 更新用户的关注状态
+     *
+     * @param WeChatApp $app
+     * @param User $user
+     */
+    public function updateSubscribeUser(WeChatApp $app, User $user)
+    {
+        // 将重新关注的用户置为有效
+        if (!$user['isValid']) {
+            $user['isValid'] = true;
+        }
+
+        if ($sceneId = $app->getScanSceneId()) {
+            $user->fromArray([
+                'isValid' => true,
+                'source' => $sceneId,
+            ]);
+        }
+
+        if ($user->isChanged()) {
+            $user->save();
+        }
     }
 }

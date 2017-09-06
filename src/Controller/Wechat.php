@@ -94,21 +94,7 @@ class Wechat extends \miaoxing\plugin\BaseController
 
         // 关注
         $app->subscribe(function (WeChatApp $app) use ($user, $reply) {
-            // 将重新关注的用户置为有效
-            if (!$user['isValid']) {
-                $user['isValid'] = true;
-            }
-
-            if ($sceneId = $app->getScanSceneId()) {
-                $user->save([
-                    'isValid' => true,
-                    'source' => $sceneId,
-                ]);
-            }
-
-            if ($user->isChanged()) {
-                $user->save();
-            }
+            wei()->weChatReply->updateSubscribeUser($app, $user);
 
             // 关注回复
             if ($reply->findByIdFromCache('subscribe')) {
