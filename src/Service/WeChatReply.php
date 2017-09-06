@@ -291,9 +291,22 @@ class WeChatReply extends \miaoxing\plugin\BaseModel
      */
     protected function toArticleArray($search = [], $replace = [])
     {
+        return $this->generateReplyArticles($this->getArticles(), $search, $replace);
+    }
+
+    /**
+     * 生成回复的图文数组
+     *
+     * @param Article|Article[] $articles
+     * @param array $search
+     * @param array $replace
+     * @return array
+     */
+    public function generateReplyArticles(Article $articles, $search = [], $replace = [])
+    {
         $wei = $this->wei;
-        $articles = [];
-        foreach ($this->getArticles() as $article) {
+        $data = [];
+        foreach ($articles as $article) {
             // 如果指定了关键词,替换描述内容里的关键词
             if ($search) {
                 $article['title'] = str_replace($search, $replace, $article['title']);
@@ -305,7 +318,7 @@ class WeChatReply extends \miaoxing\plugin\BaseModel
                 $article['thumb'] = $wei->request->getUrlFor($article['thumb']);
             }
 
-            $articles[] = [
+            $data[] = [
                 'title' => $article['title'],
                 'description' => $this->getArticles()->length() > 1 ? '' : $article['intro'],
                 'picUrl' => $article['thumb'],
@@ -313,7 +326,7 @@ class WeChatReply extends \miaoxing\plugin\BaseModel
             ];
         }
 
-        return $articles;
+        return $data;
     }
 
     /**
