@@ -135,7 +135,7 @@ class WechatQrcode extends Base
 
     public function showAction($req)
     {
-        $weChatQrcode = wei()->weChatQrcode()->findOne(['sceneId' => $req['sceneId']]);
+        $weChatQrcode = wei()->weChatQrcode()->findOrInit(['sceneId' => $req['sceneId']]);
         $image = $this->url('admin/wechat-qrcode/showImage', ['sceneId' => $weChatQrcode['sceneId']]);
 
         return $this->suc([
@@ -145,7 +145,7 @@ class WechatQrcode extends Base
 
     public function showImageAction($req)
     {
-        $weChatQrcode = wei()->weChatQrcode()->findOne(['sceneId' => $req['sceneId']]);
+        $weChatQrcode = wei()->weChatQrcode()->findOrInit(['sceneId' => $req['sceneId']]);
 
         $qrcodeService = wei()->weChatQrcode;
         $qrcodeService->displayImage($weChatQrcode);

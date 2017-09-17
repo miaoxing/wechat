@@ -486,7 +486,7 @@ class WechatApi extends \miaoxing\plugin\BaseService
                 $this->baseUrl . 'cgi-bin/groups/getid?access_token=' . $this->accessToken,
                 json_encode(
                     [
-                    'openid' => $openId,
+                        'openid' => $openId,
                     ],
                     JSON_UNESCAPED_UNICODE
                 )
@@ -525,8 +525,8 @@ class WechatApi extends \miaoxing\plugin\BaseService
                 $this->baseUrl . 'cgi-bin/groups/members/update?access_token=' . $this->accessToken,
                 json_encode(
                     [
-                    'openid' => $openId,
-                    'to_groupid' => $toGroupId,
+                        'openid' => $openId,
+                        'to_groupid' => $toGroupId,
                     ],
                     JSON_UNESCAPED_UNICODE
                 )
@@ -547,8 +547,8 @@ class WechatApi extends \miaoxing\plugin\BaseService
                 $this->baseUrl . 'cgi-bin/groups/members/batchupdate?access_token=' . $this->accessToken,
                 json_encode(
                     [
-                    'openid_list' => $openIdList,
-                    'to_groupid' => $toGroupId,
+                        'openid_list' => $openIdList,
+                        'to_groupid' => $toGroupId,
                     ],
                     JSON_UNESCAPED_UNICODE
                 )
@@ -568,9 +568,9 @@ class WechatApi extends \miaoxing\plugin\BaseService
                 $this->baseUrl . 'cgi-bin/groups/delete?access_token=' . $this->accessToken,
                 json_encode(
                     [
-                    'group' => [
-                        'id' => $groupId,
-                    ],
+                        'group' => [
+                            'id' => $groupId,
+                        ],
                     ],
                     JSON_UNESCAPED_UNICODE
                 )
@@ -735,16 +735,31 @@ class WechatApi extends \miaoxing\plugin\BaseService
     public function createPermanentQrCode($sceneId)
     {
         return $this->auth(function () use ($sceneId) {
-            return $this->http->postJson(
-                $this->baseUrl . 'cgi-bin/qrcode/create?access_token=' . $this->accessToken,
-                json_encode([
+            if (filter_var($sceneId, FILTER_VALIDATE_INT) && $sceneId > 0) {
+                // 正整数
+                $data = [
                     'action_name' => 'QR_LIMIT_SCENE',
                     'action_info' => [
                         'scene' => [
                             'scene_id' => $sceneId,
                         ],
                     ],
-                ])
+                ];
+            } else {
+                // 字符串
+                $data = [
+                    'action_name' => 'QR_LIMIT_STR_SCENE',
+                    'action_info' => [
+                        'scene' => [
+                            'scene_str' => $sceneId,
+                        ],
+                    ],
+                ];
+            }
+
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/qrcode/create?access_token=' . $this->accessToken,
+                json_encode($data)
             );
         });
     }
