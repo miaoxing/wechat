@@ -72,7 +72,10 @@ class WeChatQrcode extends BaseModel
      */
     public function getNextSceneId()
     {
-        return $this->db->max('weChatQrcode', 'sceneId') + 1;
+        return wei()->weChatQrcode()
+            ->select('MAX(sceneId)')
+            ->andWhere('sceneId > 0')
+            ->fetchColumn() + 1;
     }
 
     /**
