@@ -134,6 +134,11 @@ class Plugin extends \miaoxing\plugin\BasePlugin
         }
     }
 
+    public function onWechatSubscribe(WeChatApp $app)
+    {
+
+    }
+
     /**
      * 扫描二维码关注后的操作
      *
@@ -148,6 +153,9 @@ class Plugin extends \miaoxing\plugin\BasePlugin
         }
 
         $qrcode = wei()->weChatQrcode()->find(['sceneId' => $sceneId]);
+        if (!$qrcode['articleIds']) {
+            return;
+        }
 
         $app->subscribe(function (WeChatApp $app) use ($user, $qrcode) {
             $reply = wei()->weChatReply();
