@@ -1901,6 +1901,18 @@ class WechatApi extends \miaoxing\plugin\BaseService
         });
     }
 
+    public function modifyCardStock($data)
+    {
+        return $this->authRet(function () use ($data) {
+            return $this->http([
+                'url' => $this->baseUrl . 'card/modifystock?access_token=' . $this->accessToken,
+                'method' => 'post',
+                'dataType' => 'json',
+                'data' => json_encode($data, JSON_UNESCAPED_UNICODE),
+            ]);
+        });
+    }
+
     /**
      * 生成指定长度的随机字符串
      *
