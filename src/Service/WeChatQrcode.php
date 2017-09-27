@@ -73,7 +73,7 @@ class WeChatQrcode extends BaseModel
     public function getNextSceneId()
     {
         return wei()->weChatQrcode()
-            ->select('MAX(sceneId)')
+            ->select('MAX(CAST(sceneId AS UNSIGNED))')
             ->andWhere('sceneId > 0')
             ->fetchColumn() + 1;
     }
