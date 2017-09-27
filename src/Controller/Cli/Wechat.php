@@ -20,7 +20,7 @@ class Wechat extends \miaoxing\plugin\BaseController
             'onFail' => function () {
                 $path = $this->app->getControllerAction();
                 $this->logger->warning('请求' . $path . '重入,请检查');
-            }
+            },
         ]);
     }
 
@@ -75,7 +75,7 @@ class Wechat extends \miaoxing\plugin\BaseController
 
         $this->logger->debug('GetUserOpenIds', [
             'total' => $userOpenIds['total'],
-            'count' =>  $userOpenIds['count'],
+            'count' => $userOpenIds['count'],
         ]);
 
         // 3. 逐个检查用户是否存在,如果不存在,创建新用户
@@ -153,7 +153,7 @@ class Wechat extends \miaoxing\plugin\BaseController
 
         // 3. 同步用户
         foreach ($users as $user) {
-            $ret = $this->syncUser($user, $api);
+            $ret = wei()->wechatAccount->syncUser($user, $api);
             if ($ret['code'] === 1) {
                 ++$syncCount;
             }
@@ -207,7 +207,7 @@ class Wechat extends \miaoxing\plugin\BaseController
 
         // 3. 同步用户
         foreach ($users as $user) {
-            $ret = $this->syncUser($user, $api);
+            $ret = wei()->wechatAccount->syncUser($user, $api);
             if ($ret['code'] === 1) {
                 ++$syncCount;
             }
@@ -222,73 +222,6 @@ class Wechat extends \miaoxing\plugin\BaseController
     }
 
     /**
-     * 同步一个指定的用户
-     *
-     * @param \Miaoxing\Plugin\Service\User $user
-     * @param \Miaoxing\Wechat\Service\WechatApi $api
-     * @return bool
-     */
-    protected function syncUser(User $user, WechatApi $api)
-    {
-        if (!$user['wechatOpenId'] || strlen($user['wechatOpenId']) != 28) {
-            return ['code' => -1, 'message' => 'OpenID不合法'];
-        }
-
-        $userInfo = $api->getUserInfo($user['wechatOpenId']);
-
-        // 获取失败,如Token不对,HTTP请求错误,由接口方去告警
-        if (!$userInfo) {
-            // 如果是OpenID无效,设置用户为无效
-            // {"errcode":40003,"errmsg":"invalid openid hint: [xx]"}
-            $ret = $api->getResult();
-            if ($ret['code'] == -40003) {
-                $user->save([
-                    'wechatOpenId' => '', // 清空不正确的OpenID
-                    'isValid' => false,
-                    // TODO 临时记录 待确认无误后删除
-                    'signature' => $user['wechatOpenId'],
-                ]);
-            }
-
-            return $ret;
-        }
-
-        // 用户已经取消订阅
-        if (!$userInfo['subscribe']) {
-            $user->save(['isValid' => false]);
-
-            return ['code' => -4, 'message' => '用户已取消关注'];
-        }
-
-        // 获取分组Id
-        if ($userInfo['groupid']) {
-            $group = wei()->group()->find(['wechatId' => $userInfo['groupid']]);
-        }
-
-        // 如果锁定了地区,不覆盖地区内容
-        if (!$user->isStatus(User::STATUS_REGION_LOCKED)) {
-            $user->setData([
-                'country' => $userInfo['country'],
-                'province' => $userInfo['province'],
-                'city' => $userInfo['city'],
-            ]);
-        }
-
-        // 保存用户资料
-        $user->save([
-            'isValid' => true,
-            'nickName' => $userInfo['nickname'],
-            'remarkName' => $userInfo['remark'],
-            'gender' => $userInfo['sex'],
-            'regTime' => date('Y-m-d H:i:s', $userInfo['subscribe_time']),
-            'headImg' => $this->removePrefix($userInfo['headimgurl'], 'http:'),
-            'groupId' => $group ? $group['id'] : ($user['groupId'] ?: 0),
-        ]);
-
-        return ['code' => 1, 'message' => '同步成功'];
-    }
-
-    /**
      * 检查是否在单元测试中
      *
      * @return bool
@@ -298,21 +231,5 @@ class Wechat extends \miaoxing\plugin\BaseController
         $argv = $this->request->getServer('argv');
 
         return strpos($argv[0], 'phpunit') !== false;
-    }
-
-    /**
-     * 移除字符串指定的前缀
-     *
-     * @param string $string
-     * @param string $prefix
-     * @return string
-     */
-    protected function removePrefix($string, $prefix)
-    {
-        if (substr($string, 0, strlen($prefix)) == $prefix) {
-            return substr($string, strlen($prefix));
-        } else {
-            return $string;
-        }
     }
 }
