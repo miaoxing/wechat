@@ -2,7 +2,6 @@
 
 namespace Miaoxing\Wechat\Controller\Admin;
 
-use Miaoxing\Wechat\Controller\Admin\Base;
 use ZipArchive;
 
 class WechatQrcode extends Base

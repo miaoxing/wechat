@@ -4,7 +4,6 @@ namespace Miaoxing\Wechat\Controller\Cli;
 
 use Miaoxing\Plugin\Middleware\Lock;
 use Miaoxing\Plugin\Service\User;
-use Miaoxing\Wechat\Service\WechatApi;
 
 /**
  * @property \Wei\Cache $cache

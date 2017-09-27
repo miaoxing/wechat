@@ -3,8 +3,6 @@
 namespace Miaoxing\Wechat\Service;
 
 use Miaoxing\Plugin\Service\User;
-use Miaoxing\Wechat\Service\WechatApi;
-use Miaoxing\Wechat\Service\WechatComponentApi;
 
 /**
  * @property \Wei\Request $request
