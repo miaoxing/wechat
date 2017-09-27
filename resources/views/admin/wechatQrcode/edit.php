@@ -26,8 +26,7 @@
         </label>
 
         <div class="col-lg-4">
-          <input type="text" class="form-control" name="sceneId" id="sceneId" data-rule-required="true"
-            data-rule-number="true" data-rule-min="1" data-rule-max="100000">
+          <input type="text" class="form-control" name="sceneId" id="sceneId" data-rule-required="true">
         </div>
 
         <label class="col-lg-4 help-text" for="sceneId">

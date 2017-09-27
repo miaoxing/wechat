@@ -95,10 +95,6 @@ class WechatQrcode extends Base
             'data' => $req,
             'rules' => [
                 'sceneId' => [
-                    'required' => true,
-                    'digit' => true,
-                    'greaterThanOrEqual' => 1,
-                    'lessThanOrEqual' => 100000,
                 ],
             ],
             'names' => [
