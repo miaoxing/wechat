@@ -342,11 +342,8 @@ class WeChatReply extends \miaoxing\plugin\BaseModel
             $user['isValid'] = true;
         }
 
-        if ($sceneId = $app->getScanSceneId()) {
-            $user->fromArray([
-                'isValid' => true,
-                'source' => $sceneId,
-            ]);
+        if (!$user['source'] && $sceneId = $app->getScanSceneId()) {
+            $user['source'] = $app->getScanSceneId();
         }
 
         if ($user->isChanged()) {

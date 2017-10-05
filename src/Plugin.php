@@ -158,23 +158,7 @@ class Plugin extends \miaoxing\plugin\BasePlugin
         }
 
         $app->subscribe(function (WeChatApp $app) use ($user, $qrcode) {
-            $reply = wei()->weChatReply();
-
-            // 将重新关注的用户置为有效
-            if (!$user['isValid']) {
-                $user['isValid'] = true;
-            }
-
-            if ($sceneId = $app->getScanSceneId()) {
-                $user->save([
-                    'isValid' => true,
-                    'source' => $sceneId,
-                ]);
-            }
-
-            if ($user->isChanged()) {
-                $user->save();
-            }
+            wei()->weChatReply->updateSubscribeUser($app, $user);
 
             // 扫码的关注回复
             if ($qrcode['articleIds']) {
@@ -182,6 +166,7 @@ class Plugin extends \miaoxing\plugin\BasePlugin
             }
 
             // 关注回复
+            $reply = wei()->weChatReply();
             if ($reply->findByIdFromCache('subscribe')) {
                 return $reply->send($app, '{关注顺序}', $user['id']);
             }
