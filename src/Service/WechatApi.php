@@ -1468,20 +1468,20 @@ class WechatApi extends \miaoxing\plugin\BaseService
     }
 
     /**
-     * 查询code
+     * 查询动态码
      *
-     * @param string $code
+     * @param array $data
      * @return false|Http
      */
-    public function getCardCode($code)
+    public function getCardCode(array $data)
     {
-        $data = json_encode(['code' => $code]);
-
-        return $this->auth(function () use ($data) {
-            return $this->http->postJson(
-                $this->baseUrl . 'card/code/consume?access_token=' . $this->accessToken,
-                $data
-            );
+        return $this->authRet(function () use ($data) {
+            return $this->http([
+                'url' => $this->baseUrl . 'card/code/get?access_token=' . $this->accessToken,
+                'method' => 'post',
+                'dataType' => 'json',
+                'data' => json_encode($data, JSON_UNESCAPED_UNICODE),
+            ]);
         });
     }
 
