@@ -184,8 +184,8 @@ class WechatApi extends \miaoxing\plugin\BaseService
         }
 
         // 4. 处理接口返回错误
-        // 如果是Access token无效,清除缓存数据,然后重试一次
-        if ($http['errcode'] == 40001) {
+        // 如果是Access token无效或过期,清除缓存数据,然后重试一次
+        if ($http['errcode'] == 40001 || $http['errcode'] == 42001) {
             $this->removeAccessTokenByAuth();
             if (!$retried) {
                 $this->statsD->increment('wechat.credentialInvalid');
