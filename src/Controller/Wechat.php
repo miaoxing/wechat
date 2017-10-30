@@ -153,6 +153,11 @@ class Wechat extends \miaoxing\plugin\BaseController
         // 7. 是否开启多客服
         if ($account['transferCustomer']) {
             $app->transferCustomer(function (WeChatApp $app) use ($reply, $keyword) {
+                // 事件不接入多客服
+                if ($app->getMsgType() == 'event') {
+                    return false;
+                }
+
                 if ($reply->findByKeyword($keyword)) {
                     return $reply->send($app);
                 }
