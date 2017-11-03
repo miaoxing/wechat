@@ -122,7 +122,7 @@ class Wechat extends \miaoxing\plugin\BaseController
         $keyword = $app->getKeyword();
 
         // 事件不返回默认回复
-        if ($app->getEvent()) {
+        if (!$app->getEvent()) {
             $app->defaults(function (WeChatApp $app) use ($reply, $keyword) {
                 if ($reply->findByKeyword($keyword) || $reply->findByDefault()) {
                     return $reply->send($app);
