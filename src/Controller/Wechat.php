@@ -120,11 +120,15 @@ class Wechat extends \miaoxing\plugin\BaseController
 
         // 关键字回复和默认回复
         $keyword = $app->getKeyword();
-        $app->defaults(function (WeChatApp $app) use ($reply, $keyword) {
-            if ($reply->findByKeyword($keyword) || $reply->findByDefault()) {
-                return $reply->send($app);
-            }
-        });
+
+        // 事件不返回默认回复
+        if ($app->getEvent()) {
+            $app->defaults(function (WeChatApp $app) use ($reply, $keyword) {
+                if ($reply->findByKeyword($keyword) || $reply->findByDefault()) {
+                    return $reply->send($app);
+                }
+            });
+        }
 
         // 从缓存获取所有场景关键字
         $sceneKeywords = wei()->weChatReply()->getSceneKeywordsFromCache();
@@ -139,16 +143,6 @@ class Wechat extends \miaoxing\plugin\BaseController
                 return $reply->send($app);
             });
         }
-
-        // 屏蔽一些事件,不返回默认回复
-        $app->on('user_get_card', function () {
-        });
-        $app->on('user_del_card', function () {
-        });
-        $app->on('user_consume_card', function () {
-        });
-        $app->on('wifiConnected', function () {
-        });
 
         // 7. 是否开启多客服
         if ($account['transferCustomer']) {
