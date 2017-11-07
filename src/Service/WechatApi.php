@@ -1976,9 +1976,9 @@ class WechatApi extends \miaoxing\plugin\BaseService
     public function getCardPayCoinsInfo()
     {
         return $this->authRet(function () {
-           return $this->http([
+            return $this->http([
                'url' => $this->baseUrl . 'card/pay/getcoinsinfo?access_token=' . $this->accessToken,
-               'dataType' => 'json'
+               'dataType' => 'json',
            ]);
         });
     }
