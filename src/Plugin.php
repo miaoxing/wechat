@@ -4,6 +4,7 @@ namespace Miaoxing\Wechat;
 
 use miaoxing\plugin\BaseController;
 use Miaoxing\Plugin\Service\User;
+use Miaoxing\Wechat\Service\WeChatQrcode;
 use Wei\WeChatApp;
 
 class Plugin extends \miaoxing\plugin\BasePlugin
@@ -152,8 +153,9 @@ class Plugin extends \miaoxing\plugin\BasePlugin
             return;
         }
 
+        /** @var WeChatQrcode $qrcode */
         $qrcode = wei()->weChatQrcode()->find(['sceneId' => $sceneId]);
-        if (!$qrcode['articleIds']) {
+        if (!$qrcode['articleIds'] && !$qrcode['content']) {
             return;
         }
 
@@ -161,7 +163,11 @@ class Plugin extends \miaoxing\plugin\BasePlugin
             wei()->weChatReply->updateSubscribeUser($app, $user);
 
             // 扫码的关注回复
-            if ($qrcode['articleIds']) {
+            if ($qrcode['type'] == 'text') {
+                if ($qrcode['content']) {
+                    return $qrcode['content'];
+                }
+            } elseif ($qrcode['articleIds']) {
                 return $app->sendArticle($qrcode->toArticleArray());
             }
 

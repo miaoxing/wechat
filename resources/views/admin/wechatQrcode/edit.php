@@ -80,6 +80,32 @@
       </div>
 
       <div class="form-group">
+        <label class="col-lg-2 control-label" for="matchType">
+          <span class="text-warning">*</span>
+          回复类型
+        </label>
+
+        <div class="col-lg-4">
+          <label class="radio-inline">
+            <input type="radio" value="text" name="type"> 文本
+          </label>
+          <label class="radio-inline">
+            <input type="radio" value="article" name="type"> 图文
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group text-form-group type-form-group display-none">
+        <label class="col-lg-2 control-label" for="content">
+          回复内容
+        </label>
+
+        <div class="col-lg-4">
+          <textarea id="content" name="content" class="form-control" rows="8"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group article-form-group type-form-group display-none">
         <label class="col-lg-2 control-label" for="content">
           选择图文
         </label>
