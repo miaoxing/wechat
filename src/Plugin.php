@@ -137,7 +137,6 @@ class Plugin extends \miaoxing\plugin\BasePlugin
 
     public function onWechatSubscribe(WeChatApp $app)
     {
-
     }
 
     /**
