@@ -101,7 +101,7 @@ class Plugin extends \miaoxing\plugin\BasePlugin
 
     public function onPreControllerInit(BaseController $controller)
     {
-        $controller->middleware(\Miaoxing\Wechat\Middleware\Auth::className());
+        $controller->middleware(\Miaoxing\Wechat\Middleware\Auth::class);
     }
 
     public function onUserGetPlatform($platforms)

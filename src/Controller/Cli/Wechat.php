@@ -14,7 +14,7 @@ class Wechat extends \miaoxing\plugin\BaseController
     {
         parent::__construct($options);
 
-        $this->middleware(Lock::className(), [
+        $this->middleware(Lock::class, [
             'expire' => 60,
             'onFail' => function () {
                 $path = $this->app->getControllerAction();
