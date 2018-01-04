@@ -8,7 +8,7 @@ use Miaoxing\Plugin\Service\User;
 /**
  * @property \Wei\Cache $cache
  */
-class Wechat extends \miaoxing\plugin\BaseController
+class Wechat extends \Miaoxing\Plugin\BaseController
 {
     public function __construct(array $options)
     {

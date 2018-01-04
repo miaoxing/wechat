@@ -2,7 +2,7 @@
 
 namespace Miaoxing\Wechat;
 
-use miaoxing\plugin\BaseController;
+use Miaoxing\Plugin\BaseController;
 use Miaoxing\Plugin\Service\User;
 use Miaoxing\Wechat\Service\WeChatQrcode;
 use Wei\WeChatApp;

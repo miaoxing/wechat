@@ -6,7 +6,7 @@ use Miaoxing\Wechat\Service\WechatAccount;
 use Wei\Request;
 use Wei\WeChatApp;
 
-class Wechat extends \miaoxing\plugin\BaseController
+class Wechat extends \Miaoxing\Plugin\BaseController
 {
     public function replyAction($req)
     {

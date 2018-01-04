@@ -2,7 +2,7 @@
 
 namespace Miaoxing\Wechat\Controller\Admin;
 
-class WechatComponent extends \miaoxing\plugin\BaseController
+class WechatComponent extends \Miaoxing\Plugin\BaseController
 {
     public function authAction()
     {

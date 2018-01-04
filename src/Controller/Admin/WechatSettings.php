@@ -2,7 +2,7 @@
 
 namespace Miaoxing\Wechat\Controller\Admin;
 
-class WechatSettings extends \miaoxing\plugin\BaseController
+class WechatSettings extends \Miaoxing\Plugin\BaseController
 {
     protected $controllerName = '微信功能设置';
 

@@ -2,7 +2,7 @@
 
 namespace Miaoxing\Wechat\Controller\Wechat;
 
-abstract class Base extends \miaoxing\plugin\BaseController
+abstract class Base extends \Miaoxing\Plugin\BaseController
 {
     public function __construct(array $options = array())
     {
