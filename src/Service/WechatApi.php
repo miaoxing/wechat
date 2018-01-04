@@ -13,7 +13,7 @@ use Wei\Http;
  * @property WechatComponentApi $wechatComponentApi
  * @link http://mp.weixin.qq.com/wiki/home/index.html
  */
-class WechatApi extends \miaoxing\plugin\BaseService
+class WechatApi extends \Miaoxing\Plugin\BaseService
 {
     /**
      * @var string

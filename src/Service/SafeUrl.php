@@ -2,7 +2,7 @@
 
 namespace Miaoxing\Wechat\Service;
 
-use miaoxing\plugin\BaseService;
+use Miaoxing\Plugin\BaseService;
 
 /**
  * @property \Wei\Request $request
