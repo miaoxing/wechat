@@ -9,7 +9,7 @@ use Wei\WeChatApp;
 /**
  * @property \Wei\BaseCache $cache
  */
-class WeChatReply extends \miaoxing\plugin\BaseModel
+class WeChatReply extends \Miaoxing\Plugin\BaseModel
 {
     const EXACT_MATCH = 1;
 

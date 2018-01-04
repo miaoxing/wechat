@@ -3,7 +3,7 @@
 namespace Miaoxing\Wechat\Service;
 
 use Miaoxing\Award\Service\Award;
-use miaoxing\plugin\BaseModel;
+use Miaoxing\Plugin\BaseModel;
 use Miaoxing\Plugin\Service\User;
 use Miaoxing\Article\Service\Article;
 

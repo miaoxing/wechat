@@ -9,7 +9,7 @@ use Miaoxing\Plugin\Service\User;
  * @property \Miaoxing\Wechat\Service\WechatComponentApi $wechatComponentApi
  * @property \Wei\Logger $logger
  */
-class WechatAccount extends \miaoxing\plugin\BaseModel
+class WechatAccount extends \Miaoxing\Plugin\BaseModel
 {
     const PLATFORM_ID = 1;
 
