@@ -14,12 +14,14 @@ class WechatAccount extends \Miaoxing\Plugin\BaseController
     public function indexAction($req)
     {
         $account = wei()->wechatAccount->getCurrentAccount();
+
         return get_defined_vars();
     }
 
     public function editAction($req)
     {
         $account = wei()->wechatAccount->getCurrentAccount();
+
         return get_defined_vars();
     }
 

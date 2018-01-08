@@ -20,10 +20,11 @@ class WechatSettings extends \Miaoxing\Plugin\BaseController
 
     public function updateAction($req)
     {
-        $settings = (array)$req['settings'];
+        $settings = (array) $req['settings'];
         wei()->event->trigger('preImageDataSave', [&$settings, ['wechat.shareImage']]);
 
         $this->setting->setValues($settings, ['wechat.']);
+
         return $this->suc();
     }
 }
