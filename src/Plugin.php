@@ -119,7 +119,7 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
         }
     }
 
-    public function onBeforeContent()
+    public function onBodyStart()
     {
         if ($this->app->getControllerAction() != 'index/index') {
             return;
@@ -131,7 +131,7 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
     {
         if ($shareImage = wei()->setting('wechat.shareImage')) {
             $this->event->trigger('postImageLoad', [&$shareImage]);
-            $this->view->display('@wechat/wechat/beforeContent.php', get_defined_vars());
+            $this->view->display('@wechat/wechat/bodyStart.php', get_defined_vars());
         }
     }
 
