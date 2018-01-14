@@ -5,6 +5,7 @@ namespace plugins\wechat\docs
 {
 
     use Miaoxing\Wechat\Service\SafeUrl;
+    use Miaoxing\Wechat\Service\WechatTemplate;
 
     /**
      * @property    \Miaoxing\Wechat\Service\WechatAccount $wechatAccount 微信账户
@@ -24,6 +25,8 @@ namespace plugins\wechat\docs
      * @property    \Miaoxing\Wechat\Service\WechatComponentApi $wechatComponentApi 公众号第三方平台接口
      *
      * @property    SafeUrl $safeUrl 生成带签名的安全URL
+     *
+     * @method      WechatTemplate wechatTemplate()
      */
     class AutoComplete
     {
