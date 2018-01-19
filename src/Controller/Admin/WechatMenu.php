@@ -239,7 +239,7 @@ class WechatMenu extends Base
         wei()->weChatMenu()->delete(['accountId' => $req['accountId']]);
 
         // 菜单数据插入数据表
-        $db->insertBatch($table, $menus);
+        $db->batchInsert($table, $menus);
 
         return $this->suc();
     }
