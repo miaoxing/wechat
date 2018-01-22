@@ -2,6 +2,7 @@
 
 namespace Miaoxing\Wechat;
 
+use Miaoxing\Article\Service\Article;
 use Miaoxing\Plugin\BaseController;
 use Miaoxing\Plugin\Service\User;
 use Miaoxing\Wechat\Service\WeChatQrcode;
@@ -176,5 +177,13 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
                 return $reply->send($app, '{关注顺序}', $user['id']);
             }
         });
+    }
+
+    public function onAfterArticlesShowRender(Article $article)
+    {
+        if (!$article->isSafe()) {
+            return;
+        }
+        $this->display();
     }
 }
