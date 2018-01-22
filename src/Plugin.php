@@ -179,6 +179,14 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
         });
     }
 
+    public function onArticlesShowGetHeadImg()
+    {
+        $account = wei()->wechatAccount->getCurrentAccount();
+        if ($account['headImg']) {
+            return $account['headImg'];
+        }
+    }
+
     public function onAfterArticlesShowRender(Article $article)
     {
         if (!$article->isSafe()) {
