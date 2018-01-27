@@ -1,6 +1,6 @@
 <?php $view->layout() ?>
 
-<?= $block('css') ?>
+<?= $block->css() ?>
 <link rel="stylesheet" href="<?= $asset('plugins/wechat/css/admin/wechat-replies.css') ?>"/>
 <?= $block->end() ?>
 
@@ -213,7 +213,7 @@
 
   <?php require $view->getFile('wechat:wechat/media/tpls.php') ?>
 
-  <?= $block('js') ?>
+  <?= $block->js() ?>
   <script>
     require(['plugins/wechat/js/admin/wechat-replies', 'form', 'jquery-deparam', 'dataTable', 'validator'], function (reply, form) {
       form.toOptions($('#categoryId'), <?= json_encode(wei()->category()->notDeleted()->withParent('article')->getTreeToArray()) ?>, 'id', 'name');

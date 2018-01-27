@@ -60,7 +60,7 @@
   </div>
 </script>
 
-<?= $block('js') ?>
+<?= $block->js() ?>
 <script>
   require(['dataTable', 'form', 'jquery-deparam'], function () {
     $('#search-form').loadParams().update(function () {

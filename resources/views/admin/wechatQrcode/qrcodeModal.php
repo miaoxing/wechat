@@ -17,7 +17,7 @@
   </div>
 </div>
 
-<?= $block('js') ?>
+<?= $block->js() ?>
 <script>
   $('body').on('click', '.js-qrcode-show', function () {
     $.ajax({

@@ -166,7 +166,7 @@
 </div><!-- /.col -->
 <!-- /.row -->
 
-<?= $block('js') ?>
+<?= $block->js() ?>
 <script>
   require(['form', 'ueditor', 'jquery-deparam', 'validator'], function () {
     $('.js-account-form').loadJSON(<?= $account->toJson() ?>);

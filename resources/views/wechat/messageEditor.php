@@ -1,4 +1,4 @@
-<?= $block('css') ?>
+<?= $block->css() ?>
 <link rel="stylesheet" href="<?= $asset('plugins/wechat/css/admin/message-editor.css') ?>"/>
 <?= $block->end() ?>
 

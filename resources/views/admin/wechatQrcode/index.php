@@ -91,7 +91,7 @@
 <?php require $view->getFile('wechat:admin/wechatQrcode/batchDownload.php') ?>
 <?php require $view->getFile('user:admin/user/richInfo.php') ?>
 
-<?= $block('js') ?>
+<?= $block->js() ?>
 <script>
   require(['dataTable', 'form', 'jquery-deparam', 'template'], function () {
     var recordTable = $('#record-table').dataTable({

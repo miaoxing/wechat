@@ -1,4 +1,4 @@
-<?= $block('css') ?>
+<?= $block->css() ?>
 <link rel="stylesheet" href="<?= $asset('assets/wechat/media.css') ?>"/>
 <?= $block->end() ?>
 

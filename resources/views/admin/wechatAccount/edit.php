@@ -187,7 +187,7 @@
 </div><!-- /.col -->
 <!-- /.row -->
 
-<?= $block('js') ?>
+<?= $block->js() ?>
 <script>
   require(['form', 'ueditor', 'jquery-deparam', 'validator', 'plugins/admin/js/image-input'], function () {
     $('.js-account-form')

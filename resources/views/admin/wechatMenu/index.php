@@ -107,7 +107,7 @@
 
 <?php require $view->getFile('@link-to/link-to/link-to.php') ?>
 
-<?= $block('js') ?>
+<?= $block->js() ?>
 <script>
   require(['plugins/wechat/js/admin/wechat-menus', 'css!plugins/wechat/css/admin/wechat-menus', 'linkTo', 'form', 'dataTable', 'jquery-deparam'], function (menu, linkTo) {
     menu.index({

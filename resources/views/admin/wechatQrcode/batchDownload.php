@@ -1,4 +1,4 @@
-<?= $block('js') ?>
+<?= $block->js() ?>
 <script>
   (function () {
     var $checkAll = $('.js-table-check-all');
