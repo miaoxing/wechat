@@ -31,7 +31,7 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
         }
 
         // 获取完用户登录态后,如果存在wechatOpenId或OAuth2.0的code参数,做次跳转,移除该参数
-        if (isset($req['wechatOpenId']) || isset($req['code'])) {
+        if (isset($req['wechatOpenId']) || (isset($req['code']) && isset($req['state']))) {
             // TODO 移除逻辑,放到safeUrl中
             $removeKeys = ['wechatOpenId', 'timestamp', 'flag', 'code', 'state'];
             $queries = array_diff_key($req->getParameterReference('get'), array_flip($removeKeys));
@@ -60,7 +60,7 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
      * 根据URL中的wechatOpenId,签名等参数,初始化微信用户
      *
      * @param Request $req
-     * @return void|\Wei\Response
+     * @return array|bool
      */
     protected function initUserByWechatOpenId(Request $req)
     {
@@ -87,7 +87,7 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
      * 通过微信OAuth2的code参数,初始化用户
      *
      * @param Request $req
-     * @return false|\Wei\Response
+     * @return array|bool|\Wei\Response
      */
     protected function initUserByWechatOAuth2Code(Request $req)
     {
@@ -139,7 +139,7 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
     protected function getOAuthCode()
     {
         // 1. 如果请求不带code,不再处理
-        if (!$this->request['code']) {
+        if (!isset($this->request['code']) && !isset($this->request['state'])) {
             return false;
         }
 
