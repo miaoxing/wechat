@@ -117,9 +117,12 @@ class WechatReply extends Base
 
     public function updateAction($req)
     {
-        // FIXME 主键可以相同,如default,而Wei\Record不不支持相同主键
+        // 去掉多余空格
+        $keywords = explode(' ', $req['keywords']);
+        $keywords = implode(' ', array_filter(array_unique($keywords)));
+        $req['keywords'] = $keywords;
 
-        $reply = wei()->weChatReply()->findOrInitById($req['id']);
+        $reply = wei()->weChatReply()->findId($req['id']);
         $reply->save($req);
 
         return $this->suc();
