@@ -735,7 +735,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
     public function createPermanentQrCode($sceneId)
     {
         return $this->auth(function () use ($sceneId) {
-            if (filter_var($sceneId, FILTER_VALIDATE_INT) && $sceneId > 0) {
+            if (filter_var($sceneId, FILTER_VALIDATE_INT) && $sceneId > 0 && $sceneId <= 100000) {
                 // 正整数
                 $data = [
                     'action_name' => 'QR_LIMIT_SCENE',
