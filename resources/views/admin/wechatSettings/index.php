@@ -54,7 +54,7 @@
       })
       .validate();
 
-    $('.js-share-image').imageUpload({max: 1});
+    $('.js-share-image').imageUpload();
   });
 </script>
 <?= $block->end() ?>
