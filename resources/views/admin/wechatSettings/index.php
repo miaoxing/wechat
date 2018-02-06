@@ -8,26 +8,19 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <form action="<?= $url('admin/wechat-settings/update') ?>" class="js-setting-form form-horizontal" method="post" role="form">
+    <form action="<?= $url('admin/wechat-settings/update') ?>" class="js-setting-form form-horizontal"
+      method="post" role="form">
 
       <div class="form-group">
-        <label class="col-lg-2 control-label" for="shareImage">
+        <label class="col-lg-2 control-label" for="share-image">
           首页分享图
         </label>
 
         <div class="col-lg-4">
-          <div class="input-group">
-            <input type="text" class="js-share-image form-control" id="shareImage" name="settings[wechat.shareImage]">
-            <span class="input-group-btn">
-                <button class="btn btn-white" type="button">
-                  <i class="fa fa-picture-o"></i>
-                  选择图片
-                </button>
-            </span>
-          </div>
+          <input class="js-share-image form-control" id="share-image" name="settings[wechat.shareImage]" type="text">
         </div>
 
-        <label class="col-lg-6 help-text" for="shareImage">
+        <label class="col-lg-6 help-text" for="share-image">
           尺寸300*300以上,长宽1:1
         </label>
       </div>
@@ -48,7 +41,7 @@
 
 <?= $block->js() ?>
 <script>
-  require(['form', 'ueditor', 'validator'], function () {
+  require(['plugins/admin/js/image-upload', 'form', 'validator'], function () {
     $('.js-setting-form')
       .loadJSON(<?= json_encode([
       'js-share-image' => $shareImage,
@@ -61,7 +54,7 @@
       })
       .validate();
 
-    $('.js-share-image').imageInput();
+    $('.js-share-image').imageUpload({max: 1});
   });
 </script>
 <?= $block->end() ?>
