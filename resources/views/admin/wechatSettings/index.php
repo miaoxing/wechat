@@ -16,8 +16,8 @@
           首页分享图
         </label>
 
-          <div class="col-lg-4">
-            <input class="js-share-image form-control" id="share-image" name="settings[wechat.shareImage]" type="text" required>
+        <div class="col-lg-4">
+            <input class="js-share-image form-control" id="share-image" name="settings[wechat.shareImage]" type="text">
         </div>
 
         <label class="col-lg-6 help-text" for="share-image">
