@@ -91,10 +91,7 @@
           </label>
 
           <div class="col-lg-4">
-            <div class="input-group js-upload-container">
-              <input type="file" class="js-image-upload"/>
-              <input type="hidden" id="headImg" name="headImg" class="js-image-url"/>
-            </div>
+            <input class="js-head-img" type="text" id="headImg" name="headImg">
           </div>
         </div>
       </fieldset>
@@ -189,7 +186,7 @@
 
 <?= $block->js() ?>
 <script>
-  require(['form', 'ueditor', 'jquery-deparam', 'validator', 'plugins/admin/js/image-input'], function () {
+  require(['form', 'ueditor', 'jquery-deparam', 'validator', 'plugins/admin/js/image-upload'], function () {
     $('.js-account-form')
       .loadJSON(<?= $account->toJson() ?>)
       .loadParams()
@@ -209,8 +206,7 @@
       })
       .validate();
 
-    // 点击选择图片
-    $('input[type="file"].js-image-upload').imageUploadInput();
+    $('.js-head-img').imageUpload();
   });
 </script>
 <?= $block->end() ?>
