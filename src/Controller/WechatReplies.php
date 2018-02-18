@@ -2,10 +2,12 @@
 
 namespace Miaoxing\Wechat\Controller;
 
-use Miaoxing\Wechat\Controller\Wechat;
-
 class WechatReplies extends Wechat
 {
+    protected $guestPages = [
+        'wechatReplies',
+    ];
+
     /**
      * 验证Token是GET请求,引到index方法
      */

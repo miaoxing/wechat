@@ -8,6 +8,10 @@ use Wei\WeChatApp;
 
 class Wechat extends \Miaoxing\Plugin\BaseController
 {
+    protected $guestPages = [
+        'wechat',
+    ];
+
     public function replyAction($req)
     {
         // 记录请求日志
