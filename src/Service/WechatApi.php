@@ -2007,6 +2007,18 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
         });
     }
 
+    public function getGiftCardOrder(array $data)
+    {
+        return $this->authRet(function () use ($data) {
+            return $this->http([
+                'url' => $this->baseUrl . 'card/giftcard/order/get?access_token=' . $this->accessToken,
+                'method' => 'get',
+                'dataType' => 'json',
+                'data' => json_encode($data, JSON_UNESCAPED_UNICODE),
+            ]);
+        });
+    }
+
     /**
      * 生成指定长度的随机字符串
      *
