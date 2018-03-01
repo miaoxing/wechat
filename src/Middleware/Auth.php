@@ -139,7 +139,7 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
     protected function getOAuthCode()
     {
         // 1. 如果请求不带code,不再处理
-        if (!isset($this->request['code']) && !isset($this->request['state'])) {
+        if (!isset($this->request['code']) || !isset($this->request['state'])) {
             return false;
         }
 
