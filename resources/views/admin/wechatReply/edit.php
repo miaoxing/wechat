@@ -140,13 +140,17 @@
       </div>
 
       <div class="form-group image-form-group type-form-group display-none">
-        <label class="col-lg-2 control-label" for="content">
+        <label class="col-lg-2 control-label" for="replies-image-url">
           回复图片
         </label>
 
         <div class="col-lg-4">
           <input class="js-replies-image-url" type="text" id="replies-image-url" name="replies[image][url]" required>
         </div>
+
+        <label class="col-lg-6 help-text" for="replies-image-url">
+          图片2M以内，支持bmp/png/jpeg/jpg/gif格式
+        </label>
       </div>
 
       <input type="hidden" name="accountId" id="accountId">
