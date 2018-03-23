@@ -53,6 +53,7 @@ class WeChatReply extends \Miaoxing\Plugin\BaseModel
     {
         parent::beforeSave();
         $this['articleIds'] = json_encode($this['articleIds']);
+        $this['replies'] = json_encode($this['replies']);
     }
 
     public function afterSave()
@@ -71,6 +72,7 @@ class WeChatReply extends \Miaoxing\Plugin\BaseModel
     {
         parent::afterFind();
         $this['articleIds'] = (array) json_decode($this['articleIds'], true);
+        $this['replies'] = (array) json_decode($this['replies'], true);
     }
 
     public function getArticles()
@@ -277,8 +279,11 @@ class WeChatReply extends \Miaoxing\Plugin\BaseModel
             }
             // 直接返回content字段,由weChatApp服务构造XML.如果内容为空,weChatApp会自动输入空字符串,这样符合微信的要求
             return $this['content'];
-        } else {
+        } elseif ($this['type'] == 'article') {
             return $app->sendArticle($this->toArticleArray($search, $replace));
+        } else {
+            $ret = wei()->wechatMedia->findOrCreateByPath($this['replies']['image']['url']);
+            return $app->send('image', ['Image' => ['MediaId' => $ret['data']['wechatMediaId']]]);
         }
     }
 

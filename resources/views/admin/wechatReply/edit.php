@@ -104,6 +104,9 @@
           <label class="radio-inline">
             <input type="radio" value="article" name="type"> 图文
           </label>
+          <label class="radio-inline">
+            <input type="radio" value="image" name="type"> 图片
+          </label>
         </div>
       </div>
 
@@ -133,6 +136,16 @@
         <div class="col-lg-4">
           <div class="article-list"></div>
           <a class="btn btn-white" href="#article-table-modal" data-toggle="modal">添加</a>
+        </div>
+      </div>
+
+      <div class="form-group image-form-group type-form-group display-none">
+        <label class="col-lg-2 control-label" for="content">
+          回复图片
+        </label>
+
+        <div class="col-lg-4">
+          <input class="js-replies-image-url" type="text" id="replies-image-url" name="replies[image][url]" required>
         </div>
       </div>
 
@@ -215,7 +228,14 @@
 
   <?= $block->js() ?>
   <script>
-    require(['plugins/wechat/js/admin/wechat-replies', 'form', 'jquery-deparam', 'dataTable', 'validator'], function (reply, form) {
+    require([
+      'plugins/wechat/js/admin/wechat-replies',
+      'form',
+      'jquery-deparam',
+      'dataTable',
+      'validator',
+      'plugins/admin/js/image-upload',
+    ], function (reply, form) {
       form.toOptions($('#categoryId'), <?= json_encode(wei()->category()->notDeleted()->withParent('article')->getTreeToArray()) ?>, 'id', 'name');
 
       reply.initForm({

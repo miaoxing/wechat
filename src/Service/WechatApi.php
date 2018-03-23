@@ -1134,6 +1134,29 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
     }
 
     /**
+     * 新增永久素材
+     *
+     * @param string $type
+     * @param string $file
+     * @return array
+     */
+    public function addMaterial($type, $file)
+    {
+        return $this->authRet(function () use ($type, $file) {
+            $http = $this->http([
+                'method' => 'post',
+                'dataType' => 'json',
+                'url' => $this->baseUrl . 'cgi-bin/material/add_material?type=' . $type . '&access_token='
+                    . $this->accessToken,
+                'files' => [
+                    'media' => $file,
+                ],
+            ]);
+            return $http;
+        });
+    }
+
+    /**
      * @param string $url
      * @return array|bool
      */

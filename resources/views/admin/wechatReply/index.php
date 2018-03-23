@@ -60,6 +60,12 @@
   </div>
 </script>
 
+<script id="replies-tpl" type="text/html">
+  <a href="<%= replies.image.url %>" target="_blank">
+    <img style="max-height: 60px" src="<%= replies.image.url %>">
+  </a>
+</script>
+
 <?= $block->js() ?>
 <script>
   require(['dataTable', 'form', 'jquery-deparam'], function () {
@@ -78,24 +84,28 @@
         {
           data: 'content',
           render: function (data, type, full) {
-            if (full.type == 'text') {
-              return data;
-            } else {
+            if (full.type === 'image') {
+              return template.render('replies-tpl', full);
+            } else if (full.type === 'article') {
               var title = [];
               for (var i in full.articles) {
                 title.push(full.articles[i].title);
               }
               return title.join(', ');
+            } else {
+              return data;
             }
           }
         },
         {
           data: 'type',
-          render: function (data, type, full) {
-            if (data == 'text') {
-              return '<span class="badge badge-success">文本</span>';
+          render: function (data) {
+            if (data === 'text') {
+              return '文本';
+            } else if (data === 'article') {
+              return '图文';
             } else {
-              return '<span class="badge badge-warning">图文</span>';
+              return '图片';
             }
           }
         },

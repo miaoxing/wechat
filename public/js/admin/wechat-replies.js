@@ -1,4 +1,4 @@
-define([], function(){
+define(['plugins/app/libs/jquery.populate/jquery.populate'], function(){
     var self = {};
 
     // 选项
@@ -21,7 +21,7 @@ define([], function(){
         self.renderArticleList(self.articles);
 
         self.form
-            .loadJSON(self.data)
+            .populate(self.data)
             .loadParams()
             .ajaxForm({
                 dataType: 'json',
@@ -85,6 +85,10 @@ define([], function(){
                     });
                 }, 'json');
             });
+        });
+
+        $('.js-replies-image-url').imageUpload({
+          url: $.url('admin/wechat-medias/upload-image.json')
         });
     };
 
