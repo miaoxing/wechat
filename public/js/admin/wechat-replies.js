@@ -50,7 +50,6 @@ define(['plugins/app/libs/jquery.populate/jquery.populate'], function(){
                 rules: {
                     keywords: 'required'
                 },
-                ignore: '',
                 errorClass: 'error text-danger',
                 errorPlacement: function(error, element) {
                     error.appendTo(element.parent());

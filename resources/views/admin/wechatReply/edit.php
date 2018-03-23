@@ -116,7 +116,7 @@
         </label>
 
         <div class="col-lg-4">
-          <textarea id="content" name="content" class="form-control" rows="8"></textarea>
+          <textarea id="content" name="content" class="form-control" rows="8" required></textarea>
         </div>
 
         <label class="col-lg-6 help-text" for="content">
