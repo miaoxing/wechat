@@ -11,7 +11,7 @@ use Wei\Http;
  * @property \Wei\Cache $cache
  * @property \Miaoxing\App\Service\Logger $logger
  * @property WechatComponentApi $wechatComponentApi
- * @link http://mp.weixin.qq.com/wiki/home/index.html
+ * @see http://mp.weixin.qq.com/wiki/home/index.html
  */
 class WechatApi extends \Miaoxing\Plugin\BaseService
 {
@@ -1194,8 +1194,8 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
     public function getMediaUrl($mediaId)
     {
         return $this->auth(function () use ($mediaId) {
-            $url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?media_id=' . $mediaId . '&access_token=' . $this->accessToken;
-
+            $url = 'http://file.api.weixin.qq.com/cgi-bin/media/get?media_id='
+                . $mediaId . '&access_token=' . $this->accessToken;
             return $url;
         });
     }
@@ -1297,7 +1297,6 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
         switch ($type) {
             case 'text':
                 return $this->sendText($openId, $data['content']);
-                break;
 
             default:
                 $this->code = -1;
@@ -1814,7 +1813,8 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
 
             return $this->http([
-                'url' => $this->baseUrl . 'hardware/mydevice/platform/get_device_status?access_token=' . $this->accessToken,
+                'url' => $this->baseUrl . 'hardware/mydevice/platform/get_device_status?access_token='
+                    . $this->accessToken,
                 'method' => 'post',
                 'dataType' => 'json',
                 'data' => $data,
@@ -2040,7 +2040,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
         return $this->authRet(function () use ($data) {
             return $this->http([
                 'url' => $this->baseUrl . 'card/giftcard/order/get?access_token=' . $this->accessToken,
-                'method' => 'get',
+                'method' => 'post',
                 'dataType' => 'json',
                 'data' => json_encode($data, JSON_UNESCAPED_UNICODE),
             ]);
