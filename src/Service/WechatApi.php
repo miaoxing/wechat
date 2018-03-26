@@ -198,6 +198,21 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
         return $this->prepareError($http, $credential);
     }
 
+    protected function logApi(Http $http)
+    {
+        // 记录请求日志用于排查问题
+        wei()->appDb->insert('apiLogs', [
+            'appId' => wei()->app->getId(),
+            'url' => (string) $http->getUrl(),
+            'code' => $http->getCurlInfo(CURLINFO_HTTP_CODE),
+            'options' => json_encode($http->getOption('curlOptions'), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+            'req' => json_encode($http->getData()),
+            'res' => (string) $http->getResponseText(),
+            'createTime' => date('Y-m-d H:i:s'),
+            'createUser' => (int) wei()->curUser['id'],
+        ]);
+    }
+
     protected function authRet($fn)
     {
         return $this->processRet($this->auth($fn));
@@ -223,6 +238,8 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
      */
     protected function logError(Http $http, $credential = [])
     {
+        $this->logApi($http);
+
         // HTTP请求失败由HTTP自行告警
         if (!$http->isSuccess()) {
             return;
@@ -353,18 +370,6 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
                 'appid' => $this->getAppId(),
                 'secret' => $this->getAppSecret(),
             ],
-        ]);
-
-        // 临时记录请求日志用于排查问题
-        wei()->appDb->insert('apiLogs', [
-            'appId' => wei()->app->getId(),
-            'url' => (string) $http->getUrl(),
-            'code' => $http->getCurlInfo(CURLINFO_HTTP_CODE),
-            'options' => json_encode($http->getOption('curlOptions'), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-            'req' => json_encode($http->getData()),
-            'res' => (string) $http->getResponseText(),
-            'createTime' => date('Y-m-d H:i:s'),
-            'createUser' => (int) wei()->curUser['id'],
         ]);
 
         $this->cache->remove($lockKey);
@@ -2000,9 +2005,9 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
     {
         return $this->authRet(function () {
             return $this->http([
-               'url' => $this->baseUrl . 'card/pay/getcoinsinfo?access_token=' . $this->accessToken,
-               'dataType' => 'json',
-           ]);
+                'url' => $this->baseUrl . 'card/pay/getcoinsinfo?access_token=' . $this->accessToken,
+                'dataType' => 'json',
+            ]);
         });
     }
 
