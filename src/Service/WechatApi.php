@@ -2087,4 +2087,26 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
         return $str;
     }
+
+    public function call($url, $data, $method = 'POST')
+    {
+        return $this->authRet(function () use ($url, $data, $method) {
+            return $this->http([
+                'url' => $this->baseUrl . $url,
+                'data' => $data,
+                'method' => $method,
+                'dataType' => 'json',
+                'throwException' => false,
+            ]);
+        });
+    }
+
+    public function jsCode2Session($data)
+    {
+        return $this->call('sns/jscode2session', $data + [
+                'appid' => $this->appId,
+                'secret' => $this->appSecret,
+                'grant_type' => 'authorization_code',
+            ], 'GET');
+    }
 }
