@@ -2109,4 +2109,16 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
                 'grant_type' => 'authorization_code',
             ], 'GET');
     }
+
+    public function getWxaCode($data)
+    {
+        return $this->auth(function () use ($data) {
+            return $this->http([
+                'url' => $this->baseUrl . 'wxa/getwxacode?access_token=' . $this->accessToken,
+                'data' => json_encode($data),
+                'method' => 'post',
+                'throwException' => true,
+            ]);
+        });
+    }
 }
