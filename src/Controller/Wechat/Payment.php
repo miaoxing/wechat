@@ -19,13 +19,12 @@ class Payment extends Base
     {
         parent::__construct($options);
 
-        // 记录微信的请求信息
-        $this->logger->info('Wechat request URL: ' . $this->request->getUrl() . ' ' . print_r($_POST, true));
-        $this->logger->info('Wechat post data : ' . $this->request->getContent());
-
-        // 记录服务器返回信息
+        // 记录请求和返回信息
         $this->response->setOption('beforeSend', function ($response, $content) {
-            $this->logger->info('Server response data: ' . $content);
+            $this->logger->info('Wechat native payment', [
+                'req' => $this->request->getContent(),
+                'res' => $content
+            ]);
         });
     }
 
