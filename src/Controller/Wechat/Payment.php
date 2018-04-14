@@ -23,7 +23,7 @@ class Payment extends Base
         $this->response->setOption('beforeSend', function ($response, $content) {
             $this->logger->info('Wechat native payment', [
                 'req' => $this->request->getContent(),
-                'res' => $content
+                'res' => $content,
             ]);
         });
     }
