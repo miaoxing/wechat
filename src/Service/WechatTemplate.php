@@ -183,6 +183,10 @@ class WechatTemplate extends BaseService
             return $this->err('用户未关注');
         }
 
+        if (isset($this->request['page'])) {
+            unset($this->request['page']);
+        }
+
         $api->sendTemplate($this->request);
         return $api->getResult();
     }
@@ -196,6 +200,10 @@ class WechatTemplate extends BaseService
 
         if (!$this->request['form_id']) {
             return $this->err('没有可用的form_id');
+        }
+
+        if (isset($this->request['url'])) {
+            unset($this->request['url']);
         }
 
         $ret = $api->sendWxaTemplate($this->request);

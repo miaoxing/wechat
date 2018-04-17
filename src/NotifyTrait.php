@@ -10,9 +10,17 @@ use Wei\Event;
  */
 trait NotifyTrait
 {
-    public function notify(WechatTemplate $template, $event)
+    public function notify(WechatTemplate $template, $event, $data)
     {
-        $ret = $this->event->trigger($this->getBaseName() . ucfirst($event));
+        if (is_array($data)) {
+            $args = array_unshift($data, $event);
+        } elseif (func_get_arg(2)) {
+            $args = [$template, $data];
+        } else {
+            $args = [$template];
+        }
+
+        $ret = $this->event->until($this->getBaseName() . ucfirst($event), $args);
         if ($ret) {
             return $ret;
         }
