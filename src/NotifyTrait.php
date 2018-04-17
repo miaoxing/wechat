@@ -20,18 +20,11 @@ trait NotifyTrait
             $args = [$template];
         }
 
-        $ret = $this->event->until($this->getBaseName() . ucfirst($event), $args);
+        $ret = $this->event->until($event, $args);
         if ($ret) {
             return $ret;
         }
 
         return $template->send();
-    }
-
-    protected function getBaseName()
-    {
-        $parts = explode('\\', get_class($this));
-
-        return end($parts);
     }
 }
