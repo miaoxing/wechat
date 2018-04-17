@@ -10,7 +10,7 @@ use Wei\Event;
  */
 trait NotifyTrait
 {
-    public function notify(WechatTemplate $template, $event, $data)
+    public function notify(WechatTemplate $template, $event, $data = null)
     {
         if (is_array($data)) {
             $args = array_unshift($data, $event);
