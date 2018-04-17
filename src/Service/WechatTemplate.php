@@ -5,6 +5,7 @@ namespace Miaoxing\Wechat\Service;
 use Miaoxing\App\Service\Logger;
 use Miaoxing\Plugin\BaseService;
 use Miaoxing\Plugin\Service\User;
+use Miaoxing\WxaTemplate\Service\WxaTemplateFormModel;
 use Wei\RetTrait;
 
 /**
@@ -25,6 +26,11 @@ class WechatTemplate extends BaseService
      * @var User
      */
     protected $user;
+
+    /**
+     * @var WxaTemplateFormModel
+     */
+    protected $form;
 
     /**
      * 创建一个模板消息对象
@@ -76,6 +82,13 @@ class WechatTemplate extends BaseService
         return $this;
     }
 
+    public function page($page)
+    {
+        $this->request['page'] = $page;
+
+        return $this;
+    }
+
     /**
      * 设置跳小程序所需数据，不需跳小程序可不用传该数据
      *
@@ -115,6 +128,26 @@ class WechatTemplate extends BaseService
     }
 
     /**
+     * 小程序的FormID
+     *
+     * @param string $formId
+     * @return $this
+     */
+    public function formId($formId)
+    {
+        $this->request['form_id'] = $formId;
+        return $this;
+    }
+
+    public function form(WxaTemplateFormModel $form)
+    {
+        $this->form = $form;
+        $this->formId($form->formId);
+
+        return $this;
+    }
+
+    /**
      * 发送模板消息
      *
      * @return array
@@ -123,22 +156,54 @@ class WechatTemplate extends BaseService
     {
         $this->logger->debug('Send template message', $this->request);
 
-        $account = wei()->wechatAccount->getCurrentAccount();
-        if (!$account->isVerifiedService()) {
-            return $this->err('没有开通该服务', -1);
-        }
-
         if (!$this->request['template_id']) {
             return $this->err('缺少模板编号', -2);
         }
 
-        if (!$this->user['isValid'] || !$this->user['wechatOpenId']) {
-            return $this->err('用户未关注', -3);
+        if (!$this->request['touser']) {
+            return $this->err('缺少用户OpenID', -3);
         }
 
+        $account = wei()->wechatAccount->getCurrentAccount();
         $api = $account->createApiService();
-        $api->sendTemplate($this->request);
+        if ($account->isService()) {
+            return $this->sendServiceTemplate($account, $api);
+        } else {
+            return $this->sendWxaTemplate($account, $api);
+        }
+    }
 
+    protected function sendServiceTemplate(WechatAccount $account, WechatApi $api)
+    {
+        if (!$account['verified']) {
+            return $this->err('微信帐号未认证', -1);
+        }
+
+        if (!$this->user['isValid']) {
+            return $this->err('用户未关注');
+        }
+
+        $api->sendTemplate($this->request);
         return $api->getResult();
+    }
+
+    protected function sendWxaTemplate(WechatAccount $account, WechatApi $api)
+    {
+        if (!array_key_exists('form_id', $this->request)) {
+            $form = wei()->wxaTemplate->getAvailableForm($this->user);
+            $this->form($form ?: null);
+        }
+
+        if (!$this->request['form_id']) {
+            return $this->err('没有可用的form_id');
+        }
+
+        $ret = $api->sendWxaTemplate($this->request);
+
+        if ($ret['code'] === 1 && $this->form) {
+            $this->form->consume();
+        }
+
+        return $ret;
     }
 }

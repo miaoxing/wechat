@@ -17,6 +17,8 @@ class WechatAccount extends \Miaoxing\Plugin\BaseModel
 
     const SERVICE = 2;
 
+    const TYPE_WXA = 3;
+
     protected $autoId = true;
 
     protected $data = [
@@ -27,6 +29,7 @@ class WechatAccount extends \Miaoxing\Plugin\BaseModel
     protected $types = [
         1 => '订阅号',
         2 => '服务号',
+        3 => '小程序',
     ];
 
     protected $currentAccount;

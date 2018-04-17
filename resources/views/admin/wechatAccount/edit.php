@@ -25,6 +25,9 @@
             <label class="radio-inline">
               <input type="radio" name="type" value="2"> 服务号
             </label>
+            <label class="radio-inline">
+              <input type="radio" name="type" value="3"> 小程序
+            </label>
 
           </div>
         </div>

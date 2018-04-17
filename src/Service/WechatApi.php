@@ -1346,6 +1346,17 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
         });
     }
 
+    public function sendWxaTemplate(array $data)
+    {
+        return $this->authRet(function () use ($data) {
+            $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+            return $this->http->postJson(
+                $this->baseUrl . 'cgi-bin/message/wxopen/template/send?access_token=' . $this->accessToken,
+                $data
+            );
+        });
+    }
+
     /**
      * 拉取门店列表
      *
