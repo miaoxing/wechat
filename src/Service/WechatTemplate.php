@@ -112,7 +112,7 @@ class WechatTemplate extends BaseService
     {
         foreach ($data as $name => $rows) {
             // 允许直接传入文案，不传颜色，如 ['first' => '恭喜你购买成功！']
-            if (is_string($rows)) {
+            if (!is_array($rows)) {
                 $data[$name] = ['value' => $rows];
             }
 
