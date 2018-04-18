@@ -14,7 +14,7 @@ trait NotifyTrait
     {
         if (is_array($data)) {
             $args = array_unshift($data, $event);
-        } elseif (func_get_arg(2)) {
+        } elseif (func_num_args() === 3) {
             $args = [$template, $data];
         } else {
             $args = [$template];
