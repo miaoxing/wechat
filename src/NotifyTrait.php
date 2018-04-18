@@ -13,7 +13,8 @@ trait NotifyTrait
     public function notify(WechatTemplate $template, $event, $data = null)
     {
         if (is_array($data)) {
-            $args = array_unshift($data, $event);
+            array_unshift($data, $template);
+            $args = $data;
         } elseif (func_num_args() === 3) {
             $args = [$template, $data];
         } else {
