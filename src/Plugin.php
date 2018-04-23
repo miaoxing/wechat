@@ -58,13 +58,6 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
             'sort' => 800,
         ];
 
-        $navs[] = [
-            'parentId' => 'wechat-account',
-            'url' => 'admin/wechat-qrcode/index',
-            'name' => '二维码管理',
-            'sort' => 700,
-        ];
-
         $subCategories['wechat-setting'] = [
             'parentId' => 'wechat',
             'name' => '设置',
