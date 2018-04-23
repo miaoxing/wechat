@@ -51,13 +51,6 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
             'sort' => 900,
         ];
 
-        $navs[] = [
-            'parentId' => 'wechat-account',
-            'url' => 'admin/wechat-menu-categories',
-            'name' => '菜单管理',
-            'sort' => 800,
-        ];
-
         $subCategories['wechat-setting'] = [
             'parentId' => 'wechat',
             'name' => '设置',
