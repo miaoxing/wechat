@@ -5,6 +5,7 @@ namespace Miaoxing\Wechat;
 use Miaoxing\Article\Service\Article;
 use Miaoxing\Plugin\BaseController;
 use Miaoxing\Plugin\Service\User;
+use Miaoxing\Wechat\Service\WechatAccount;
 use Miaoxing\Wechat\Service\WeChatQrcode;
 use Wei\WeChatApp;
 
@@ -44,12 +45,15 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
             'sort' => 1000,
         ];
 
-        $navs[] = [
-            'parentId' => 'wechat-account',
-            'url' => 'admin/wechat-reply/index',
-            'name' => '回复管理',
-            'sort' => 900,
-        ];
+        // TODO 拆分wechat-reply插件
+        if (wei()->wechatAccount->getCurrentAccount()['type'] != WechatAccount::TYPE_WXA) {
+            $navs[] = [
+                'parentId' => 'wechat-account',
+                'url' => 'admin/wechat-reply/index',
+                'name' => '回复管理',
+                'sort' => 900,
+            ];
+        }
 
         $subCategories['wechat-setting'] = [
             'parentId' => 'wechat',
