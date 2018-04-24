@@ -44,7 +44,7 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
         }
 
         // 如果未登录,在微信浏览器中,且有认证服务号,跳转到OAuth2.0地址获取用户登录态
-        if (!wei()->curUser['id'] && wei()->ua->isWeChat()) {
+        if (!$this->request->isAjax() && !wei()->curUser['id'] && wei()->ua->isWeChat()) {
             $account = wei()->wechatAccount->getCurrentAccount();
             if ($account->isVerifiedService()) {
                 $url = $this->getRedirectUrl();
