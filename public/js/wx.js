@@ -61,7 +61,7 @@ define(['//res.wx.qq.com/open/js/jweixin-1.3.2.js'], function (wx) {
     called = true;
 
     $.ajax({
-      url: $.url('wechat/js-config'),
+      url: typeof wxConfigUrl !== 'undefined' ? wxConfigUrl: $.url('wechat/js-config'),
       type: 'post',
       dataType: 'json',
       success: function (ret) {
