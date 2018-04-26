@@ -84,7 +84,7 @@ class WechatTemplate extends BaseService
 
     public function page($page)
     {
-        $this->request['page'] = $page;
+        $this->request['page'] = ltrim($page, '/');
 
         return $this;
     }
