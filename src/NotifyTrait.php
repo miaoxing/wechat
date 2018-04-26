@@ -21,7 +21,7 @@ trait NotifyTrait
             $args = [$template];
         }
 
-        $ret = $this->event->until($event, $args);
+        $ret = wei()->event->until($event, $args);
         if ($ret) {
             return $ret;
         }
