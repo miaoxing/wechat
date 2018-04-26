@@ -195,7 +195,9 @@ class WechatTemplate extends BaseService
     {
         if (!array_key_exists('form_id', $this->request)) {
             $form = wei()->wxaTemplate->getAvailableForm($this->user);
-            $this->form($form ?: null);
+            if ($form) {
+                $this->form($form);
+            }
         }
 
         if (!$this->request['form_id']) {
