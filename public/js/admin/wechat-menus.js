@@ -209,6 +209,8 @@ define(['bootbox'], function (bootbox) {
                   id: rowData.id,
                   linkTo: data
                 }
+              }).done(function (ret) {
+                $.msg(ret);
               });
             }
           });
