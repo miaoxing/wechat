@@ -43,7 +43,6 @@
           <th>总关注人数</th>
           <th>总取消人数</th>
           <th>积累关注数</th>
-          <th style="width: 80px">启用奖励</th>
           <th style="width: 120px">操作</th>
         </tr>
         </thead>
@@ -141,12 +140,6 @@
         },
         {
           data: 'validCount'
-        },
-        {
-          data: 'award.enabled',
-          render: function (data, type, full) {
-            return template.render('award-enabled-col-tpl', full.award);
-          }
         },
         {
           data: 'id',

@@ -49,37 +49,6 @@
       </div>
 
       <div class="form-group">
-        <label class="col-lg-2 control-label">
-          扫描奖励
-        </label>
-
-        <div class="col-lg-10 award-editor">
-
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="col-lg-2 control-label" for="awardRule">
-          奖励规则
-        </label>
-
-        <div class="col-lg-10">
-          <div class="radio">
-            <label>
-              <input class="awardRule" type="radio" name="awardRule" id="awardRule" value="0">
-              扫描就可以获得奖励
-            </label>
-          </div>
-          <div class="radio">
-            <label>
-              <input class="awardRule" type="radio" name="awardRule" id="awardRule2" value="1">
-              只有首次关注才可以获得奖励,重新关注不可获得奖励
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
         <label class="col-lg-2 control-label" for="matchType">
           <span class="text-warning">*</span>
           回复类型
