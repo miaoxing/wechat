@@ -75,7 +75,6 @@ class WechatReply extends Base
                 'hideKeywords' => true,
                 'showPlainKeywords' => true,
                 'hideMatchType' => true,
-                'contentTips' => '"{关注顺序}"会被替换为用户的关注顺序',
                 'defaultData' => [
                     'keywords' => '关注时回复',
                 ],
