@@ -1929,6 +1929,20 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
         });
     }
 
+    public function getMemberCardUserInfo($data)
+    {
+        return $this->authRet(function () use ($data) {
+            $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+
+            return $this->http([
+                'url' => $this->baseUrl . 'card/membercard/userinfo/get?access_token=' . $this->accessToken,
+                'method' => 'post',
+                'dataType' => 'json',
+                'data' => $data,
+            ]);
+        });
+    }
+
     public function getWxCategory()
     {
         return $this->authRet(function () {
