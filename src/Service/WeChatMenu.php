@@ -79,7 +79,7 @@ class WeChatMenu extends \Miaoxing\Plugin\BaseModel
                         'type' => 'miniprogram',
                         'appid' => $appId,
                         'pagepath' => $path,
-                        'url' => $url,
+                        'url' => $url ?: wei()->url->full(''),
                     ];
                     break;
 
