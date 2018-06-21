@@ -79,6 +79,13 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
             'placeholder' => '请输入微信回复的关键字',
         ];
 
+        $types['miniProgram'] = [
+            'name' => '小程序',
+            'input' => 'text',
+            'sort' => 1100,
+            'placeholder' => '小程序appid+路径,如:wx123+/pages/index/index',
+        ];
+
         $decorators['oauth2Base'] = [
             'name' => '微信OpenID授权',
         ];

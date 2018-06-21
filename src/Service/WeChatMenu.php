@@ -73,6 +73,16 @@ class WeChatMenu extends \Miaoxing\Plugin\BaseModel
                     $button += ['type' => 'click', 'key' => $this['linkTo']['value']];
                     break;
 
+                case 'miniProgram':
+                    list($appId, $path, $url) = explode('+', $this['linkTo']['value']);
+                    $button += [
+                        'type' => 'miniprogram',
+                        'appid' => $appId,
+                        'pagepath' => $path,
+                        'url' => $url,
+                    ];
+                    break;
+
                 default:
                     $button += ['type' => 'view', 'url' => wei()->linkTo->getFullUrl($this['linkTo'])];
             }
