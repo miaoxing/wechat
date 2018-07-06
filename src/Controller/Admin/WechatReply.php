@@ -121,7 +121,7 @@ class WechatReply extends Base
         $keywords = implode(' ', array_filter(array_unique($keywords)));
         $req['keywords'] = $keywords;
 
-        $reply = wei()->weChatReply()->findId($req['id']);
+        $reply = wei()->weChatReply()->findOrInitById($req['id']);
         $reply->save($req);
 
         return $this->suc();
