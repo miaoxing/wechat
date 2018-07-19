@@ -124,10 +124,19 @@ class Wechat extends \Miaoxing\Plugin\BaseController
 
         // 关键字回复和默认回复
         $keyword = $app->getKeyword();
-
-        // 除点击事件之外，不返回默认回复
         $event = $app->getEvent();
-        if (!$event || $event === 'CLICK') {
+
+        // 点击事件单独处理
+        if ($app->getEvent() && $event === 'CLICK') {
+            $app->click($keyword, function (WeChatApp $app) use ($reply, $keyword) {
+                if ($reply->findByKeyword($keyword) || $reply->findByDefault()) {
+                    return $reply->send($app);
+                }
+            });
+        }
+
+        // 事件均不返回默认回复
+        if (!$event) {
             $app->defaults(function (WeChatApp $app) use ($reply, $keyword) {
                 if ($reply->findByKeyword($keyword) || $reply->findByDefault()) {
                     return $reply->send($app);
