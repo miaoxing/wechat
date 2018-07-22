@@ -172,6 +172,11 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
             $this->code = -abs($e->getCode());
             $this->message = $e->getMessage();
 
+            $http = \Miaoxing\App\Callback\Http::$lastErrorHttp;
+            if ($http) {
+                $this->logApi($http);
+            }
+
             return false;
         }
 
