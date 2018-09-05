@@ -194,8 +194,6 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
 
     public function onScript()
     {
-        if (!wei()->ua->isAndroid()) {
-            $this->display();
-        }
+        $this->display();
     }
 }
