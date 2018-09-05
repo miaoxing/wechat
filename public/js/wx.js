@@ -61,9 +61,12 @@ define(['//res.wx.qq.com/open/js/jweixin-1.3.2.js'], function (wx) {
     called = true;
 
     $.ajax({
-      url: typeof wxConfigUrl !== 'undefined' ? wxConfigUrl : $.url('wechat/js-config'),
+      url: typeof wxConfigUrl === 'undefined' ? $.url('wechat/js-config') : wxConfigUrl,
       type: 'post',
       dataType: 'json',
+      data: {
+        url: typeof wxInitUrl === 'undefined' ? '' : wxInitUrl,
+      },
       success: function (ret) {
         if (ret.code !== 1) {
           $.log('获取微信配置失败' + JSON.stringify(ret));
