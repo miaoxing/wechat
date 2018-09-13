@@ -60,12 +60,20 @@ define(['//res.wx.qq.com/open/js/jweixin-1.3.2.js'], function (wx) {
     }
     called = true;
 
+    var url;
+    if (window.__wxjs_environment !== 'miniprogram' && /(android)/i.test(navigator.userAgent)) {
+      // 单页应用+安卓+公众号下,使用当前地址,留空后台自动生成
+      url = '';
+    } else {
+      url = typeof wxInitUrl === 'undefined' ? '' : wxInitUrl;
+    }
+
     $.ajax({
       url: typeof wxConfigUrl === 'undefined' ? $.url('wechat/js-config') : wxConfigUrl,
       type: 'post',
       dataType: 'json',
       data: {
-        url: typeof wxInitUrl === 'undefined' ? '' : wxInitUrl,
+        url: url,
       },
       success: function (ret) {
         if (ret.code !== 1) {
