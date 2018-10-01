@@ -8,7 +8,7 @@
       </div>
       <div class="modal-body text-center">
         <img class="js-qrcode-img" src="">
-        <div>提示: 您可以右键保存二维码</div>
+        <div class="js-qrcode-name text-lg"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -20,6 +20,7 @@
 <?= $block->js() ?>
 <script>
   $('body').on('click', '.js-qrcode-show', function () {
+    $('.js-qrcode-name').html($(this).data('name'));
     $.ajax({
       url: $.url('admin/wechat-qrcode/show', {sceneId: $(this).data('scene-id')}),
       dataType: 'json',

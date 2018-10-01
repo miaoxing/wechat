@@ -71,7 +71,8 @@
 
 <script id="table-actions-tpl" type="text/html">
   <div class="action-buttons">
-    <a href="javascript:;" class="js-qrcode-show" data-scene-id="<%= sceneId %>" title="查看二维码">
+    <a href="javascript:;" class="js-qrcode-show" data-scene-id="<%= sceneId %>" title="查看二维码"
+      data-name="<%= name %>">
       <i class="fa fa-qrcode bigger-130"></i>
     </a>
     <a href="<%= $.url('admin/wechat-qrcode/showDetail', {sceneId: sceneId}) %>" target="_blank" title="查看">
