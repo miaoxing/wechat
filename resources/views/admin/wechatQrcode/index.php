@@ -87,9 +87,9 @@
   </div>
 </script>
 
-<?php require $view->getFile('wechat:admin/wechatQrcode/qrcodeModal.php') ?>
-<?php require $view->getFile('wechat:admin/wechatQrcode/batchDownload.php') ?>
-<?php require $view->getFile('user:admin/user/richInfo.php') ?>
+<?php require $view->getFile('@wechat/admin/wechatQrcode/qrcodeModal.php') ?>
+<?php require $view->getFile('@wechat/admin/wechatQrcode/batchDownload.php') ?>
+<?php require $view->getFile('@user/admin/user/richInfo.php') ?>
 
 <?= $block->js() ?>
 <script>

@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="<?= $asset('plugins/wechat/css/admin/message-editor.css') ?>"/>
 <?= $block->end() ?>
 
-<?php require $view->getFile('wechat:wechat/media/tpls.php') ?>
+<?php require $view->getFile('@wechat/wechat/media/tpls.php') ?>
 
 <div class="js-message-editor message-editor">
   <ul class="js-message-editor-nav nav nav-tabs message-editor-nav" role="tablist">
