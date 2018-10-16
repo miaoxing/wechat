@@ -230,9 +230,9 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
         }
 
         return [
-            'code' => 1,
-            'message' => '操作成功',
-        ] + $http->getResponse();
+                'code' => 1,
+                'message' => '操作成功',
+            ] + $http->getResponse();
     }
 
     /**
@@ -2148,6 +2148,24 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
                 'data' => json_encode($data),
                 'method' => 'post',
                 'throwException' => true,
+            ]);
+        });
+    }
+
+    public function getTags()
+    {
+        return $this->callAuth('cgi-bin/tags/get', [], 'GET');
+    }
+
+    protected function callAuth($url, $data, $method = 'POST')
+    {
+        return $this->authRet(function () use ($url, $data, $method) {
+            return $this->http([
+                'url' => $this->baseUrl . $url . '?access_token=' . $this->accessToken,
+                'data' => json_encode($data),
+                'method' => $method,
+                'throwException' => true,
+                'dataType' => 'json',
             ]);
         });
     }
