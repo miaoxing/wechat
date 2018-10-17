@@ -2159,6 +2159,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function callAuth($url, $data, $method = 'POST')
     {
+        $this->logger->debug('Wechat api ' . $url, $data);
         return $this->authRet(function () use ($url, $data, $method) {
             return $this->http([
                 'url' => $this->baseUrl . $url . '?access_token=' . $this->accessToken,
