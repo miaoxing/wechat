@@ -354,5 +354,10 @@ class WeChatReply extends \Miaoxing\Plugin\BaseModel
         if ($user->isChanged()) {
             $user->save();
         }
+
+        $hasTag = wei()->userTagsUserModel()->fetchColumn(['user_id' => $user['id']]);
+        if (!$hasTag && $defaultTagId = wei()->setting('user.defaultTagId')) {
+            wei()->userTag->addTag($defaultTagId);
+        }
     }
 }

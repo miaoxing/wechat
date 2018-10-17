@@ -197,7 +197,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
      * 获取JS-SDK配置
      *
      * @param Request $req
-     * @return string
+     * @return array
      */
     public function jsConfigAction($req)
     {
