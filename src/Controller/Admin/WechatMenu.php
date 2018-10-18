@@ -127,6 +127,13 @@ class WechatMenu extends Base
                             $buttons['matchrule'] += ['group_id' => $menuCategory->getGroup()->get('wechatId')];
                         }
                         break;
+
+                    case 'tagId':
+                        if ($menuCategory[$key]) {
+                            $buttons['matchrule'] += ['tag_id' => $menuCategory->userTag->outId];
+                        }
+                        break;
+
                     case 'clientPlatformType':
                         if ($menuCategory[$key]) {
                             $buttons['matchrule'] += ['client_platform_type' => $menuCategory['clientPlatformType']];
@@ -167,13 +174,13 @@ class WechatMenu extends Base
         }
     }
 
-    public function testAction()
+    public function getWechatMenuAction()
     {
         $account = wei()->wechatAccount->getCurrentAccount();
         $api = $account->createApiService();
         $result = $api->getMenu();
-        print_r($result->getResponse());
-        die;
+
+        return $this->suc(['res' => $result->getResponse()]);
     }
 
     /**
