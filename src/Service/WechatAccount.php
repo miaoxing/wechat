@@ -323,7 +323,7 @@ class WechatAccount extends \Miaoxing\Plugin\BaseModel
      *
      * @param \Miaoxing\Plugin\Service\User $user
      * @param \Miaoxing\Wechat\Service\WechatApi $api
-     * @return bool
+     * @return array
      */
     public function syncUser(User $user, WechatApi $api = null)
     {
@@ -387,7 +387,34 @@ class WechatAccount extends \Miaoxing\Plugin\BaseModel
             'wechatUnionId' => isset($userInfo['unionid']) ? $userInfo['unionid'] : '',
         ]);
 
+        // 同步标签
+        $this->syncTags($user, $userInfo['tagid_list']);
+
         return ['code' => 1, 'message' => '同步成功'];
+    }
+
+    protected function syncTags(User $user, $tagIds)
+    {
+        $userTagsUsers = wei()->userTagsUserModel()->findAll(['user_id' => $user['id']]);
+        $userTagIds = $userTagsUsers->getAll('tag_id');
+
+        $addTagIds = array_diff($tagIds, $userTagIds);
+        foreach ($addTagIds as $tagId) {
+            wei()->userTagsUserModel()->save([
+                'tagId' => $tagId,
+                'userId' => $user['id'],
+            ]);
+        }
+
+        $deleteTagIds = array_diff($userTagIds, $tagIds);
+        foreach ($deleteTagIds as $tagId) {
+            wei()->userTagsUserModel()->andWhere([
+                'tag_id' => $tagId,
+                'user_id' => $user['id'],
+            ])->destroy();
+        }
+
+        return $this->suc();
     }
 
     /**
