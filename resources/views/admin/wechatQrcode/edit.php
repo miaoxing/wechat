@@ -48,6 +48,18 @@
         </div>
       </div>
 
+      <?php if (wei()->plugin->isInstalled('user-tag')) { ?>
+        <div class="form-group">
+          <label class="col-lg-2 control-label" for="add-tag-ids">
+            打上标签
+          </label>
+
+          <div class="col-lg-4">
+            <input class="js-tag-ids form-control" id="add-tag-ids" name="addTagIds"/>
+          </div>
+        </div>
+      <?php } ?>
+
       <div class="form-group">
         <label class="col-lg-2 control-label" for="matchType">
           <span class="text-warning">*</span>
@@ -114,7 +126,11 @@
 <?= $block->js() ?>
 <script>
   require(['plugins/wechat/js/admin/wechat-replies', 'form', 'assets/apps/admin/award/editor',
-    'jquery-deparam', 'dataTable', 'template', 'validator'
+    'jquery-deparam', 'dataTable', 'template', 'validator',
+    'comps/select2/select2.min',
+    'css!comps/select2/select2',
+    'css!comps/select2-bootstrap-css/select2-bootstrap',
+    'plugins/admin/js/image-upload'
   ], function (reply, form, awardEditor) {
     var data = <?= json_encode($data, JSON_UNESCAPED_SLASHES); ?>;
     reply.initForm({
@@ -129,6 +145,11 @@
       data: award.awards
     });
 
+    $('.js-tag-ids').select2({
+      multiple: true,
+      closeOnSelect: false,
+      data: <?= json_encode($tags) ?>
+    });
   });
 </script>
 <?= $block->end() ?>

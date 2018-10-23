@@ -85,6 +85,11 @@ class WechatQrcode extends Base
 
         $data = $qrcode->toArrayWithArticles();
 
+        $tags = [];
+        foreach (wei()->userTag->getAll() as $userTag) {
+            $tags[] = ['id' => $userTag->id, 'text' => $userTag->name];
+        }
+
         return get_defined_vars();
     }
 
