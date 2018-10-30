@@ -20,20 +20,14 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
     {
         $req = $this->request;
 
-        $res = $this->initUserByWechatOpenId($req);
-        if ($res) {
-            return $res;
-        }
-
         $res = $this->initUserByWechatOAuth2Code($req);
         if ($res) {
             return $res;
         }
 
-        // 获取完用户登录态后,如果存在wechatOpenId或OAuth2.0的code参数,做次跳转,移除该参数
-        if (isset($req['wechatOpenId']) || (isset($req['code']) && isset($req['state']))) {
-            // TODO 移除逻辑,放到safeUrl中
-            $removeKeys = ['wechatOpenId', 'timestamp', 'flag', 'code', 'state'];
+        // 获取完用户登录态后,如果存在OAuth2.0的code参数,做次跳转,移除该参数
+        if (isset($req['code']) && isset($req['state'])) {
+            $removeKeys = ['code', 'state'];
             $queries = array_diff_key($req->getParameterReference('get'), array_flip($removeKeys));
             $newUrl = $req->getUrlFor($req->getBaseUrl() . $req->getPathInfo());
             if ($queries) {
@@ -54,33 +48,6 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
         }
 
         return $next();
-    }
-
-    /**
-     * 根据URL中的wechatOpenId,签名等参数,初始化微信用户
-     *
-     * @param Request $req
-     * @return array|bool
-     */
-    protected function initUserByWechatOpenId(Request $req)
-    {
-        // 1. URL中带有微信OpenID才做检查
-        if (!isset($req['wechatOpenId'])) {
-            return false;
-        }
-
-        // 2. 签名校验失败,提示错误信息
-        if (!wei()->safeUrl->verify('wechatOpenId')) {
-            // safeUrl校验出错,如超时,让用户重新获取新的地址
-            return $this->ret->err('很抱歉,微信登录参数有误,请返回微信重新操作');
-        }
-
-        // 3. 如果URL通过验证,检查用户存在才设置登录态
-        $user = wei()->user()->find(['wechatOpenId' => $req['wechatOpenId']]);
-        if ($user) {
-            wei()->curUser->loginByRecord($user);
-        }
-        // 用户不存在的话,忽略
     }
 
     /**
