@@ -1084,6 +1084,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
             $http = $this->http([
                 'method' => 'post',
                 'dataType' => 'json',
+                'timeout' => 30000,
                 'url' => $this->baseUrl . 'cgi-bin/media/uploadimg?access_token=' . $this->accessToken,
                 'files' => [
                     'media' => $file,
