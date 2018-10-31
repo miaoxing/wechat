@@ -393,8 +393,16 @@ class WechatAccount extends \Miaoxing\Plugin\BaseModel
         return ['code' => 1, 'message' => '同步成功'];
     }
 
-    protected function syncTags(User $user, $tagIds)
+    protected function syncTags(User $user, $wechatTagIds)
     {
+        $tagIds = [];
+        $userTags = wei()->userTag->getAll();
+        foreach ($userTags as $userTag) {
+            if (in_array($userTag->outId, $wechatTagIds)) {
+                $tagIds[] = $userTag->id;
+            }
+        }
+
         $userTagsUsers = wei()->userTagsUserModel()->findAll(['user_id' => $user['id']]);
         $userTagIds = $userTagsUsers->getAll('tag_id');
 
