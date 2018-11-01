@@ -2,10 +2,10 @@
 
 namespace Miaoxing\Wechat\Service;
 
+use Miaoxing\Article\Service\Article;
 use Miaoxing\Award\Service\Award;
 use Miaoxing\Plugin\BaseModel;
 use Miaoxing\Plugin\Service\User;
-use Miaoxing\Article\Service\Article;
 
 class WeChatQrcode extends BaseModel
 {
@@ -289,5 +289,10 @@ class WeChatQrcode extends BaseModel
     {
         parent::afterFind();
         $this['articleIds'] = (array) json_decode($this['articleIds'], true);
+    }
+
+    public function hasReply()
+    {
+        return $this['articleIds'] || $this['content'];
     }
 }

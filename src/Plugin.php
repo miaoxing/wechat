@@ -152,7 +152,7 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
 
         /** @var WeChatQrcode $qrcode */
         $qrcode = wei()->weChatQrcode()->find(['sceneId' => $sceneId]);
-        if (!$qrcode['articleIds'] && !$qrcode['content']) {
+        if (!$qrcode->hasReply()) {
             return;
         }
 
