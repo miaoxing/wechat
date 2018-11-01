@@ -6,6 +6,7 @@ use Miaoxing\Article\Service\Article;
 use Miaoxing\Award\Service\Award;
 use Miaoxing\Plugin\BaseModel;
 use Miaoxing\Plugin\Service\User;
+use Wei\WeChatApp;
 
 class WeChatQrcode extends BaseModel
 {
@@ -300,6 +301,18 @@ class WeChatQrcode extends BaseModel
     public function hasReply()
     {
         return $this['articleIds'] || $this['content'];
+    }
+
+    public function generateReply(WeChatApp $app)
+    {
+        if ($this['type'] == 'text') {
+            if ($this['content']) {
+                return $this['content'];
+            }
+        } elseif ($this['articleIds']) {
+            return $app->sendArticle($this->toArticleArray());
+        }
+        return false;
     }
 
     public function findAndCacheBySceneId($sceneId)

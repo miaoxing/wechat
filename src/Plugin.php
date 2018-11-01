@@ -156,22 +156,39 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
             return;
         }
 
+        if ($app->getEvent() === 'subscribe') {
+            $this->handleSubscribeReply($app, $user, $qrcode);
+        } else {
+            $this->handleScanReply($app, $user, $qrcode);
+        }
+    }
+
+    protected function handleSubscribeReply(WeChatApp $app, User $user, WeChatQrcode $qrcode)
+    {
         $app->subscribe(function (WeChatApp $app) use ($user, $qrcode) {
             wei()->weChatReply->updateSubscribeUser($app, $user);
 
-            // 扫码的关注回复
-            if ($qrcode['type'] == 'text') {
-                if ($qrcode['content']) {
-                    return $qrcode['content'];
-                }
-            } elseif ($qrcode['articleIds']) {
-                return $app->sendArticle($qrcode->toArticleArray());
+            $reply = $qrcode->generateReply($app);
+            if ($reply) {
+                return $reply;
             }
 
             // 关注回复
             $reply = wei()->weChatReply();
             if ($reply->findByIdFromCache('subscribe')) {
                 return $reply->send($app, '{关注顺序}', $user['id']);
+            }
+        });
+    }
+
+    protected function handleScanReply(WeChatApp $app, User $user, WeChatQrcode $qrcode)
+    {
+        $app->scan(function (WeChatApp $app) use ($user, $qrcode) {
+            wei()->weChatReply->updateScanUser($app, $user);
+
+            $reply = $qrcode->generateReply($app);
+            if ($reply) {
+                return $reply;
             }
         });
     }
