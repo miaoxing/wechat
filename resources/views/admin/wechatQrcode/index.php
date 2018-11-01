@@ -37,7 +37,6 @@
           <th style="width: 80px">场景编号</th>
           <th>名称</th>
           <th>用户</th>
-          <th>扫描奖励</th>
           <th>总关注次数</th>
           <th>总取消次数</th>
           <th>总关注人数</th>
@@ -119,12 +118,6 @@
               return '-';
             }
             return template.render('user-info-tpl', data);
-          }
-        },
-        {
-          data: 'award.contents',
-          render: function (data, type, full) {
-            return data.join('<br>') || '无';
           }
         },
         {
