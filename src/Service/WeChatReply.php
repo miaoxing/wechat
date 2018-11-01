@@ -360,4 +360,18 @@ class WeChatReply extends \Miaoxing\Plugin\BaseModel
             wei()->userTag->updateTag($defaultTagId);
         }
     }
+
+    /**
+     * 更新扫码的用户的来源
+     *
+     * @param WeChatApp $app
+     * @param User $user
+     */
+    public function updateScanUser(WeChatApp $app, User $user)
+    {
+        $sceneId = $app->getScanSceneId();
+        if ($user['source'] != $sceneId) {
+            $user->save(['source' => $sceneId]);
+        }
+    }
 }

@@ -108,9 +108,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
 
         // 扫描
         $app->scan(function (WeChatApp $app) use ($user, $reply) {
-            // 记录用户来源
-            $user->save(['source' => $app->getScanSceneId()]);
-
+            wei()->weChatReply->updateScanUser($app, $user);
             // 扫码回复
             if ($reply->findByIdFromCache('scan')) {
                 return $reply->send($app);
