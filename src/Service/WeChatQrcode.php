@@ -31,6 +31,11 @@ class WeChatQrcode extends BaseModel
      */
     protected $award;
 
+    /**
+     * @var array
+     */
+    protected $sceneCache = [];
+
     protected $types = [
         0 => '全部',
         1 => '有关联用户',
@@ -74,9 +79,9 @@ class WeChatQrcode extends BaseModel
     public function getNextSceneId()
     {
         return wei()->weChatQrcode()
-            ->select('MAX(CAST(sceneId AS UNSIGNED))')
-            ->andWhere('sceneId > 0')
-            ->fetchColumn() + 1;
+                ->select('MAX(CAST(sceneId AS UNSIGNED))')
+                ->andWhere('sceneId > 0')
+                ->fetchColumn() + 1;
     }
 
     /**
@@ -243,7 +248,8 @@ class WeChatQrcode extends BaseModel
             $this->articles = wei()->article()->beColl();
             if ($this['articleIds']) {
                 // 按原来的顺序排列
-                $this->articles->orderBy('FIELD(id, ' . implode(', ', $this['articleIds']) . ')')->findAll(['id' => $this['articleIds']]);
+                $this->articles->orderBy('FIELD(id, ' . implode(', ',
+                        $this['articleIds']) . ')')->findAll(['id' => $this['articleIds']]);
             }
         }
 
@@ -294,5 +300,14 @@ class WeChatQrcode extends BaseModel
     public function hasReply()
     {
         return $this['articleIds'] || $this['content'];
+    }
+
+    public function findAndCacheBySceneId($sceneId)
+    {
+        if (!isset($this->sceneCache[$sceneId])) {
+            $this->sceneCache[$sceneId] = wei()->weChatQrcode()->find(['sceneId' => $sceneId]);
+        }
+
+        return $this->sceneCache[$sceneId];
     }
 }
