@@ -19,6 +19,7 @@ class V20170117120504CreateWeChatReplyTable extends BaseMigration
             ->tinyInt('matchType')
             ->text('content')->comment('文本回复内容')
             ->string('articleIds')->comment('图文回复的文章编号')
+            ->string('replies', 1024)
             ->timestampsV1()
             ->userstampsV1()
             ->softDeletableV1()

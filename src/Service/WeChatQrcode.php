@@ -290,25 +290,30 @@ class WeChatQrcode extends BaseModel
     {
         parent::beforeSave();
         $this['articleIds'] = json_encode($this['articleIds']);
+        $this['replies'] = json_encode($this['replies']);
     }
 
     public function afterFind()
     {
         parent::afterFind();
         $this['articleIds'] = (array) json_decode($this['articleIds'], true);
+        $this['replies'] = (array) json_decode($this['replies'], true);
     }
 
     public function hasReply()
     {
-        return $this['articleIds'] || $this['content'];
+        return $this['articleIds'] || $this['content'] || $this['replies'];
     }
 
     public function generateReply(WeChatApp $app)
     {
-        if ($this['type'] == 'text') {
+        if ($this['type'] === 'text') {
             if ($this['content']) {
                 return $this['content'];
             }
+        } elseif ($this['type'] === 'image') {
+            $ret = wei()->wechatMedia->findOrCreateByPath($this['replies']['image']['url']);
+            return $app->send('image', ['Image' => ['MediaId' => $ret['data']['wechatMediaId']]]);
         } elseif ($this['articleIds']) {
             return $app->sendArticle($this->toArticleArray());
         }

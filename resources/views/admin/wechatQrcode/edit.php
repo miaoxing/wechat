@@ -73,6 +73,9 @@
           <label class="radio-inline">
             <input type="radio" value="article" name="type"> 图文
           </label>
+          <label class="radio-inline">
+            <input type="radio" value="image" name="type"> 图片
+          </label>
         </div>
       </div>
 
@@ -95,6 +98,20 @@
           <div class="article-list"></div>
           <a class="btn btn-white" href="#article-table-modal" data-toggle="modal">添加</a>
         </div>
+      </div>
+
+      <div class="form-group image-form-group type-form-group display-none">
+        <label class="col-lg-2 control-label" for="replies-image-url">
+          回复图片
+        </label>
+
+        <div class="col-lg-4">
+          <input class="js-replies-image-url" type="text" id="replies-image-url" name="replies[image][url]" required>
+        </div>
+
+        <label class="col-lg-6 help-text" for="replies-image-url">
+          图片2M以内，支持bmp/png/jpeg/jpg/gif格式
+        </label>
       </div>
 
       <input type="hidden" name="id" id="id">
