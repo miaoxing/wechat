@@ -27,7 +27,7 @@ class WeChatMenu extends \Miaoxing\Plugin\BaseModel
 
     public function beforeCreate()
     {
-        $this['sort'] = (int) wei()->weChatMenu()->desc('sort')->findOrInit(['parentId' => $this['parentId']])->get('sort') + 1;
+        $this['sort'] = (int) wei()->weChatMenu()->desc('sort')->findOrInit(['parentId' => (int) $this['parentId']])->get('sort') + 1;
     }
 
     /**
