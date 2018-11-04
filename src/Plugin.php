@@ -187,7 +187,6 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
             wei()->weChatReply->updateScanUser($app, $user);
 
             $reply = $qrcode->generateReply($app);
-            $this->logger->info('reply', $reply);
             if ($reply) {
                 return $reply;
             }
