@@ -300,6 +300,13 @@ class WeChatQrcode extends BaseModel
         $this['replies'] = (array) json_decode($this['replies'], true);
     }
 
+    public function afterSave()
+    {
+        parent::afterSave();
+        $this['articleIds'] = (array) json_decode($this['articleIds'], true);
+        $this['replies'] = (array) json_decode($this['replies'], true);
+    }
+
     public function hasReply()
     {
         return $this['articleIds'] || $this['content'] || $this['replies'];
