@@ -403,7 +403,7 @@ class WechatAccount extends \Miaoxing\Plugin\BaseModel
             }
         }
 
-        $userTagsUsers = wei()->userTagsUserModel()->findAll(['user_id' => $user['id']]);
+        $userTagsUsers = wei()->userTagsUserModel()->asc('id')->findAll(['user_id' => $user['id']]);
         $userTagIds = $userTagsUsers->getAll('tag_id');
 
         $addTagIds = array_diff($tagIds, $userTagIds);
