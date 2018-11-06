@@ -81,7 +81,8 @@ class WeChatReply extends \Miaoxing\Plugin\BaseModel
             $this->articles = wei()->article()->beColl();
             if ($this['articleIds']) {
                 // 按原来的顺序排列
-                $this->articles->orderBy('FIELD(id, ' . implode(', ', $this['articleIds']) . ')')->findAll(['id' => $this['articleIds']]);
+                $this->articles->orderBy('FIELD(id, ' . implode(', ',
+                        $this['articleIds']) . ')')->findAll(['id' => $this['articleIds']]);
             }
         }
 
@@ -355,8 +356,7 @@ class WeChatReply extends \Miaoxing\Plugin\BaseModel
             $user->save();
         }
 
-        $hasTag = wei()->userTagsUserModel()->fetchColumn(['user_id' => $user['id']]);
-        if (!$hasTag && $defaultTagId = wei()->setting('user.defaultTagId')) {
+        if (!wei()->userTag->hasTag() && $defaultTagId = wei()->setting('user.defaultTagId')) {
             wei()->userTag->updateTag($defaultTagId);
         }
     }
