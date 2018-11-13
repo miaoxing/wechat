@@ -117,24 +117,12 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
         }
     }
 
-    public function onBodyStart()
-    {
-        if ($this->app->getControllerAction() != 'index/index') {
-            return;
-        }
-        $this->displayShareImage();
-    }
-
     public function displayShareImage()
     {
         if ($shareImage = wei()->setting('wechat.shareImage')) {
             $this->event->trigger('postImageLoad', [&$shareImage]);
             $this->view->display('@wechat/wechat/bodyStart.php', get_defined_vars());
         }
-    }
-
-    public function onWechatSubscribe(WeChatApp $app)
-    {
     }
 
     /**
@@ -211,6 +199,24 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
 
     public function onScript()
     {
+        // 设置默认分享标题
+        if (!wei()->share->getTitle()) {
+            $title = wei()->page->getTitle();
+            $siteTitle = wei()->setting('site.title');
+
+            // 附加站点名称
+            if (strpos($title, $siteTitle) === false) {
+                $title = $siteTitle . $title;
+            }
+            wei()->share->setTitle($title);
+        }
+
+        // 设置默认分享图片
+        if (!wei()->share->getImage() && $image = wei()->setting('wechat.shareImage')) {
+            $this->event->trigger('postImageLoad', [&$image]);
+            wei()->share->setImage($image);
+        }
+
         $this->display();
     }
 }

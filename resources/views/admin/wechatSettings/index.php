@@ -13,7 +13,7 @@
 
       <div class="form-group">
         <label class="col-lg-2 control-label" for="share-image">
-          首页分享图
+          默认分享图
         </label>
 
         <div class="col-lg-4">
