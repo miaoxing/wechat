@@ -21,7 +21,7 @@ class PreviewImage extends React.Component {
   }
 
   render() {
-    return <div>{this.props.children}</div>;
+    return <span>{this.props.children}</span>;
   }
 }
 
