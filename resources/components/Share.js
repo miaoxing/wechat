@@ -1,6 +1,13 @@
 import React from "react";
 
 export default class Share extends React.Component {
+  componentWillMount() {
+    // 进入页面要刷新接口
+    requirejs(['plugins/wechat/js/wx'], function (wx) {
+      wx.reset();
+    });
+  }
+
   componentDidMount() {
     if (!window.wxDefaultTtile) {
       window.wxDefaultTtile = wxShare.title;
