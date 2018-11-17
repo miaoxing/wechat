@@ -96,7 +96,7 @@
 
         <div class="col-lg-4">
           <div class="article-list"></div>
-          <a class="btn btn-white" href="#article-table-modal" data-toggle="modal">添加</a>
+          <a class="btn btn-default" href="#article-table-modal" data-toggle="modal">添加</a>
         </div>
       </div>
 

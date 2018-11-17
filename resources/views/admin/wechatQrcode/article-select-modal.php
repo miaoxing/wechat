@@ -23,10 +23,10 @@
             </div>
 
             <div class="form-group pull-right">
-              <a class="btn btn-white refresh-articles" title="刷新" href="javascript:;">
+              <a class="btn btn-default refresh-articles" title="刷新" href="javascript:;">
                 <i class="fa fa-refresh"></i>
               </a>
-              <a class="btn btn-white add-article" title="增加" href="<?= $url('admin/article/new') ?>"
+              <a class="btn btn-default add-article" title="增加" href="<?= $url('admin/article/new') ?>"
                 target="_blank">
                 <i class="fa fa-plus"></i>
               </a>
