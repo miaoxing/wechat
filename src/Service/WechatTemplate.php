@@ -117,7 +117,7 @@ class WechatTemplate extends BaseService
             }
 
             // 空值则显示默认值
-            if (!$this->wei->isPresent($data[$name]['value'])) {
+            if ($name !== 'remark' && !$this->wei->isPresent($data[$name]['value'])) {
                 $data[$name]['value'] = '-';
             }
         }
