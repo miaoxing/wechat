@@ -9,6 +9,10 @@ export default class Share extends React.Component {
   }
 
   componentDidMount() {
+    if (typeof wxShare === 'undefined') {
+      window.wxShare = {};
+    }
+
     if (!window.wxDefaultTtile) {
       window.wxDefaultTtile = wxShare.title;
     }
