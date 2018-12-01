@@ -199,6 +199,10 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
 
     public function onScript()
     {
+        if ($this->app->isAdmin()) {
+            return;
+        }
+
         // 设置默认分享标题
         if (!wei()->share->getTitle()) {
             $title = wei()->page->getTitle();
