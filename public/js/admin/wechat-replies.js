@@ -99,7 +99,7 @@ define(['plugins/app/libs/jquery.populate/jquery.populate'], function(){
                 self.articleTable = self.articleTable.dataTable({
                     dom: "t<'row'<'col-sm-6'ir><'col-sm-6'p>>",
                     ajax: {
-                        url: $.queryUrl('admin/article.json')
+                        url: $.url('admin/article.json')
                     },
                     columns: [
                         {
@@ -121,6 +121,10 @@ define(['plugins/app/libs/jquery.populate/jquery.populate'], function(){
                         }
                     ]
                 });
+
+              $('#search-form').update(function () {
+                self.articleTable.reload($(this).serialize(), false);
+              });
             }
         });
 
