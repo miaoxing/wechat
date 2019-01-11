@@ -245,6 +245,10 @@
       reply.initForm({
         data: <?= $reply->toJsonWithArticles() ?>
       });
+
+      $('#search-form').update(function () {
+        reply.articleTable.reload($(this).serialize(), false);
+      });
     });
   </script>
   <?= $block->end() ?>
