@@ -205,6 +205,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
         $url = $req['url'] ?: $req->getReferer();
         $config = $account->getConfigData([], $url);
 
+        $this->response->setHeader('Access-Control-Allow-Origin', '*');
         return $this->suc([
             'config' => $config,
         ]);
