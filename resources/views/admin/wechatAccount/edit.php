@@ -49,16 +49,16 @@
 
         <div class="form-group">
           <label class="col-lg-2 control-label" for="sourceId">
-            <span class="text-warning">*</span>
             原始ID
           </label>
 
           <div class="col-lg-4">
-            <input type="text" class="form-control" name="sourceId" id="sourceId" data-rule-required="true">
+            <input type="text" class="form-control" name="sourceId" id="sourceId">
           </div>
           <div class="col-lg-6 help-text">
             如:gh_fb5e7eb6ad05
-            <a href="https://kf.qq.com/faq/120911VrYVrA141215UfyiuU.html" title="如何获取公众号原始ID" target="_blank">
+            <a href="https://jingyan.baidu.com/article/f54ae2fc084bc81e92b8492d.html"
+              title="如何获取公众号原始ID" target="_blank">
               <span class="help-button get-source-id-tooltip" style="cursor: pointer">?</span>
             </a>
           </div>
@@ -72,10 +72,6 @@
           <div class="col-lg-4">
             <input type="text" class="form-control" name="weChatId" id="weChatId">
           </div>
-
-          <label class="col-lg-6 help-text" for="weChatId">
-            用于推荐用户关注
-          </label>
         </div>
 
         <div class="form-group">
@@ -113,7 +109,8 @@
             <input type="text" class="form-control" name="applicationId" id="applicationId">
           </div>
           <div class="col-lg-6 help-text">
-            <a href="http://jingyan.baidu.com/article/6525d4b12af618ac7c2e9468.html" target="_blank" title="如何获取AppId和AppSecret">
+            <a href="http://jingyan.baidu.com/article/6525d4b12af618ac7c2e9468.html" target="_blank"
+              title="如何获取AppId和AppSecret">
               <span class="help-button get-source-id-tooltip" style="cursor: pointer">?</span>
             </a>
           </div>
