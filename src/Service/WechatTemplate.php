@@ -77,6 +77,10 @@ class WechatTemplate extends BaseService
      */
     public function url($url)
     {
+        if (parse_url($url, PHP_URL_SCHEME) == '') {
+            $url = wei()->request->getUrlFor($url);
+        }
+
         $this->request['url'] = $url;
 
         return $this;
