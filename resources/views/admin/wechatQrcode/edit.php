@@ -142,24 +142,18 @@
 
 <?= $block->js() ?>
 <script>
-  require(['plugins/wechat/js/admin/wechat-replies', 'form', 'assets/apps/admin/award/editor',
+  require(['plugins/wechat/js/admin/wechat-replies', 'form',
     'jquery-deparam', 'dataTable', 'template', 'validator',
     'comps/select2/select2.min',
     'css!comps/select2/select2',
     'css!comps/select2-bootstrap-css/select2-bootstrap',
     'plugins/admin/js/image-upload'
-  ], function (reply, form, awardEditor) {
+  ], function (reply, form) {
     var data = <?= json_encode($data, JSON_UNESCAPED_SLASHES); ?>;
     reply.initForm({
       data: data,
       returnUrl: $.url('admin/wechat-qrcode/index'),
       form: $('.js-wechat-qrcode-form')
-    });
-
-    // 初始化奖励编辑器
-    var award = <?= $qrcode->getAward()->toJson() ?>;
-    awardEditor.init({
-      data: award.awards
     });
 
     $('.js-tag-ids').select2({

@@ -46,10 +46,6 @@ class WechatQrcode extends Base
                     $user = $qrcode->getUser();
                     $data[] = $qrcode->toArray() + [
                             'user' => $user ? $user->toArray() : '',
-                            'award' => $qrcode->getAward()->toArray() + [
-                                    'contents' => $qrcode->getAward()->getContents(),
-                                    'stat' => $qrcode->getAward()->getStats(),
-                                ],
                         ];
                 }
 
@@ -110,16 +106,6 @@ class WechatQrcode extends Base
         }
 
         $qrcode = wei()->weChatQrcode()->findOrInitById($req['id']);
-
-        $award = $qrcode->getAward();
-        $award->save([
-            'name' => '扫描二维码,公众号:' . $qrcode['accountId'] . ',场景:' . $req['sceneId'],
-            'source' => 'weChatQrcode',
-            'once' => 1,
-            'awards' => $req['awards'],
-        ]);
-
-        $qrcode['awardId'] = $award['id'];
         $qrcode->save($req);
 
         return $this->suc();

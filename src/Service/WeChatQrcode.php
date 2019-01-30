@@ -3,7 +3,6 @@
 namespace Miaoxing\Wechat\Service;
 
 use Miaoxing\Article\Service\Article;
-use Miaoxing\Award\Service\Award;
 use Miaoxing\Plugin\BaseModel;
 use Miaoxing\Plugin\Service\User;
 use Wei\WeChatApp;
@@ -24,13 +23,6 @@ class WeChatQrcode extends BaseModel
      * {@inheritdoc}
      */
     protected $enableTrash = true;
-
-    /**
-     * 扫描二维码对应的奖励
-     *
-     * @var Award
-     */
-    protected $award;
 
     /**
      * @var array
@@ -83,18 +75,6 @@ class WeChatQrcode extends BaseModel
                 ->select('MAX(CAST(sceneId AS UNSIGNED))')
                 ->andWhere('sceneId > 0')
                 ->fetchColumn() + 1;
-    }
-
-    /**
-     * Record: 获取二维码的奖励
-     *
-     * @return \Miaoxing\Award\Service\Award
-     */
-    public function getAward()
-    {
-        $this->award || $this->award = wei()->award()->findOrInitById($this['awardId']);
-
-        return $this->award;
     }
 
     /**
