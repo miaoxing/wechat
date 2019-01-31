@@ -76,11 +76,6 @@ class Wechat extends \Miaoxing\Plugin\BaseController
 
             // 没有匹配到任何规则为空数组
             if ($response) {
-                // 如果返回的是文本消息,更新里面的URL地址
-                if ($response['MsgType'] == 'text') {
-                    $response['Content'] = $this->updateMessageUrl($response['Content']);
-                }
-
                 // 只保存回复的文本消息到数据库
                 if ($response['MsgType'] == 'text' && $response['Content']) {
                     wei()->message()->saveData([
@@ -247,31 +242,6 @@ class Wechat extends \Miaoxing\Plugin\BaseController
 
         // 不调用$app->run(),避免返回默认信息
         return 'success';
-    }
-
-    /**
-     * 为回复文字中的URL加上wechatOpenId和默认服务号授权地址
-     *
-     * @param string $text
-     * @return string
-     */
-    protected function updateMessageUrl($text)
-    {
-        $text = preg_replace_callback('/<a(.*)href="([^"]*)"(.*)>/', function ($matches) {
-            // Step1 附加WeChatOpenId参数, 并对WeChatOpenId进行签名
-            $url = wei()->linkTo->generateInternalUrl($matches[2]);
-
-            // Step2 获取默认的服务号,生成微信OpenID授权网页地址
-            $account = wei()->wechatAccount->getCurrentAccount();
-            if ($account->isVerifiedService()) {
-                $url = wei()->linkTo->generateOauth2BaseUrl($url);
-            }
-
-            // Step3 替换原来的URL地址
-            return str_replace($matches[2], $url, $matches[0]);
-        }, $text);
-
-        return $text;
     }
 
     /**

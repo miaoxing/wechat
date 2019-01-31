@@ -152,10 +152,8 @@ class Auth extends \Miaoxing\Plugin\Middleware\Base
      */
     protected function getRedirectUrl(array $params = [])
     {
-        return wei()->linkTo->getFullUrl([
-            'value' => wei()->url->append($this->request->getUrl(), $params),
-            'decorator' => 'oauth2Base',
-        ]);
+        $url = wei()->url->append($this->request->getUrl(), $params);
+        return wei()->wechatAccount->getCurrentAccount()->getOauth2Url($url, 'snsapi_base');
     }
 
     /**
