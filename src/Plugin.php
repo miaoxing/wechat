@@ -70,7 +70,7 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
         ];
     }
 
-    public function onLinkToGetLinks(&$links, &$types, &$decorators)
+    public function onLinkToGetLinks(&$links, &$types)
     {
         $types['keyword'] = [
             'name' => '关键字',
@@ -85,16 +85,6 @@ class Plugin extends \Miaoxing\Plugin\BasePlugin
             'sort' => 1100,
             'placeholder' => '小程序appid+路径,如:wx123+/pages/index/index',
         ];
-
-        $decorators['oauth2Base'] = [
-            'name' => '微信OpenID授权',
-        ];
-
-        // 暂不支持
-        /*
-            $decorators['oauth2UserInfo'] = [
-            'name' => '微信用户信息授权',
-        ];*/
     }
 
     public function onPreControllerInit(BaseController $controller)

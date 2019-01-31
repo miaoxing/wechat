@@ -251,7 +251,7 @@ class WeChatQrcode extends BaseModel
                 'title' => $article['title'],
                 'description' => $this->getArticles()->length() > 1 ? '' : $article['intro'],
                 'picUrl' => $article['thumb'],
-                'url' => $article->getUrlWithDecorator(),
+                'url' => $article->getFullUrl(),
             ];
         }
 

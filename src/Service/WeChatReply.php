@@ -328,7 +328,7 @@ class WeChatReply extends \Miaoxing\Plugin\BaseModel
                 'title' => $article['title'],
                 'description' => $articles->length() > 1 ? '' : $article['intro'],
                 'picUrl' => $article['thumb'],
-                'url' => $article->getUrlWithDecorator(),
+                'url' => $article->getFullUrl(),
             ];
         }
 
