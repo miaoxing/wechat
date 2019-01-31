@@ -131,15 +131,17 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="col-lg-2 control-label">
-            多客服
-          </label>
+        <?php if (wei()->wechatAccount->enableTransferCustomerService) { ?>
+          <div class="form-group">
+            <label class="col-lg-2 control-label">
+              转发未匹配消息给客服
+            </label>
 
-          <div class="col-lg-4">
-            <p class="form-control-static"><?= $e($account['transferCustomer']) ? '开启' : '关闭' ?></p>
+            <div class="col-lg-4">
+              <p class="form-control-static"><?= $e($account['transferCustomer']) ? '开启' : '关闭' ?></p>
+            </div>
           </div>
-        </div>
+        <?php } ?>
       </fieldset>
 
       <input type="hidden" name="id" id="id">

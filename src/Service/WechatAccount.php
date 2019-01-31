@@ -2,15 +2,19 @@
 
 namespace Miaoxing\Wechat\Service;
 
+use Miaoxing\Config\ConfigTrait;
 use Miaoxing\Plugin\Service\User;
 
 /**
  * @property \Wei\Request $request
  * @property \Miaoxing\Wechat\Service\WechatComponentApi $wechatComponentApi
  * @property \Wei\Logger $logger
+ * @property bool enableTransferCustomerService
  */
 class WechatAccount extends \Miaoxing\Plugin\BaseModel
 {
+    use ConfigTrait;
+
     const PLATFORM_ID = 1;
 
     const SUBSCRIBE = 1;
@@ -20,6 +24,12 @@ class WechatAccount extends \Miaoxing\Plugin\BaseModel
     const TYPE_WXA = 3;
 
     protected $autoId = true;
+
+    protected $configs = [
+        'enableTransferCustomerService' => [
+            'default' => false,
+        ]
+    ];
 
     protected $data = [
         'type' => 1,

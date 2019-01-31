@@ -146,21 +146,23 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label class="col-lg-2 control-label" for="transferCustomer">
-            多客服
-          </label>
-
-          <div class="col-lg-4">
-            <label class="radio-inline">
-              <input type="radio" name="transferCustomer" value="1"> 开启
-            </label>
-            <label class="radio-inline">
-              <input type="radio" name="transferCustomer" value="0"> 关闭
+        <?php if (wei()->wechatAccount->enableTransferCustomerService) { ?>
+          <div class="form-group">
+            <label class="col-lg-2 control-label" for="transferCustomer">
+              转发未匹配消息给客服
             </label>
 
+            <div class="col-lg-4">
+              <label class="radio-inline">
+                <input type="radio" name="transferCustomer" value="1"> 开启
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="transferCustomer" value="0"> 关闭
+              </label>
+
+            </div>
           </div>
-        </div>
+        <?php } ?>
       </fieldset>
 
       <input type="hidden" name="id" id="id">
