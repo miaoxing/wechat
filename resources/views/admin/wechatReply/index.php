@@ -4,7 +4,7 @@
 <div class="page-header">
   <div class="pull-right">
 
-    <div class="btn-group">
+    <div class="dropdown">
       <button data-toggle="dropdown" class="btn btn-success dropdown-toggle">
         系统回复
         <i class="fa fa-angle-down icon-on-right"></i>
