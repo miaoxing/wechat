@@ -35,20 +35,20 @@
     <h5 class="stat-title">趋势图</h5>
 
     <ul class="js-chart-tabs nav tab-underline">
-      <li role="presentation" class="active">
-        <a href="#validCount" aria-controls="validCount" role="tab" data-toggle="tab">积累关注数</a>
+      <li role="presentation" class="nav-item active">
+        <a href="#validCount" class="nav-link" aria-controls="validCount" role="tab" data-toggle="tab">积累关注数</a>
       </li>
-      <li>
-        <a href="#totalHeadCount" aria-controls="totalHeadCount" role="tab" data-toggle="tab">总关注人数</a>
+      <li class="nav-item">
+        <a href="#totalHeadCount" class="nav-link" aria-controls="totalHeadCount" role="tab" data-toggle="tab">总关注人数</a>
       </li>
-      <li>
-        <a href="#cancelHeadCount" aria-controls="cancelHeadCount" role="tab" data-toggle="tab">总取消人数</a>
+      <li class="nav-item">
+        <a href="#cancelHeadCount" class="nav-link" aria-controls="cancelHeadCount" role="tab" data-toggle="tab">总取消人数</a>
       </li>
-      <li>
-        <a href="#totalCount" aria-controls="totalCount" role="tab" data-toggle="tab">总关注次数</a>
+      <li class="nav-item">
+        <a href="#totalCount" class="nav-link" aria-controls="totalCount" role="tab" data-toggle="tab">总关注次数</a>
       </li>
-      <li>
-        <a href="#cancelCount" aria-controls="cancelCount" role="tab" data-toggle="tab">总取消次数</a>
+      <li class="nav-item">
+        <a href="#cancelCount" class="nav-link" aria-controls="cancelCount" role="tab" data-toggle="tab">总取消次数</a>
       </li>
     </ul>
 
