@@ -15,7 +15,7 @@
 <!-- /.page-header -->
 
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-12">
     <!-- PAGE CONTENT BEGINS -->
     <form class="js-account-form form-horizontal" method="post" role="form">
       <fieldset>
@@ -147,7 +147,7 @@
       <input type="hidden" name="id" id="id">
 
       <div class="clearfix form-actions form-group">
-        <div class="col-lg-offset-2">
+        <div class="offset-lg-2">
           <a class="btn btn-primary" href="<?= $url('admin/wechat-account/edit') ?>">
             <i class="fa fa-edit bigger-110"></i>
             编辑
