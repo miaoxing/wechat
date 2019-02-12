@@ -176,10 +176,10 @@
         <div class="modal-content">
           <div class="modal-header p-a-0">
             <div class="table-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                <span class="white">&times;</span>
-              </button>
               请选择图文
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span class="white" aria-hidden="true">&times;</span>
+              </button>
             </div>
           </div>
 
