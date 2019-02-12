@@ -3,21 +3,20 @@
 <!-- /.page-header -->
 <div class="page-header">
   <div class="pull-right">
-
-    <div class="dropdown">
-      <button data-toggle="dropdown" class="btn btn-success dropdown-toggle">
-        系统回复
-        <i class="fa fa-angle-down icon-on-right"></i>
-      </button>
-      <ul class="dropdown-menu pull-right">
-        <li><a href="<?= $url('admin/wechat-reply/edit?id=default&scene=默认回复', ['accountId' => $req['accountId']]) ?>">默认回复</a></li>
-        <li><a href="<?= $url('admin/wechat-reply/edit?id=subscribe&scene=关注时回复', ['accountId' => $req['accountId']]) ?>">关注时回复</a></li>
-        <li><a href="<?= $url('admin/wechat-reply/edit?id=phone&scene=输入手机号码', ['accountId' => $req['accountId']]) ?>">输入手机号码</a></li>
-        <li><a href="<?= $url('admin/wechat-reply/edit?id=scan&scene=扫码', ['accountId' => $req['accountId']]) ?>">扫码</a></li>
-      </ul>
-    </div>
-
     <a href="<?= $url('admin/wechat-reply/new?type=text') ?>" class="btn btn-success">添加回复</a>
+    <div class="d-inline-block">
+      <div class="dropdown">
+        <button data-toggle="dropdown" class="btn btn-success dropdown-toggle">
+          系统回复
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="<?= $url('admin/wechat-reply/edit?id=default&scene=默认回复', ['accountId' => $req['accountId']]) ?>">默认回复</a>
+          <a class="dropdown-item" href="<?= $url('admin/wechat-reply/edit?id=subscribe&scene=关注时回复', ['accountId' => $req['accountId']]) ?>">关注时回复</a>
+          <a class="dropdown-item" href="<?= $url('admin/wechat-reply/edit?id=phone&scene=输入手机号码', ['accountId' => $req['accountId']]) ?>">输入手机号码</a>
+          <a class="dropdown-item" href="<?= $url('admin/wechat-reply/edit?id=scan&scene=扫码', ['accountId' => $req['accountId']]) ?>">扫码</a>
+        </div>
+      </div>
+    </div>
   </div>
   <h1>
     回复管理
