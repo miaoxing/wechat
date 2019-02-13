@@ -14,7 +14,7 @@
   <div class="col-12">
     <!-- PAGE CONTENT BEGINS -->
     <div class="table-responsive">
-      <div class="well form-well">
+      <div class="well">
         <form class="form-inline" id="search-form" role="form">
 
           <div class="form-group">
@@ -48,7 +48,7 @@
         <tbody>
         </tbody>
       </table>
-      <div class="well form-well">
+      <div class="well">
         <label>
           <input class="js-table-check-all ace" type="checkbox">
           <span class="lbl"> 全选 </span>

@@ -182,7 +182,7 @@
           </div>
 
           <div class="modal-body p-a-0">
-            <div class="well form-well">
+            <div class="well">
               <form class="form-inline" id="search-form" role="form">
                 <div class="form-group">
                   <select class="form-control" name="categoryId" id="categoryId">
