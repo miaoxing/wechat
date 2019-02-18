@@ -11,7 +11,7 @@
   </h1>
 </div>
 
-<ol class="grey">
+<ol class="text-muted">
   <li>微信最多可以创建 <strong>3</strong> 个一级菜单,每个一级菜单下最多可以创建 <strong>5</strong> 个二级菜单，超出的菜单将不会显示在微信上。</li>
   <li>编辑中的菜单不会马上被用户看到，请放心修改。</li>
   <li>菜单发布后，24小时之内生效。</li>

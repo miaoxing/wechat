@@ -19,7 +19,7 @@
     <!-- PAGE CONTENT BEGINS -->
     <form class="js-account-form form-horizontal" method="post" role="form">
       <fieldset>
-        <legend class="grey bigger-130">基本信息</legend>
+        <legend class="text-muted bigger-130">基本信息</legend>
         <div class="form-group">
           <label class="col-lg-2 control-label" for="type">
             类型
@@ -66,7 +66,7 @@
       </fieldset>
 
       <fieldset>
-        <legend class="grey bigger-130">
+        <legend class="text-muted bigger-130">
           开发者凭据
           <small class="smaller-70">（用于配置自定义菜单,服务号发送消息等）</small>
         </legend>
@@ -92,7 +92,7 @@
       </fieldset>
 
       <fieldset>
-        <legend class="grey bigger-130">
+        <legend class="text-muted bigger-130">
           消息接口配置
           <small class="smaller-70">
             （用于接收用户信息）
