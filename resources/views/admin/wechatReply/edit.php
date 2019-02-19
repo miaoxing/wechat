@@ -181,7 +181,7 @@
             </button>
           </div>
 
-          <div class="modal-body p-a-0">
+          <div class="modal-body p-0">
             <div class="well">
               <form class="form-inline" id="search-form" role="form">
                 <div class="form-group">

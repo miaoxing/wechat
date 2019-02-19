@@ -52,7 +52,7 @@
       </li>
     </ul>
 
-    <div class="tab-content m-t border-0">
+    <div class="tab-content mt-3 border-0">
       <div role="tabpanel" class="tab-pane text-center active" id="read">
         加载中...
       </div>
