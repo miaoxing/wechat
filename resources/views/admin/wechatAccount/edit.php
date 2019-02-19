@@ -98,7 +98,7 @@
       <fieldset>
         <legend class="text-muted bigger-130">
           开发者凭据
-          <small class="smaller-70">（选填,用于配置自定义菜单,服务号发送消息等）</small>
+          <small class="text-xs">（选填,用于配置自定义菜单,服务号发送消息等）</small>
         </legend>
         <div class="form-group">
           <label class="col-lg-2 control-label" for="applicationId">

@@ -68,7 +68,7 @@
       <fieldset>
         <legend class="text-muted bigger-130">
           开发者凭据
-          <small class="smaller-70">（用于配置自定义菜单,服务号发送消息等）</small>
+          <small class="text-xs">（用于配置自定义菜单,服务号发送消息等）</small>
         </legend>
         <div class="form-group">
           <label class="col-lg-2 control-label" for="applicationId">
@@ -94,7 +94,7 @@
       <fieldset>
         <legend class="text-muted bigger-130">
           消息接口配置
-          <small class="smaller-70">
+          <small class="text-xs">
             （用于接收用户信息）
             <a href="http://kf.qq.com/faq/120911VrYVrA1307306biMFz.html" target="_blank" title="如何配置消息接口">
               <span class="help-button help-button-xs get-source-id-tooltip">?</span>
