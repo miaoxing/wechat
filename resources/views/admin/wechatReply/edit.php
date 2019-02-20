@@ -234,7 +234,7 @@
       'plugins/wechat/js/admin/wechat-replies',
       'form',
       'jquery-deparam',
-      'dataTable',
+      'plugins/admin/js/data-table',
       'validator',
       'plugins/admin/js/image-upload',
     ], function (reply, form) {

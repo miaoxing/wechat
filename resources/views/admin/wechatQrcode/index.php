@@ -92,7 +92,7 @@
 
 <?= $block->js() ?>
 <script>
-  require(['dataTable', 'form', 'jquery-deparam', 'template'], function () {
+  require(['plugins/admin/js/data-table', 'form', 'jquery-deparam', 'template'], function () {
     var recordTable = $('#record-table').dataTable({
       ajax: {
         url: $.queryUrl('admin/wechat-qrcode/index?_format=json')
