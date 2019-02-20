@@ -137,7 +137,6 @@
 </div><!-- /.col -->
 <!-- /.row -->
 <?php require $view->getFile('@wechat/admin/wechatQrcode/article-select-modal.php') ?>
-<?php require $this->getFile('@award/admin/award/editor.php') ?>
 <?php require $view->getFile('@wechat/wechat/media/tpls.php') ?>
 
 <?= $block->js() ?>

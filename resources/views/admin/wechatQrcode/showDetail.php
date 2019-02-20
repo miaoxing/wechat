@@ -118,7 +118,9 @@
 
 <?= $block->js() ?>
 <script>
-  require(['highcharts', 'jquery-deparam','form', 'dataTable', 'jquery-ui-datepicker-zh-CN'], function () {
+  require(['highcharts', 'jquery-deparam','form', 'dataTable',
+    'https://cdn.jsdelivr.net/npm/jqueryui@1.11.1/jquery-ui.min.js'
+  ], function () {
     $('#search-form').loadParams();
     // 渲染趋势图
     // 1. 初始化公用的数据
