@@ -118,7 +118,7 @@
 
 <?= $block->js() ?>
 <script>
-  require(['highcharts', 'jquery-deparam','form', 'plugins/admin/js/data-table',
+  require(['plugins/stat/js/highcharts', 'jquery-deparam','form', 'plugins/admin/js/data-table',
     'https://cdn.jsdelivr.net/npm/jqueryui@1.11.1/jquery-ui.min.js'
   ], function () {
     $('#search-form').loadParams();
