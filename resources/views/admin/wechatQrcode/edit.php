@@ -15,7 +15,7 @@
 <!-- /.page-header -->
 
 <div class="row">
-  <div class="col-12">
+  <div class="col-xs-12">
     <!-- PAGE detail BEGINS -->
     <form class="wechat-qrcode-form form-horizontal js-wechat-qrcode-form" method="post" role="form"
       action="<?= $url('admin/wechat-qrcode/' . $qrcode->getFormAction()) ?>">
@@ -32,7 +32,7 @@
         <label class="col-lg-4 help-text" for="sceneId">
           永久二维码的场景编号,最多10万个
           <a href="http://mp.weixin.qq.com/wiki/18/167e7d94df85d8389df6c94a7a8f78ba.html" target="_blank">
-            <i class="fa fa-external-link text-xs"></i>
+            <i class="fa fa-external-link smaller-80"></i>
           </a>
         </label>
       </div>
@@ -118,7 +118,7 @@
       <input type="hidden" name="accountId" id="accountId">
 
       <div class="clearfix form-actions form-group">
-        <div class="offset-lg-2">
+        <div class="col-lg-offset-2">
           <button class="btn btn-primary" type="submit">
             <i class="fa fa-check bigger-110"></i>
             提交
@@ -142,7 +142,7 @@
 <?= $block->js() ?>
 <script>
   require(['plugins/wechat/js/admin/wechat-replies', 'form',
-    'jquery-unparam', 'plugins/admin/js/data-table', 'template', 'plugins/app/js/validation',
+    'jquery-deparam', 'dataTable', 'template', 'validator',
     'comps/select2/select2.min',
     'css!comps/select2/select2',
     'css!comps/select2-bootstrap-css/select2-bootstrap',
