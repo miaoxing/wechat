@@ -142,7 +142,7 @@
 <?= $block->js() ?>
 <script>
   require(['plugins/wechat/js/admin/wechat-replies', 'form',
-    'jquery-deparam', 'plugins/admin/js/data-table', 'template', 'validator',
+    'jquery-deparam', 'plugins/admin/js/data-table', 'template', 'plugins/app/js/validation',
     'comps/select2/select2.min',
     'css!comps/select2/select2',
     'css!comps/select2-bootstrap-css/select2-bootstrap',

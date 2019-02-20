@@ -170,7 +170,7 @@
 
 <?= $block->js() ?>
 <script>
-  require(['form', 'ueditor', 'jquery-deparam', 'validator'], function () {
+  require(['form', 'ueditor', 'jquery-deparam', 'plugins/app/js/validation'], function () {
     $('.js-account-form').loadJSON(<?= $account->toJson() ?>);
   });
 </script>

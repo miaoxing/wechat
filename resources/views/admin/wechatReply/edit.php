@@ -235,7 +235,7 @@
       'form',
       'jquery-deparam',
       'plugins/admin/js/data-table',
-      'validator',
+      'plugins/app/js/validation',
       'plugins/admin/js/image-upload',
     ], function (reply, form) {
       form.toOptions($('#categoryId'), <?= json_encode(wei()->category()->notDeleted()->withParent('article')->getTreeToArray()) ?>, 'id', 'name');
