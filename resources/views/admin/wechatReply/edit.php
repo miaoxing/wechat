@@ -233,7 +233,7 @@
     require([
       'plugins/wechat/js/admin/wechat-replies',
       'form',
-      'jquery-deparam',
+      'jquery-unparam',
       'plugins/admin/js/data-table',
       'plugins/app/js/validation',
       'plugins/admin/js/image-upload',
