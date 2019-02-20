@@ -1,0 +1,149 @@
+.appmsg {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #d5d5d5;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.appmsg_content {
+  padding: 0 14px;
+  position: relative;
+}
+
+.appmsg_title {
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  padding-top: 6px;
+  line-height: 28px;
+  max-height: 56px;
+  overflow: hidden;
+  word-wrap: break-word;
+  word-break: break-all
+}
+
+.appmsg_title a {
+  display: block;
+  color: #222
+}
+
+.appmsg_thumb_wrp {
+  height: 160px;
+  overflow: hidden
+}
+
+.appmsg_thumb {
+  width: 100%
+}
+
+.appmsg_desc {
+  padding: 5px 0 10px;
+  word-wrap: break-word;
+  word-break: break-all
+}
+
+.appmsg_item {
+  position: relative;
+  padding: 12px 14px;
+  border-top: 1px solid #d3d3d3
+}
+
+.appmsg_item:after {
+  content: "\200B";
+  display: block;
+  height: 0;
+  clear: both
+}
+
+.appmsg_item .appmsg_title {
+  line-height: 24px;
+  max-height: 48px;
+  overflow: hidden;
+  *zoom: 1;
+  margin-top: 14px
+}
+
+.appmsg_item .appmsg_thumb {
+  float: right;
+  width: 78px;
+  height: 78px;
+  margin-left: 14px
+}
+
+.multi .appmsg_info {
+  padding-top: 4px;
+  padding-left: 14px;
+  padding-right: 14px
+}
+
+.multi .appmsg_content {
+  padding: 0
+}
+
+.multi .appmsg_title {
+  font-size: 14px;
+  padding-top: 0;
+  margin: 0;
+}
+
+.cover_appmsg_item {
+  position: relative;
+  margin: 14px 14px 14px
+}
+
+.cover_appmsg_item .appmsg_title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6) !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#99000000', endcolorstr='#99000000')
+}
+
+.cover_appmsg_item .appmsg_title a {
+  padding: 0 4px;
+  color: #fff
+}
+
+.appmsg:hover .appmsg_mask {
+  display: block
+}
+
+.appmsg_thumb.default {
+  display: block;
+  color: #c0c0c0;
+  text-align: center;
+  line-height: 160px;
+  font-weight: 400;
+  font-style: normal;
+  background-color: #ececec;
+  font-size: 22px
+}
+
+.appmsg_item .appmsg_thumb.default {
+  line-height: 78px;
+  font-size: 16px
+}
+
+.article-actions {
+  position: absolute;
+  right: 0;
+  top: 0;
+  font-size: 28px;
+  line-height: 0;
+  display: none;
+  padding: 8px 8px 4px 8px;
+  background: #fff;
+  border-bottom-left-radius: 4px;
+}
+
+.article-actions .remove-article:hover {
+  color: #dd5a43 !important;
+}
+
+.appmsg_item:hover .article-actions,
+.cover_appmsg_item:hover .article-actions,
+.appmsg-sigle-content:hover .article-actions {
+  display: block;
+}

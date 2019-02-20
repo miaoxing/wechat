@@ -1,5 +1,5 @@
 <?= $block->css() ?>
-<link rel="stylesheet" href="<?= $asset('assets/wechat/media.css') ?>"/>
+<link rel="stylesheet" href="<?= $asset('plugins/wechat/css/admin/media.css') ?>"/>
 <?= $block->end() ?>
 
 <script id="media-news" type="text/html">
