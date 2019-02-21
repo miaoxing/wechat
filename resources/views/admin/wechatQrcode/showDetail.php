@@ -120,7 +120,7 @@
 <script>
   require(['plugins/stat/js/highcharts', 'jquery-unparam','form', 'plugins/admin/js/data-table',
     'https://cdn.jsdelivr.net/npm/jqueryui@1.11.1/jquery-ui.min.js',
-    'css!comps/jquery-ui-custom/jquery-ui-1.10.3.full.min.css',
+    'css!plugins/admin/libs/jquery-ui-custom.css',
   ], function () {
     $('#search-form').loadParams();
     // 渲染趋势图
