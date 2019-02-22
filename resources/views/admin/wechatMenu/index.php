@@ -111,7 +111,7 @@
 
 <?= $block->js() ?>
 <script>
-  require(['plugins/wechat/js/admin/wechat-menus', 'css!plugins/wechat/css/admin/wechat-menus', 'plugins/link-to/js/link-to', 'form', 'plugins/admin/js/data-table'], function (menu, linkTo) {
+  require(['plugins/wechat/js/admin/wechat-menus', 'css!plugins/wechat/css/admin/wechat-menus', 'plugins/link-to/js/link-to', 'plugins/admin/js/form', 'plugins/admin/js/data-table'], function (menu, linkTo) {
     menu.index({
       linkTo: linkTo
     });

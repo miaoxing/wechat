@@ -67,7 +67,7 @@
 
 <?= $block->js() ?>
 <script>
-  require(['plugins/admin/js/data-table', 'form'], function () {
+  require(['plugins/admin/js/data-table', 'plugins/admin/js/form'], function () {
     $('#search-form').loadParams().update(function () {
       recordTable.reload($(this).serialize());
     });

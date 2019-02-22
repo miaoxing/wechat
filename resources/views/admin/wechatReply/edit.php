@@ -232,7 +232,7 @@
   <script>
     require([
       'plugins/wechat/js/admin/wechat-replies',
-      'form',
+      'plugins/admin/js/form',
       'plugins/admin/js/data-table',
       'plugins/app/js/validation',
       'plugins/admin/js/image-upload',
