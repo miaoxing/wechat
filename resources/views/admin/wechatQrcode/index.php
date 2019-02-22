@@ -149,7 +149,7 @@
 
     //筛选
     $('#search-form').loadParams().update(function () {
-      recordTable.search($(this).serializeArray(), false);
+      recordTable.reload($(this).serialize(), false);
     });
 
     recordTable.deletable();
