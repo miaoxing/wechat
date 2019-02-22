@@ -188,7 +188,7 @@
 
 <?= $block->js() ?>
 <script>
-  require(['form', 'ueditor', 'jquery-unparam', 'plugins/app/js/validation', 'plugins/admin/js/image-upload'], function () {
+  require(['form', 'ueditor', 'plugins/app/js/validation', 'plugins/admin/js/image-upload'], function () {
     $('.js-account-form')
       .loadJSON(<?= $account->toJson() ?>)
       .loadParams()
