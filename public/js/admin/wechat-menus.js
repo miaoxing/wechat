@@ -1,4 +1,4 @@
-define(['plugins/app/js/bootbox/bootbox'], function (bootbox) {
+define(['plugins/app/js/bootbox'], function (bootbox) {
   var menu = {};
 
   menu.linkTo = {};
