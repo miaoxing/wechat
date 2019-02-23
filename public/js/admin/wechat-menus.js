@@ -251,7 +251,11 @@ define(['plugins/app/js/bootbox/bootbox'], function (bootbox) {
 
     // 从微信加载菜单
     $('.load-menu-from-wechat').click(function () {
-      $.confirm('从微信加载菜单,本地菜单将会被清空,确认加载?', function () {
+      $.confirm('从微信加载菜单,本地菜单将会被清空,确认加载?', function (result) {
+        if (!result) {
+          return;
+        }
+
         $.post($.queryUrl('admin/wechat-menu/loadFromWeChat'), function (result) {
           $.msg(result);
           $('table.menu-table').dataTable().reload();
