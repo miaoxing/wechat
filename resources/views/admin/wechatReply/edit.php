@@ -39,7 +39,7 @@
           </label>
 
           <div class="col-lg-4">
-            <p class="form-control-static scene"></p>
+            <p class="form-control-plaintext scene"></p>
           </div>
         </div>
       <?php endif ?>
@@ -55,7 +55,7 @@
 
           <div class="col-lg-4">
             <?php if (isset($formConfig['showPlainKeywords']) && $formConfig['showPlainKeywords'] == true) : ?>
-              <p class="form-control-static keywords"></p>
+              <p class="form-control-plaintext keywords"></p>
             <?php else : ?>
               <input type="text" name="keywords" id="keywords" class="form-control">
             <?php endif ?>

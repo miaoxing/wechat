@@ -26,7 +26,7 @@
           </label>
 
           <div class="col-lg-4">
-            <p class="form-control-static">
+            <p class="form-control-plaintext">
               <?= $account->getTypeName() ?>
             </p>
           </div>
@@ -38,7 +38,7 @@
           </label>
 
           <div class="col-lg-4">
-            <p class="form-control-static" id="sourceId"></p>
+            <p class="form-control-plaintext" id="sourceId"></p>
           </div>
         </div>
 
@@ -48,7 +48,7 @@
           </label>
 
           <div class="col-lg-4">
-            <p class="form-control-static" id="nickName"></p>
+            <p class="form-control-plaintext" id="nickName"></p>
           </div>
         </div>
 
@@ -58,7 +58,7 @@
           </label>
 
           <div class="col-lg-4">
-            <p class="form-control-static">
+            <p class="form-control-plaintext">
               <img class="account-head-img" src="<?= $account['headImg'] ?>">
             </p>
           </div>
@@ -76,7 +76,7 @@
           </label>
 
           <div class="col-lg-4">
-            <p class="form-control-static" id="applicationId"></p>
+            <p class="form-control-plaintext" id="applicationId"></p>
           </div>
         </div>
 
@@ -86,7 +86,7 @@
           </label>
 
           <div class="col-lg-4">
-            <p class="form-control-static" id="applicationSecret"></p>
+            <p class="form-control-plaintext" id="applicationSecret"></p>
           </div>
         </div>
       </fieldset>
@@ -107,7 +107,7 @@
           </label>
 
           <div class="col-lg-4">
-            <p class="form-control-static" id="url"><?= $url->full('wechat-replies') ?></p>
+            <p class="form-control-plaintext" id="url"><?= $url->full('wechat-replies') ?></p>
           </div>
         </div>
 
@@ -117,7 +117,7 @@
           </label>
 
           <div class="col-lg-4">
-            <p class="form-control-static" id="token"></p>
+            <p class="form-control-plaintext" id="token"></p>
           </div>
         </div>
 
@@ -127,7 +127,7 @@
           </label>
 
           <div class="col-lg-4">
-            <p class="form-control-static"><?= $e($account['encodingAesKey']) ?: '-' ?></p>
+            <p class="form-control-plaintext"><?= $e($account['encodingAesKey']) ?: '-' ?></p>
           </div>
         </div>
 
@@ -138,7 +138,7 @@
             </label>
 
             <div class="col-lg-4">
-              <p class="form-control-static"><?= $e($account['transferCustomer']) ? '开启' : '关闭' ?></p>
+              <p class="form-control-plaintext"><?= $e($account['transferCustomer']) ? '开启' : '关闭' ?></p>
             </div>
           </div>
         <?php } ?>
