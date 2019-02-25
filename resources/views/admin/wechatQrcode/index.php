@@ -2,7 +2,7 @@
 
 <!-- /.page-header -->
 <div class="page-header">
-  <div class="pull-right">
+  <div class="float-right">
     <a class="btn btn-success" href="<?= $url('admin/wechat-qrcode/new', ['accountId' => $req['accountId']]) ?>">添加二维码</a>
   </div>
   <h1>

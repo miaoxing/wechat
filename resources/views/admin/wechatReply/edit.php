@@ -5,7 +5,7 @@
 <?= $block->end() ?>
 
 <div class="page-header">
-  <div class="pull-right">
+  <div class="float-right">
 
     <?php if (!$reply->isNew()) : ?>
       <a class="btn btn-danger delete-record" href="javascript:;"
@@ -193,7 +193,7 @@
                   <input type="text" class="form-control" name="search" placeholder="请输入标题搜索">
                 </div>
 
-                <div class="form-group pull-right">
+                <div class="form-group float-right">
                   <a class="btn btn-default refresh-articles" title="刷新" href="javascript:;">
                     <i class="fa fa-refresh"></i>
                   </a>

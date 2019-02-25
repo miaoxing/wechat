@@ -2,7 +2,7 @@
 
 <!-- /.page-header -->
 <div class="page-header">
-  <div class="pull-right">
+  <div class="float-right">
     <a href="<?= $url('admin/wechat-reply/new?type=text') ?>" class="btn btn-success">添加回复</a>
     <div class="d-inline-block">
       <div class="dropdown">
