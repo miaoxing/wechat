@@ -14,7 +14,7 @@
       </a>
     <?php endif ?>
 
-    <a class="btn btn-default" href="<?= $url('admin/wechat-reply/index', ['accountId' => $req['accountId']]) ?>">返回列表</a>
+    <a class="btn btn-secondary" href="<?= $url('admin/wechat-reply/index', ['accountId' => $req['accountId']]) ?>">返回列表</a>
   </div>
   <h1>
     微信管理
@@ -135,7 +135,7 @@
 
         <div class="col-lg-4">
           <div class="article-list"></div>
-          <a class="btn btn-default" href="#article-table-modal" data-toggle="modal">添加</a>
+          <a class="btn btn-secondary" href="#article-table-modal" data-toggle="modal">添加</a>
         </div>
       </div>
 
@@ -163,7 +163,7 @@
             提交
           </button>
           &nbsp; &nbsp; &nbsp;
-          <a class="btn btn-default" href="<?= $url('admin/wechat-reply/index', ['accountId' => $req['accountId']]) ?>">
+          <a class="btn btn-secondary" href="<?= $url('admin/wechat-reply/index', ['accountId' => $req['accountId']]) ?>">
             <i class="fa fa-undo bigger-110"></i>
             返回列表
           </a>
@@ -194,10 +194,10 @@
                 </div>
 
                 <div class="form-group float-right">
-                  <a class="btn btn-default refresh-articles" title="刷新" href="javascript:;">
+                  <a class="btn btn-secondary refresh-articles" title="刷新" href="javascript:;">
                     <i class="fa fa-refresh"></i>
                   </a>
-                  <a class="btn btn-default add-article" title="增加" href="<?= $url('admin/article/new') ?>"
+                  <a class="btn btn-secondary add-article" title="增加" href="<?= $url('admin/article/new') ?>"
                      target="_blank">
                     <i class="fa fa-plus"></i>
                   </a>

@@ -174,7 +174,7 @@
             提交
           </button>
           &nbsp; &nbsp; &nbsp;
-          <a class="btn btn-default" href="<?= $url('admin/wechat-account') ?>">
+          <a class="btn btn-secondary" href="<?= $url('admin/wechat-account') ?>">
             <i class="fa fa-undo bigger-110"></i>
             返回
           </a>

@@ -5,7 +5,7 @@
 <?= $block->end() ?>
 
 <div class="page-header">
-  <a class="btn btn-default float-right"
+  <a class="btn btn-secondary float-right"
     href="<?= $url('admin/wechat-qrcode/index', ['accountId' => $req['accountId']]) ?>">返回列表</a>
 
   <h1>
@@ -96,7 +96,7 @@
 
         <div class="col-lg-4">
           <div class="article-list"></div>
-          <a class="btn btn-default" href="#article-table-modal" data-toggle="modal">添加</a>
+          <a class="btn btn-secondary" href="#article-table-modal" data-toggle="modal">添加</a>
         </div>
       </div>
 
@@ -125,7 +125,7 @@
           </button>
 
           &nbsp; &nbsp; &nbsp;
-          <a class="btn btn-default" href="<?= $url('admin/wechat-qrcode/index', ['accountId' => $req['accountId']]) ?>">
+          <a class="btn btn-secondary" href="<?= $url('admin/wechat-qrcode/index', ['accountId' => $req['accountId']]) ?>">
             <i class="fa fa-undo"></i>
             返回列表
           </a>

@@ -4,7 +4,7 @@
 <div class="page-header">
   <div class="float-right">
     <a class="btn btn-success add-menu" href="javascript:;">添加一级菜单</a>
-    <a class="btn btn-default" href="<?= $url('admin/wechat-menu-categories'); ?>">返回列表</a>
+    <a class="btn btn-secondary" href="<?= $url('admin/wechat-menu-categories'); ?>">返回列表</a>
   </div>
   <h1>
     菜单管理
