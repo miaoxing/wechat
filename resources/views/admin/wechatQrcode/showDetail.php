@@ -34,7 +34,7 @@
 
     <h5 class="stat-title">趋势图</h5>
 
-    <ul class="js-chart-tabs nav tab-underline">
+    <ul class="js-chart-tabs nav nav-underline">
       <li role="presentation" class="nav-item">
         <a href="#validCount" class="nav-link active" aria-controls="validCount" role="tab" data-toggle="tab">积累关注数</a>
       </li>
