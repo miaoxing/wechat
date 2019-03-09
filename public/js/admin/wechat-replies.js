@@ -75,7 +75,7 @@ define(['plugins/app/libs/jquery.populate/jquery.populate'], function(){
         // 删除记录
         $('.delete-record').click(function(){
             var $this = $(this);
-            $.confirm('删除后将无法还原,确认删除?', function(result) {
+            $.confirm('删除后将无法还原,确定删除?', function(result) {
               if (!result) {
                 return;
               }
