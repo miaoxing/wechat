@@ -69,10 +69,11 @@
 
 <script id="name-control" type="text/html">
   <% if (parentId != '0') { %>
-  <span style="color: #ccc">├── </span>
+    <span class="text-monospace text-muted">├── </span>
   <% } %>
 
-  <input type="text" value="<%= name %>" class="name" data-id="<%= id %>" data-parent-id="<%= parentId %>">
+  <input type="text" value="<%= name %>" class="form-control w-50 d-inline-block name" data-id="<%= id %>"
+    data-parent-id="<%= parentId %>">
 
   <% if (parentId == '0') { %>
   <div class="action-buttons">
