@@ -110,7 +110,7 @@
         </div>
       </div>
 
-      <div class="form-group text-form-group type-form-group display-none">
+      <div class="form-group text-form-group type-form-group" hidden>
         <label class="col-lg-2 control-label" for="content">
           回复内容
         </label>
@@ -127,7 +127,7 @@
 
       </div>
 
-      <div class="form-group article-form-group type-form-group display-none">
+      <div class="form-group article-form-group type-form-group" hidden>
         <label class="col-lg-2 control-label" for="content">
           <span class="text-warning">*</span>
           选择图文
@@ -139,7 +139,7 @@
         </div>
       </div>
 
-      <div class="form-group image-form-group type-form-group display-none">
+      <div class="form-group image-form-group type-form-group" hidden>
         <label class="col-lg-2 control-label" for="replies-image-url">
           回复图片
         </label>
@@ -182,7 +182,7 @@
           </div>
 
           <div class="modal-body p-0">
-            <div class="well">
+            <div class="well border-0 mb-0">
               <form class="form-inline" id="search-form" role="form">
                 <div class="form-group">
                   <select class="form-control" name="categoryId" id="categoryId">
@@ -193,8 +193,8 @@
                   <input type="text" class="form-control" name="search" placeholder="请输入标题搜索">
                 </div>
 
-                <div class="form-group float-right">
-                  <a class="btn btn-secondary refresh-articles" title="刷新" href="javascript:;">
+                <div class="ml-auto">
+                  <a class="btn btn-secondary refresh-articles mr-1" title="刷新" href="javascript:;">
                     <i class="fa fa-refresh"></i>
                   </a>
                   <a class="btn btn-secondary add-article" title="增加" href="<?= $url('admin/article/new') ?>"
