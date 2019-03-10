@@ -42,7 +42,7 @@
           <th>总关注人数</th>
           <th>总取消人数</th>
           <th>积累关注数</th>
-          <th style="width: 120px">操作</th>
+          <th>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -137,6 +137,7 @@
         },
         {
           data: 'id',
+          sClass: 't-6',
           render: function (data, type, full) {
             return template.render('table-actions-tpl', full);
           }

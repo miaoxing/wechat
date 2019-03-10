@@ -79,7 +79,7 @@
         </div>
       </div>
 
-      <div class="form-group text-form-group type-form-group display-none">
+      <div class="form-group text-form-group type-form-group" hidden>
         <label class="col-lg-2 control-label" for="content">
           回复内容
         </label>
@@ -89,7 +89,7 @@
         </div>
       </div>
 
-      <div class="form-group article-form-group type-form-group display-none">
+      <div class="form-group article-form-group type-form-group" hidden>
         <label class="col-lg-2 control-label" for="content">
           选择图文
         </label>
@@ -100,7 +100,7 @@
         </div>
       </div>
 
-      <div class="form-group image-form-group type-form-group display-none">
+      <div class="form-group image-form-group type-form-group" hidden>
         <label class="col-lg-2 control-label" for="replies-image-url">
           回复图片
         </label>
