@@ -118,7 +118,7 @@
 
 <?= $block->js() ?>
 <script>
-  require(['plugins/stat/js/highcharts','form', 'plugins/admin/js/data-table',
+  require(['plugins/stat/js/highcharts','plugins/admin/js/form', 'plugins/admin/js/data-table',
     'plugins/admin/libs/jquery-ui-custom/jquery-ui.min',
     'css!plugins/admin/libs/jquery-ui-custom/jquery-ui-custom.css',
   ], function () {

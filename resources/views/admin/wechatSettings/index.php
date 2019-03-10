@@ -41,7 +41,7 @@
 
 <?= $block->js() ?>
 <script>
-  require(['plugins/admin/js/image-upload', 'form', 'plugins/app/js/validation'], function () {
+  require(['plugins/admin/js/image-upload', 'plugins/admin/js/form', 'plugins/app/js/validation'], function () {
     $('.js-setting-form')
       .loadJSON(<?= json_encode([
       'js-share-image' => $shareImage,
