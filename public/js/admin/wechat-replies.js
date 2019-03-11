@@ -58,8 +58,8 @@ define(['plugins/app/libs/jquery.populate/jquery.populate'], function(){
 
         $('input[name=type]')
             .change(function(){
-                $('.type-form-group').attr('hidden', true);
-                $('.' + $(this).val() + '-form-group').attr('hidden', false);
+                $('.type-form-group').prop('hidden', true);
+                $('.' + $(this).val() + '-form-group').prop('hidden', false);
             });
 
         $('input[name=type]:checked').trigger('change');
