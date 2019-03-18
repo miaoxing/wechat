@@ -1,3 +1,11 @@
+<?= $block->css() ?>
+<style>
+  .images-preview img {
+    cursor: pointer;
+  }
+</style>
+<?= $block->end() ?>
+
 <?= $block->js() ?>
 <script>
   require(['plugins/wechat/js/wx'], function (wx) {
