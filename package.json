@@ -1,0 +1,19 @@
+{
+  "name": "@miaoxing/wechat",
+  "version": "0.1.0",
+  "private": true,
+  "main": "index.js",
+  "repository": "https://github.com/miaoxing/wechat",
+  "license": "MIT",
+  "devDependencies": {
+    "@miaoxing/dev": "^7.0.1"
+  },
+  "jest": {
+    "preset": "jest-preset-miaoxing"
+  },
+  "ciDependencies": {
+    "babel-preset-miaoxing": "miaoxing/babel-preset-miaoxing",
+    "@miaoxing/dev": "miaoxing/dev",
+    "jest-preset-miaoxing": "miaoxing/jest-preset-miaoxing"
+  }
+}
