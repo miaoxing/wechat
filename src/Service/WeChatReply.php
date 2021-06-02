@@ -3,13 +3,14 @@
 namespace Miaoxing\Wechat\Service;
 
 use Miaoxing\Article\Service\Article;
+use Miaoxing\Plugin\BaseService;
 use Miaoxing\Plugin\Service\User;
 use Wei\WeChatApp;
 
 /**
  * @property \Wei\BaseCache $cache
  */
-class WeChatReply extends \Miaoxing\Plugin\BaseModel
+class WeChatReply extends BaseService
 {
     const EXACT_MATCH = 1;
 
