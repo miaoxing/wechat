@@ -205,8 +205,9 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     protected function logApi(Http $http)
     {
+        return;
         // 记录请求日志用于排查问题
-        wei()->appDb->insert('apiLogs', [
+        wei()->db->insert('apiLogs', [
             'appId' => wei()->app->getId(),
             'url' => (string) $http->getUrl(),
             'code' => $http->getCurlInfo(CURLINFO_HTTP_CODE),
@@ -214,7 +215,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
             'req' => json_encode($http->getData()),
             'res' => (string) $http->getResponseText(),
             'createTime' => date('Y-m-d H:i:s'),
-            'createUser' => (int) wei()->curUser['id'],
+            'createUser' => (int) User::id(),
         ]);
     }
 
@@ -230,7 +231,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
         }
 
         return [
-                'code' => 1,
+                'code' => 0,
                 'message' => '操作成功',
             ] + $http->getResponse();
     }

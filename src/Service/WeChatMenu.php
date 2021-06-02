@@ -2,10 +2,12 @@
 
 namespace Miaoxing\Wechat\Service;
 
+use Miaoxing\Plugin\BaseService;
+
 /**
  * @property \Miaoxing\LinkTo\Service\LinkTo $linkTo
  */
-class WeChatMenu extends \Miaoxing\Plugin\BaseModel
+class WeChatMenu extends BaseService
 {
     protected $autoId = true;
 

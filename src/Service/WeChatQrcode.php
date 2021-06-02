@@ -4,10 +4,11 @@ namespace Miaoxing\Wechat\Service;
 
 use Miaoxing\Article\Service\Article;
 use Miaoxing\Plugin\BaseModel;
+use Miaoxing\Plugin\BaseService;
 use Miaoxing\Plugin\Service\User;
 use Wei\WeChatApp;
 
-class WeChatQrcode extends BaseModel
+class WeChatQrcode extends BaseService
 {
     /**
      * 扫描就可以获得奖励

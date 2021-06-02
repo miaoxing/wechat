@@ -9,7 +9,7 @@ use Miaoxing\Wechat\Service\WechatAccount;
 use Miaoxing\Wechat\Service\WeChatQrcode;
 use Wei\WeChatApp;
 
-class Plugin extends \Miaoxing\Plugin\BasePlugin
+class WechatPlugin extends \Miaoxing\Plugin\BasePlugin
 {
     protected $name = '微信公众平台';
 

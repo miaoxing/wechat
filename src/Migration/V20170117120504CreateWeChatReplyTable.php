@@ -2,7 +2,7 @@
 
 namespace Miaoxing\Wechat\Migration;
 
-use Miaoxing\Plugin\BaseMigration;
+use Wei\Migration\BaseMigration;
 
 class V20170117120504CreateWeChatReplyTable extends BaseMigration
 {
@@ -20,9 +20,9 @@ class V20170117120504CreateWeChatReplyTable extends BaseMigration
             ->text('content')->comment('文本回复内容')
             ->string('articleIds')->comment('图文回复的文章编号')
             ->string('replies', 1024)
-            ->timestampsV1()
-            ->userstampsV1()
-            ->softDeletableV1()
+            ->timestamps()
+            ->userstamps()
+            ->softDeletable()
             ->primary('id')
             ->exec();
     }

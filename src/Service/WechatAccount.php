@@ -3,6 +3,7 @@
 namespace Miaoxing\Wechat\Service;
 
 use Miaoxing\Config\ConfigTrait;
+use Miaoxing\Plugin\BaseService;
 use Miaoxing\Plugin\Service\User;
 
 /**
@@ -11,9 +12,9 @@ use Miaoxing\Plugin\Service\User;
  * @property \Wei\Logger $logger
  * @property bool enableTransferCustomerService
  */
-class WechatAccount extends \Miaoxing\Plugin\BaseModel
+class WechatAccount extends BaseService
 {
-    use ConfigTrait;
+    //use ConfigTrait;
 
     const PLATFORM_ID = 1;
 
