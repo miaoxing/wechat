@@ -17,7 +17,7 @@ class WechatUserModel extends BaseModel
     use HasAppIdTrait;
     use WechatUserTrait;
 
-    public function user()
+    public function user(): UserModel
     {
         return $this->belongsTo(UserModel::class);
     }
