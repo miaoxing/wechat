@@ -1,6 +1,6 @@
-import React from "react";
+import { Component } from "react";
 
-export default class Share extends React.Component {
+export default class Share extends Component {
   componentWillMount() {
     // 进入页面要刷新接口
     requirejs(['plugins/wechat/js/wx'], function (wx) {
