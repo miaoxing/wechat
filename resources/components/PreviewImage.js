@@ -1,7 +1,7 @@
-import React from 'react';
+import { Component } from 'react';
 import {findDOMNode} from "react-dom";
 
-class PreviewImage extends React.Component {
+class PreviewImage extends Component {
   componentDidMount() {
     const $this = $(findDOMNode(this));
 
