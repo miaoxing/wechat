@@ -17,6 +17,8 @@ class WechatPlugin extends \Miaoxing\Plugin\BasePlugin
 
     protected $adminNavId = 'wechat';
 
+    protected $code = 211;
+
     public function onAdminNavGetNavs(&$navs, &$categories, &$subCategories)
     {
         $categories['wechat'] = [
@@ -85,11 +87,6 @@ class WechatPlugin extends \Miaoxing\Plugin\BasePlugin
             'sort' => 1100,
             'placeholder' => '小程序appid+路径,如:wx123+/pages/index/index',
         ];
-    }
-
-    public function onPreControllerInit(BaseController $controller)
-    {
-        $controller->middleware(\Miaoxing\Wechat\Middleware\Auth::class);
     }
 
     public function onUserGetPlatform($platforms)
