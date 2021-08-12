@@ -32,13 +32,6 @@ class WechatAccountMixin {
 }
 
 /**
- * @property    Miaoxing\Wechat\Service\WechatAccountModel $wechatAccountModel
- * @method      Miaoxing\Wechat\Service\WechatAccountModel wechatAccountModel() 返回当前对象
- */
-class WechatAccountModelMixin {
-}
-
-/**
  * @property    Miaoxing\Wechat\Service\WechatApi $wechatApi
  */
 class WechatApiMixin {
@@ -58,23 +51,14 @@ class WechatTemplateMixin {
 }
 
 /**
- * @property    Miaoxing\Wechat\Service\WechatUserModel $wechatUserModel
- * @method      Miaoxing\Wechat\Service\WechatUserModel wechatUserModel() 返回当前对象
- */
-class WechatUserModelMixin {
-}
-
-/**
  * @mixin SafeUrlMixin
  * @mixin WeChatMenuMixin
  * @mixin WeChatQrcodeMixin
  * @mixin WeChatReplyMixin
  * @mixin WechatAccountMixin
- * @mixin WechatAccountModelMixin
  * @mixin WechatApiMixin
  * @mixin WechatComponentApiMixin
  * @mixin WechatTemplateMixin
- * @mixin WechatUserModelMixin
  */
 class AutoCompletion {
 }
@@ -102,12 +86,6 @@ $weChatReply = wei()->weChatReply;
 /** @var Miaoxing\Wechat\Service\WechatAccount $wechatAccount */
 $wechatAccount = wei()->wechatAccount;
 
-/** @var Miaoxing\Wechat\Service\WechatAccountModel $wechatAccount */
-$wechatAccount = wei()->wechatAccountModel;
-
-/** @var Miaoxing\Wechat\Service\WechatAccountModel|Miaoxing\Wechat\Service\WechatAccountModel[] $wechatAccounts */
-$wechatAccounts = wei()->wechatAccountModel();
-
 /** @var Miaoxing\Wechat\Service\WechatApi $wechatApi */
 $wechatApi = wei()->wechatApi;
 
@@ -116,9 +94,3 @@ $wechatComponentApi = wei()->wechatComponentApi;
 
 /** @var Miaoxing\Wechat\Service\WechatTemplate $wechatTemplate */
 $wechatTemplate = wei()->wechatTemplate;
-
-/** @var Miaoxing\Wechat\Service\WechatUserModel $wechatUser */
-$wechatUser = wei()->wechatUserModel;
-
-/** @var Miaoxing\Wechat\Service\WechatUserModel|Miaoxing\Wechat\Service\WechatUserModel[] $wechatUsers */
-$wechatUsers = wei()->wechatUserModel();
