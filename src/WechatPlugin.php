@@ -48,14 +48,14 @@ class WechatPlugin extends \Miaoxing\Plugin\BasePlugin
         ];
 
         // TODO 拆分wechat-reply插件
-        if (wei()->wechatAccount->getCurrentAccount()['type'] != WechatAccount::TYPE_WXA) {
+//        if (wei()->wechatAccount->getCurrentAccount()['type'] != WechatAccount::TYPE_WXA) {
             $navs[] = [
                 'parentId' => 'wechat-account',
                 'url' => 'admin/wechat-reply/index',
                 'name' => '回复管理',
                 'sort' => 900,
             ];
-        }
+//        }
 
         $subCategories['wechat-setting'] = [
             'parentId' => 'wechat',
@@ -186,6 +186,7 @@ class WechatPlugin extends \Miaoxing\Plugin\BasePlugin
 
     public function onScript()
     {
+        return;
         if ($this->app->isAdmin()) {
             return;
         }
