@@ -2,18 +2,19 @@
 
 namespace Miaoxing\Wechat\Service;
 
-use Miaoxing\Plugin\Service\User;
+use Miaoxing\Plugin\BaseService;
 use Wei\Http;
+use Wei\Ret;
 
 /**
- * @property \Wei\Http $http
- * @method \Wei\Http http(array $options = [])
- * @property \Wei\Cache $cache
- * @property \Miaoxing\App\Service\Logger $logger
- * @property WechatComponentApi $wechatComponentApi
- * @see http://mp.weixin.qq.com/wiki/home/index.html
+ * @mixin \HttpMixin
+ * @mixin \CacheMixin
+ * @mixin \LoggerMixin
+ * @mixin \UrlMixin
+ * @mixin \StatsDMixin
+ * @mixin \WechatComponentApiMixin
  */
-class WechatApi extends \Miaoxing\Plugin\BaseService
+class WechatApi extends BaseService
 {
     /**
      * @var string
@@ -40,11 +41,16 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
     protected $refreshToken;
 
     /**
-     * 公众号的全局唯一票据
+     * 全局唯一票据
      *
      * @var string
      */
     protected $accessToken;
+
+    /**
+     * @var string
+     */
+    protected $baseUrl = 'https://api.weixin.qq.com/';
 
     /**
      * @var array
@@ -82,22 +88,6 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
         //41011 => '必填字段不完整或不合法，参考相应接口',
     ];
 
-    protected $baseUrl = 'https://api.weixin.qq.com/';
-
-    /**
-     * 返回代码
-     *
-     * @var int
-     */
-    protected $code = 1;
-
-    /**
-     * 返回信息
-     *
-     * @var string
-     */
-    protected $message;
-
     /**
      * 指定返回的errcode对应的日志等级
      *
@@ -109,131 +99,113 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
     ];
 
     /**
-     * 获取返回代码
-     *
-     * @return int
+     * @return Ret
      */
-    public function getCode()
+    public function initAccessToken(): Ret
     {
-        return $this->code;
-    }
-
-    /**
-     * 获取返回信息
-     *
-     * @return string
-     */
-    public function getMessage()
-    {
-        return $this->message;
-    }
-
-    public function getMainMessage()
-    {
-        $message = explode(' hint', $this->message)[0];
-        $message = rtrim($message, ',');
-
-        return $message;
-    }
-
-    /**
-     * 获取返回结果
-     *
-     * @return array
-     */
-    public function getResult()
-    {
-        return ['code' => $this->code, 'message' => $this->message];
-    }
-
-    /**
-     * 获取Access token并执行指定的回调
-     *
-     * @param callable $fn
-     * @param bool $retried 是否重试过
-     * @return false|Http
-     */
-    public function auth(callable $fn, $retried = false)
-    {
-        // 1. 获取Access token
-        $token = $this->getAccessTokenByAuth();
-        if (!$token) {
-            $this->code = -1;
-            $this->message = '很抱歉,网络繁忙,请再试一次';
-
-            return false;
+        if ($this->accessToken) {
+            return suc();
         }
 
-        // 2. 调用接口,转换异常为错误信息
-        try {
-            /** @var Http $http */
-            $http = $fn();
-        } catch (\Exception $e) {
-            $this->code = -abs($e->getCode());
-            $this->message = $e->getMessage();
-
-            $http = \Miaoxing\App\Callback\Http::$lastErrorHttp;
-            if ($http) {
-                $this->logApi($http);
+        $credential = $this->getCredentialFromCache();
+        if (!$credential || $credential['expireTime'] - time() < 60) {
+            $ret = $this->getToken();
+            if ($ret->isErr()) {
+                return $ret;
             }
 
-            return false;
+            $this->accessToken = $ret['access_token'];
+            $this->setCredentialToCache([
+                'accessToken' => $ret['access_token'],
+                'expireTime' => time() + $ret['expires_in'],
+            ]);
+        } else {
+            $this->accessToken = $credential['accessToken'];
         }
 
-        // 3. 成功直接返回
-        if (!$this->isError($http)) {
-            $this->code = 1;
-            $this->message = '操作成功';
+        return suc();
+    }
 
-            return $http;
+    /**
+     * @param array|string $options
+     * @return Ret
+     */
+    public function call($options): Ret
+    {
+        // 1. 获取Access token
+        if (!$this->accessToken) {
+            $ret = $this->initAccessToken();
+            if ($ret->isErr()) {
+                return $ret;
+            }
         }
 
-        // 4. 处理接口返回错误
-        // 如果是Access token无效或过期,清除缓存数据,然后重试一次
+        // 2. 附加并调用
+        $options['url'] = $this->url->append($options['url'], ['access_token' => $this->accessToken]);
+        return $this->callWithoutToken($options);
+    }
+
+    /**
+     * @param $options
+     * @param bool $retried
+     * @return Ret
+     */
+    public function callWithoutToken($options, bool $retried = false): Ret
+    {
+        // 1. 发送请求
+        $options['throwException'] = false;
+        $http = $this->http($options);
+
+        // 2. 成功直接返回
+        $ret = $this->parseResponse($http);
+        if ($ret->isSuc()) {
+            return $ret;
+        }
+
+        // 3. 处理接口返回错误
+        // 如果是 Access token 无效或过期,清除缓存数据，然后重试一次
         if ($http['errcode'] == 40001 || $http['errcode'] == 42001) {
             $this->removeAccessTokenByAuth();
             if (!$retried) {
                 $this->statsD->increment('wechat.credentialInvalid');
-
-                return $this->auth($fn, true);
+                return $this->callWithoutToken($options, true);
             }
         }
-        $credential = $this->cache->get($this->getAccessTokenCacheKey());
-
-        return $this->prepareError($http, $credential);
+        return $ret;
     }
 
-    protected function logApi(Http $http)
+    /**
+     * @param Http $http
+     * @return Ret
+     * @todo 可能换名称
+     */
+    protected function parseResponse(Http $http): Ret
     {
-        return;
-        // 记录请求日志用于排查问题
-        wei()->db->insert('apiLogs', [
-            'appId' => wei()->app->getId(),
-            'url' => (string) $http->getUrl(),
-            'code' => $http->getCurlInfo(CURLINFO_HTTP_CODE),
-            'options' => json_encode($http->getOption('curlOptions'), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-            'req' => json_encode($http->getData()),
-            'res' => (string) $http->getResponseText(),
-            'createTime' => date('Y-m-d H:i:s'),
-            'createUser' => (int) User::id(),
-        ]);
-    }
-
-    protected function authRet($fn)
-    {
-        return $this->processRet($this->auth($fn));
-    }
-
-    protected function processRet($http)
-    {
-        if (!$http) {
-            return $this->getResult();
+        if (!$http->isSuccess()) {
+            return $http->toRet();
         }
 
-        return [
-                'code' => 0,
-                'message' => '操作成功',
-            ] + $http->getResponse();
+        if (isset($http['errcode']) && $http['errcode'] !== 0) {
+            $code = $http['errcode'];
+            $message = $http['errmsg'];
+        } elseif (isset($http['base_resp'])) {
+            // 硬件接口的返回
+            $code = $http['base_resp']['errcode'];
+            $message = $http['base_resp']['errmsg'];
+        } elseif (isset($http['error_code'])) {
+            // 硬件 Open API 的返回
+            $code = $http['error_code'];
+            $message = $http['error_msg'];
+        } else {
+            return suc($http->getResponse());
+        }
+
+        $parts = explode(' hint ', $message);
+        return err([
+            'code' => -abs($code),
+            'message' => $this->messages[$code] ?? rtrim($parts[0], ','),
+            'detail' => $parts[1] ?? null,
+        ]);
     }
 
     /**
@@ -241,16 +213,10 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
      *
      * @param Http $http
      * @param array $credential
+     * @todo
      */
-    protected function logError(Http $http, $credential = [])
+    protected function logError(Http $http, array $credential = [])
     {
-        $this->logApi($http);
-
-        // HTTP请求失败由HTTP自行告警
-        if (!$http->isSuccess()) {
-            return;
-        }
-
         $credential['currentTime'] = time();
 
         // 移除结尾的请求ID,使相同信息合并成一条
@@ -347,10 +313,20 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
         return $this;
     }
 
+    protected function getCredentialFromCache()
+    {
+        return $this->cache->get($this->getAccessTokenCacheKey());
+    }
+
+    protected function setCredentialToCache($credential)
+    {
+        return $this->cache->set($this->getAccessTokenCacheKey(), $credential);
+    }
+
     /**
      * @return string
      */
-    protected function getAccessTokenCacheKey()
+    protected function getAccessTokenCacheKey(): string
     {
         return 'wechat:accessToken:' . $this->getAppId();
     }
@@ -358,32 +334,27 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
     /**
      * 获取token
      *
-     * @return false|Http
+     * @return Ret
      */
-    public function getToken()
+    public function getToken(): Ret
     {
         // 加锁防止重复生成token
         $lockKey = 'wechat:getToken:' . $this->getAppId();
         if (!$this->cache->add($lockKey, 1, $this->http->getOption('timeout') / 1000)) {
-            return false;
+            return err('网络缓慢，请稍后再试');
         }
 
-        $http = $this->http([
+        $ret = $this->callWithoutToken([
             'url' => $this->baseUrl . 'cgi-bin/token?grant_type=client_credential',
             'dataType' => 'json',
-            'throwException' => false,
             'data' => [
                 'appid' => $this->getAppId(),
                 'secret' => $this->getAppSecret(),
             ],
         ]);
-
         $this->cache->remove($lockKey);
-        if ($this->isError($http)) {
-            return $this->prepareError($http);
-        } else {
-            return $http;
-        }
+
+        return $ret;
     }
 
     /**
@@ -437,7 +408,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
      *
      * @return string
      */
-    public function getAppId()
+    public function getAppId(): string
     {
         return $this->appId;
     }
@@ -447,7 +418,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
      *
      * @return string
      */
-    public function getAppSecret()
+    public function getAppSecret(): string
     {
         return $this->appSecret;
     }
@@ -457,7 +428,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
      *
      * @return string
      */
-    public function getRefreshToken()
+    public function getRefreshToken(): string
     {
         return $this->refreshToken;
     }
@@ -647,9 +618,9 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
      * 获取用户基本信息
      *
      * @param string $openId
-     * @return false|Http
+     * @return Ret
      */
-    public function getUserInfo($openId)
+    public function getUserInfo($openId): Ret
     {
         return $this->auth(function () use ($openId) {
             // 1. 调用接口,获取用户信息
@@ -691,35 +662,28 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
      *
      * @param string $openId
      * @param string $accessToken
-     * @return \Wei\Http
+     * @return Ret
      */
-    public function getSnsUserInfo($openId, $accessToken)
+    public function getSnsUserInfo(string $openId, string $accessToken): Ret
     {
-        // 调用接口,获取用户信息
-        $userInfo = $this->http([
-            'url' => 'https://api.weixin.qq.com/sns/userinfo',
+        return $this->callWithoutToken([
+            'dataType' => 'json',
+            'url' => $this->baseUrl . 'sns/userinfo',
             'data' => [
                 'access_token' => $accessToken,
                 'openid' => $openId,
                 'lang' => 'zh_CN',
             ],
-            'dataType' => 'json',
-            'throwException' => false,
         ]);
-        if ($this->isError($userInfo)) {
-            return $this->prepareError($userInfo);
-        } else {
-            return $userInfo;
-        }
     }
 
     /**
      * 创建临时二维码
      *
      * @param int $sceneId
-     * @return false|Http
+     * @return Ret
      */
-    public function createTemporaryQrCode($sceneId)
+    public function createTemporaryQrCode($sceneId): Ret
     {
         return $this->auth(function () use ($sceneId) {
             return $this->http->postJson(
@@ -813,39 +777,34 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
     }
 
     /**
-     * 获取帐号的关注者的OpenID列表
+     * 获取帐号的关注者的 OpenID 列表
      *
-     * @param string $nextOpenId
-     * @return false|Http
+     * @param string|null $nextOpenId
+     * @return Ret
      */
-    public function getUserOpenIds($nextOpenId = null)
+    public function userGet(string $nextOpenId = null): Ret
     {
-        return $this->auth(function () use ($nextOpenId) {
-            return wei()->http([
-                'timeout' => 10000,
-                'dataType' => 'json',
-                'url' => $this->baseUrl . 'cgi-bin/user/get',
-                'data' => [
-                    'access_token' => $this->accessToken,
-                    'next_openid' => $nextOpenId,
-                ],
-            ]);
-        });
+        return $this->call([
+            'dataType' => 'json',
+            'url' => $this->baseUrl . 'cgi-bin/user/get',
+            'data' => [
+                'next_openid' => $nextOpenId,
+            ],
+        ]);
     }
 
     /**
      * 根据帐号是否授权获取不同的网页授权access_token
      *
      * @param array $data
-     * @return Http
+     * @return Ret
      */
-    public function getOAuth2AccessTokenByAuth(array $data)
+    public function getOAuth2AccessTokenByAuth(array $data): Ret
     {
         if ($this->authed) {
             if (!isset($data['appid']) || !$data['appid']) {
                 $data['appid'] = $this->appId;
             }
-
             return $this->wechatComponentApi->getOAuth2AccessToken($data);
         } else {
             return $this->getOAuth2AccessToken($data);
@@ -856,96 +815,21 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
      * 通过OAuth2.0的code获取网页授权access_token
      *
      * @param array $data
-     * @return Http
+     * @return Ret
      */
-    public function getOAuth2AccessToken(array $data)
+    public function getOAuth2AccessToken(array $data): Ret
     {
-        $http = $this->http([
+        return $this->callWithoutToken([
             'url' => $this->baseUrl . 'sns/oauth2/access_token',
             'dataType' => 'json',
             'throwException' => false,
-            'data' => $data + [
-                    'code' => '', // 需传入参数
-                    'appid' => $this->appId,
-                    'secret' => $this->appSecret,
-                    'grant_type' => 'authorization_code',
-                ],
+            'data' => array_merge([
+                'code' => '', // 需传入参数
+                'appid' => $this->appId,
+                'secret' => $this->appSecret,
+                'grant_type' => 'authorization_code',
+            ], $data),
         ]);
-        if ($this->isError($http)) {
-            $this->logError($http);
-        }
-
-        return $http;
-    }
-
-    /**
-     * 检查HTTP请求返回的结果是否有错误
-     *
-     * @param Http $http
-     * @return bool
-     */
-    protected function isError($http)
-    {
-        // 允许返回字符串的情况,如getMediaUrl返回素材路径
-        if (is_string($http)) {
-            return false;
-        }
-
-        if (!$http->isSuccess()) {
-            return true;
-        }
-
-        if (isset($http['errcode']) && $http['errcode'] !== 0) {
-            return true;
-        }
-
-        // 硬件接口的返回
-        if (isset($http['base_resp']['errcode']) && $http['base_resp']['errcode'] !== 0) {
-            return true;
-        }
-
-        // 硬件Open API的返回
-        if (isset($http['error_code']) && $http['error_code'] !== 0) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * 设置错误代号和信息,返回false
-     *
-     * @param Http $http
-     * @param array $credential
-     * @return false
-     */
-    protected function prepareError($http, $credential = [])
-    {
-        if (!$http->isSuccess()) {
-            $this->code = -1;
-            $this->message = '很抱歉,网络繁忙,请稍后再试';
-        } else {
-            // TODO 简化各类错误的处理
-            if (isset($http['errcode']) && $http['errcode'] !== 0) {
-                $code = $http['errcode'];
-                $message = $http['errmsg'];
-            } elseif (isset($http['base_resp'])) {
-                $code = $http['base_resp']['errcode'];
-                $message = $http['base_resp']['errmsg'];
-            } elseif (isset($http['error_code'])) {
-                $code = $http['error_code'];
-                $message = $http['error_msg'];
-            } else {
-                $code = 1000;
-                $message = '未知返回' . $http->getResponseText();
-            }
-
-            $this->code = -abs($code);
-            $this->message = isset($this->messages[$code]) ? $this->messages[$code] : $message;
-            $this->logError($http, $credential);
-        }
-
-        return false;
     }
 
     /**
@@ -1154,7 +1038,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
      */
     public function addMaterial($type, $file)
     {
-        return $this->authRet(function () use ($type, $file) {
+        return $this->auth(function () use ($type, $file) {
             $http = $this->http([
                 'method' => 'post',
                 'dataType' => 'json',
@@ -1355,7 +1239,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function sendWxaTemplate(array $data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
             return $this->http->postJson(
                 $this->baseUrl . 'cgi-bin/message/wxopen/template/send?access_token=' . $this->accessToken,
@@ -1420,18 +1304,10 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
     }
 
     /**
-     * @todo ret逐步替代原来的方法
-     */
-    public function createCardRet(array $data)
-    {
-        return $this->processRet($this->createCard($data));
-    }
-
-    /**
      * 更新卡券
      *
      * @param array $data
-     * @return false|Http
+     * @return Ret
      */
     public function updateCard(array $data)
     {
@@ -1520,7 +1396,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
      */
     public function getCardCode(array $data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             return $this->http([
                 'url' => $this->baseUrl . 'card/code/get?access_token=' . $this->accessToken,
                 'method' => 'post',
@@ -1868,7 +1744,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
      */
     public function addPoi(array $data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
 
             return $this->http([
@@ -1882,7 +1758,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function updatePoi(array $data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
 
             return $this->http([
@@ -1896,7 +1772,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function delPoi(array $data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
 
             return $this->http([
@@ -1910,7 +1786,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function getPoi(array $data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
 
             return $this->http([
@@ -1924,7 +1800,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function updateMemberCardUser($data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
 
             return $this->http([
@@ -1938,7 +1814,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function getMemberCardUserInfo($data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             $data = json_encode($data, JSON_UNESCAPED_UNICODE);
 
             return $this->http([
@@ -1952,7 +1828,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function getWxCategory()
     {
-        return $this->authRet(function () {
+        return $this->auth(function () {
             return $this->http([
                 'url' => $this->baseUrl . 'cgi-bin/poi/getwxcategory?access_token=' . $this->accessToken,
                 'method' => 'get',
@@ -1963,7 +1839,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function modifyCardStock($data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             return $this->http([
                 'url' => $this->baseUrl . 'card/modifystock?access_token=' . $this->accessToken,
                 'method' => 'post',
@@ -1975,7 +1851,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function setCardSelfConsumeCell($data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             return $this->http([
                 'url' => $this->baseUrl . 'card/selfconsumecell/set?access_token=' . $this->accessToken,
                 'method' => 'post',
@@ -1987,7 +1863,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function getStoreList($data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             return $this->http([
                 'url' => $this->baseUrl . 'wxa/get_store_list?access_token=' . $this->accessToken,
                 'method' => 'post',
@@ -1999,7 +1875,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function addPayGiftCard($data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             return $this->http([
                 'url' => $this->baseUrl . 'card/paygiftcard/add?access_token=' . $this->accessToken,
                 'method' => 'post',
@@ -2011,7 +1887,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function updatePayGiftCard($data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             return $this->http([
                 'url' => $this->baseUrl . 'card/paygiftcard/update?access_token=' . $this->accessToken,
                 'method' => 'post',
@@ -2023,7 +1899,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function deletePayGiftCard($data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             return $this->http([
                 'url' => $this->baseUrl . 'card/paygiftcard/delete?access_token=' . $this->accessToken,
                 'method' => 'post',
@@ -2035,7 +1911,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function getCardPayCoinsInfo()
     {
-        return $this->authRet(function () {
+        return $this->auth(function () {
             return $this->http([
                 'url' => $this->baseUrl . 'card/pay/getcoinsinfo?access_token=' . $this->accessToken,
                 'dataType' => 'json',
@@ -2045,7 +1921,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function getCardPayPayPrice(array $data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             return $this->http([
                 'url' => $this->baseUrl . 'card/pay/getpayprice?access_token=' . $this->accessToken,
                 'method' => 'post',
@@ -2057,7 +1933,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function confirmCardPay(array $data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             return $this->http([
                 'url' => $this->baseUrl . 'card/pay/confirm?access_token=' . $this->accessToken,
                 'method' => 'post',
@@ -2069,7 +1945,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function getGiftCardOrder(array $data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             return $this->http([
                 'url' => $this->baseUrl . 'card/giftcard/order/get?access_token=' . $this->accessToken,
                 'method' => 'post',
@@ -2081,7 +1957,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function updateGeneralCardUser(array $data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             return $this->http([
                 'url' => $this->baseUrl . 'card/generalcard/updateuser?access_token=' . $this->accessToken,
                 'method' => 'post',
@@ -2093,7 +1969,7 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function getUserCardList(array $data)
     {
-        return $this->authRet(function () use ($data) {
+        return $this->auth(function () use ($data) {
             return $this->http([
                 'url' => $this->baseUrl . 'card/user/getcardlist?access_token=' . $this->accessToken,
                 'method' => 'post',
@@ -2120,26 +1996,17 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
         return $str;
     }
 
-    public function call($url, $data, $method = 'POST')
+    public function jsCode2Session(array $data): Ret
     {
-        return $this->authRet(function () use ($url, $data, $method) {
-            return $this->http([
-                'url' => $this->baseUrl . $url,
-                'data' => $data,
-                'method' => $method,
-                'dataType' => 'json',
-                'throwException' => false,
-            ]);
-        });
-    }
-
-    public function jsCode2Session($data)
-    {
-        return $this->call('sns/jscode2session', $data + [
+        return $this->callWithoutToken([
+            'dataType' => 'json',
+            'url' => $this->baseUrl . '/sns/jscode2session',
+            'data' => array_merge([
                 'appid' => $this->appId,
                 'secret' => $this->appSecret,
                 'grant_type' => 'authorization_code',
-            ], 'GET');
+            ], $data),
+        ]);
     }
 
     public function getWxaCode($data)
@@ -2156,19 +2023,11 @@ class WechatApi extends \Miaoxing\Plugin\BaseService
 
     public function getTags()
     {
-        return $this->callAuth('cgi-bin/tags/get', [], 'GET');
-    }
-
-    public function callAuth($url, $data, $method = 'POST')
-    {
-        $this->logger->debug('Wechat api ' . $url, $data);
-        return $this->authRet(function () use ($url, $data, $method) {
+        return $this->auth(function () {
             return $this->http([
-                'url' => $this->baseUrl . $url . '?access_token=' . $this->accessToken,
-                'data' => json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-                'method' => $method,
+                'url' => $this->baseUrl . 'cgi-bin/tags/get?access_token=' . $this->accessToken,
+                'method' => 'get',
                 'throwException' => true,
-                'dataType' => 'json',
             ]);
         });
     }
