@@ -433,133 +433,6 @@ class WechatApi extends BaseService
         return $this->refreshToken;
     }
 
-    public function createGroup(array $groups)
-    {
-        $groups = json_encode($groups, JSON_UNESCAPED_UNICODE);
-
-        return $this->auth(function () use ($groups) {
-            return $this->http->postJson(
-                $this->baseUrl . 'cgi-bin/groups/create?access_token=' . $this->accessToken,
-                $groups
-            );
-        });
-    }
-
-    /**
-     * 查询所有分组
-     * @return false|Http
-     */
-    public function batchGetGroup()
-    {
-        return $this->auth(function () {
-            return $this->http->postJson($this->baseUrl . 'cgi-bin/groups/get?access_token=' . $this->accessToken);
-        });
-    }
-
-    /**
-     * 查询用户所在的groupid
-     * @param $openId
-     * @return false|Http
-     */
-    public function getUserGroupId($openId)
-    {
-        return $this->auth(function () use ($openId) {
-            return $this->http->postJson(
-                $this->baseUrl . 'cgi-bin/groups/getid?access_token=' . $this->accessToken,
-                json_encode(
-                    [
-                        'openid' => $openId,
-                    ],
-                    JSON_UNESCAPED_UNICODE
-                )
-            );
-        });
-    }
-
-    /**
-     * 修改分组
-     * @param $groupId
-     * @param $name
-     * @return false|Http
-     */
-    public function updateGroup(array $groups)
-    {
-        $groups = json_encode($groups, JSON_UNESCAPED_UNICODE);
-
-        return $this->auth(function () use ($groups) {
-            return $this->http->postJson(
-                $this->baseUrl . 'cgi-bin/groups/update?access_token=' . $this->accessToken,
-                $groups
-            );
-        });
-    }
-
-    /**
-     * 移动用户分组
-     * @param $openId
-     * @param $toGroupId
-     * @return false|Http
-     */
-    public function updateMemberGroup($openId, $toGroupId)
-    {
-        return $this->auth(function () use ($openId, $toGroupId) {
-            return $this->http->postJson(
-                $this->baseUrl . 'cgi-bin/groups/members/update?access_token=' . $this->accessToken,
-                json_encode(
-                    [
-                        'openid' => $openId,
-                        'to_groupid' => $toGroupId,
-                    ],
-                    JSON_UNESCAPED_UNICODE
-                )
-            );
-        });
-    }
-
-    /**
-     * 批量修改用户分组
-     * @param array $openIdList
-     * @param $toGroupId
-     * @return false|Http
-     */
-    public function updateBatchMemberGroup(array $openIdList, $toGroupId)
-    {
-        return $this->auth(function () use ($openIdList, $toGroupId) {
-            return $this->http->postJson(
-                $this->baseUrl . 'cgi-bin/groups/members/batchupdate?access_token=' . $this->accessToken,
-                json_encode(
-                    [
-                        'openid_list' => $openIdList,
-                        'to_groupid' => $toGroupId,
-                    ],
-                    JSON_UNESCAPED_UNICODE
-                )
-            );
-        });
-    }
-
-    /**
-     * 删除分组
-     * @param $groupId
-     * @return false|Http
-     */
-    public function deleteGroup($groupId)
-    {
-        return $this->auth(function () use ($groupId) {
-            return $this->http->postJson(
-                $this->baseUrl . 'cgi-bin/groups/delete?access_token=' . $this->accessToken,
-                json_encode(
-                    [
-                        'group' => [
-                            'id' => $groupId,
-                        ],
-                    ],
-                    JSON_UNESCAPED_UNICODE
-                )
-            );
-        });
-    }
-
     /**
      * 创建菜单
      *
@@ -2000,7 +1873,7 @@ class WechatApi extends BaseService
     {
         return $this->callWithoutToken([
             'dataType' => 'json',
-            'url' => $this->baseUrl . '/sns/jscode2session',
+            'url' => $this->baseUrl . 'sns/jscode2session',
             'data' => array_merge([
                 'appid' => $this->appId,
                 'secret' => $this->appSecret,
