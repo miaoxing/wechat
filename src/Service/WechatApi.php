@@ -200,12 +200,31 @@ class WechatApi extends BaseService
             return suc($http->getResponse());
         }
 
-        $parts = explode(' hint ', $message);
+        [$message, $detail] = $this->parseMessage($message);
+
         return err([
             'code' => -abs($code),
-            'message' => $this->messages[$code] ?? rtrim($parts[0], ','),
-            'detail' => $parts[1] ?? null,
+            'message' => $this->messages[$code] ?? $message,
+            'detail' => $detail,
         ]);
+    }
+
+    protected function parseMessage(string $message): array
+    {
+        [$message, $detail] = $this->explodeMessage($message, ' hint:');
+        if (null !== $detail) {
+            return [$message, $detail];
+        }
+        return $this->explodeMessage($message, ' rid:');
+    }
+
+    protected function explodeMessage(string $message, string $separator): array
+    {
+        $pos = strrpos($message, $separator);
+        if ($pos !== false) {
+            return [rtrim(substr($message, 0, $pos), ', '), trim(substr($message, $pos))];
+        }
+        return [$message, null];
     }
 
     /**
