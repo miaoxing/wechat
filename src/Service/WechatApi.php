@@ -106,7 +106,20 @@ class WechatApi extends BaseService
     /**
      * @var array
      */
-    protected $defaultConfigs = [];
+    protected $defaultConfigs = [
+        // @link https://developers.weixin.qq.com/doc/offiaccount/User_Management/User_Tag_Management.html
+        'createTag' => 'cgi-bin/tags/create',
+        'getTags' => [
+            'path' => 'cgi-bin/tags/get',
+            'method' => 'GET',
+        ],
+        'updateTag' => 'cgi-bin/tags/update',
+        'deleteTag' => 'cgi-bin/tags/delete',
+        'getTagUsers' => 'cgi-bin/user/tag/get',
+        'batchTaggingMembers' => 'cgi-bin/tags/members/batchtagging',
+        'batchUnTaggingMembers' => 'cgi-bin/tags/members/batchuntagging',
+        'getTagIdList' => 'cgi-bin/tags/getidlist',
+    ];
 
     /**
      * @return Ret
