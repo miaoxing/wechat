@@ -99,6 +99,16 @@ class WechatApi extends BaseService
     ];
 
     /**
+     * @var array
+     */
+    protected $configs = [];
+
+    /**
+     * @var array
+     */
+    protected $defaultConfigs = [];
+
+    /**
      * @return Ret
      */
     public function initAccessToken(): Ret
@@ -450,6 +460,30 @@ class WechatApi extends BaseService
     public function getRefreshToken(): string
     {
         return $this->refreshToken;
+    }
+
+    /**
+     * @param string $name
+     * @param array $args
+     * @return mixed|Ret
+     * @throws \ReflectionException
+     */
+    public function __call(string $name, array $args)
+    {
+        $config = $this->configs[$name] ?? $this->defaultConfigs[$name] ?? null;
+        if ($config) {
+            if (is_string($config)) {
+                $config = ['path' => $config];
+            }
+            return $this->call(array_merge([
+                'url' => $this->baseUrl . $config['path'],
+                'dataType' => 'json',
+                'method' => 'post',
+                'data' => $args ? json_encode($args[0], JSON_UNESCAPED_UNICODE) : [],
+            ], $config));
+        }
+
+        return parent::__call($name, $args);
     }
 
     /**
@@ -1908,17 +1942,6 @@ class WechatApi extends BaseService
                 'url' => $this->baseUrl . 'wxa/getwxacode?access_token=' . $this->accessToken,
                 'data' => json_encode($data),
                 'method' => 'post',
-                'throwException' => true,
-            ]);
-        });
-    }
-
-    public function getTags()
-    {
-        return $this->auth(function () {
-            return $this->http([
-                'url' => $this->baseUrl . 'cgi-bin/tags/get?access_token=' . $this->accessToken,
-                'method' => 'get',
                 'throwException' => true,
             ]);
         });
