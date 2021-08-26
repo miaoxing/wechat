@@ -36,7 +36,7 @@ class WechatApi extends BaseService
     /**
      * 授权方的刷新令牌,通过第三方平台调用接口时需提供
      *
-     * @var string
+     * @var string|null
      */
     protected $refreshToken;
 
@@ -79,6 +79,7 @@ class WechatApi extends BaseService
         40027 => '不合法的子菜单按钮URL长度',
         40028 => '不合法的自定义菜单使用用户',
         40029 => '不合法的oauth_code',
+        42001 => 'access_token 超时',
         46003 => '不存在菜单数据',
         // 卡券需展示具体的错误信息
         //47001 => '解析JSON/XML内容错误',
@@ -89,13 +90,13 @@ class WechatApi extends BaseService
     ];
 
     /**
-     * 指定返回的errcode对应的日志等级
+     * 指定返回的 errcode 对应的日志等级
      *
      * @var array
      */
     protected $logLevels = [
+        // 没有关注该服务号
         43004 => 'info',
-        -1000 => 'info',
     ];
 
     /**
@@ -107,10 +108,14 @@ class WechatApi extends BaseService
      * @var array
      */
     protected $defaultConfigs = [
+        'getSnsUserInfo' => [
+            'url' => 'sns/userinfo',
+            'accessToken' => false,
+        ],
         // @link https://developers.weixin.qq.com/doc/offiaccount/User_Management/User_Tag_Management.html
         'createTag' => 'cgi-bin/tags/create',
         'getTags' => [
-            'path' => 'cgi-bin/tags/get',
+            'url' => 'cgi-bin/tags/get',
             'method' => 'GET',
         ],
         'updateTag' => 'cgi-bin/tags/update',
@@ -122,12 +127,101 @@ class WechatApi extends BaseService
     ];
 
     /**
+     * 获取AppId参数
+     *
+     * @return string
+     */
+    public function getAppId(): string
+    {
+        return $this->appId;
+    }
+
+    /**
+     * 获取AppSecret参数
+     *
+     * @return string
+     */
+    public function getAppSecret(): string
+    {
+        return $this->appSecret;
+    }
+
+    /**
+     * 获取刷新令牌
+     *
+     * @return string
+     */
+    public function getRefreshToken(): ?string
+    {
+        return $this->refreshToken;
+    }
+
+    /**
+     * @param array|string $options
      * @return Ret
      */
-    public function initAccessToken(): Ret
+    public function get($options): Ret
+    {
+        return $this->request($options + ['method' => 'GET']);
+    }
+
+    /**
+     * @param array|string $options
+     * @return Ret
+     */
+    public function post($options): Ret
+    {
+        return $this->request($options);
+    }
+
+    /**
+     * @param string $name
+     * @param array $args
+     * @return mixed|Ret
+     * @throws \ReflectionException
+     */
+    public function __call(string $name, array $args)
+    {
+        $config = $this->configs[$name] ?? $this->defaultConfigs[$name] ?? null;
+        if ($config) {
+            if (is_string($config)) {
+                $config = ['url' => $config];
+            }
+
+            // @experimental
+            if (isset($config['data']['secret'])) {
+                $config['data']['appid'] = $this->getAppId();
+                $config['data']['secret'] = $this->getAppSecret();
+            }
+
+            $config['data'] = array_merge($config['data'] ?? [], $args ? $args[0] : []);
+
+            // TODO 部分接口转换为开放平台
+
+            return $this->request(array_merge(['url' => $config['url']], $config));
+        }
+
+        return parent::__call($name, $args);
+    }
+
+    /**
+     * 获取 Access token
+     *
+     * @return Ret|array{accessToken?: string}
+     */
+    public function getAccessToken(): Ret
     {
         if ($this->accessToken) {
-            return suc();
+            return suc(['accessToken' => $this->accessToken]);
+        }
+
+        // 根据帐号是否授权获取不同的 Access token
+        if ($this->authed) {
+            $this->accessToken = $this->wechatComponentApi->getAuthorizerAccessToken(
+                $this->getAppId(),
+                $this->getRefreshToken()
+            );
+            return suc(['accessToken' => $this->accessToken]);
         }
 
         $credential = $this->getCredentialFromCache();
@@ -137,70 +231,147 @@ class WechatApi extends BaseService
                 return $ret;
             }
 
-            $this->accessToken = $ret['access_token'];
-            $this->setCredentialToCache([
+            $credential = [
                 'accessToken' => $ret['access_token'],
                 'expireTime' => time() + $ret['expires_in'],
-            ]);
-        } else {
-            $this->accessToken = $credential['accessToken'];
+            ];
+            $this->setCredentialToCache($credential);
         }
 
-        return suc();
+        $this->accessToken = $credential['accessToken'];
+        return suc(['accessToken' => $this->accessToken]);
+    }
+
+    /**
+     * 获取 Token
+     *
+     * @param array{appid?: string, secret?: string} $data
+     * @return Ret|array{access_token: string, expires_in: int}
+     */
+    public function getToken(array $data = []): Ret
+    {
+        return $this->get([
+            'accessToken' => false,
+            'url' => 'cgi-bin/token?grant_type=client_credential',
+            'data' => array_merge([
+                'appid' => $this->getAppId(),
+                'secret' => $this->getAppSecret(),
+            ], $data),
+        ]);
+    }
+
+    /**
+     * 通过 OAuth2.0 的 code 获取网页授权 access_token
+     *
+     * @param array{code: string, appid?: string} $data
+     * @return Ret|array{access_token: string, expires_in: int, refresh_token: string, openid: string, scope: string}
+     */
+    public function getSnsOAuth2AccessToken(array $data): Ret
+    {
+        if ($this->authed) {
+            if (!isset($data['appid']) || !$data['appid']) {
+                $data['appid'] = $this->appId;
+            }
+            return $this->wechatComponentApi->getSnsOAuth2AccessToken($data);
+        }
+
+        return $this->get([
+            'accessToken' => false,
+            'url' => 'sns/oauth2/access_token?grant_type=authorization_code',
+            'data' => array_merge([
+                'appid' => $this->getAppId(),
+                'secret' => $this->getAppSecret(),
+            ], $data),
+        ]);
+    }
+
+    /**
+     * 获取小程序登录凭证校验
+     *
+     * @param array{js_code: string} $data
+     * @return Ret
+     */
+    public function snsJsCode2Session(array $data): Ret
+    {
+        return $this->get([
+            'accessToken' => false,
+            'url' => $this->baseUrl . 'sns/jscode2session?grant_type=authorization_code',
+            'data' => array_merge([
+                'appid' => $this->getAppId(),
+                'secret' => $this->getAppSecret(),
+            ], $data),
+        ]);
     }
 
     /**
      * @param array|string $options
+     * @param int $retries
      * @return Ret
      */
-    public function call($options): Ret
+    protected function request($options, int $retries = 0): Ret
     {
-        // 1. 获取Access token
-        if (!$this->accessToken) {
-            $ret = $this->initAccessToken();
-            if ($ret->isErr()) {
+        // 1. 默认附加 Access token
+        if (($options['accessToken'] ?? null) !== false) {
+            // 1.1 获取 Access token
+            if (!$this->accessToken && ($ret = $this->getAccessToken())->isErr()) {
                 return $ret;
             }
+            // 1.2 附加并调用
+            $options['url'] = $this->url->append($options['url'], ['access_token' => $this->accessToken]);
         }
 
-        // 2. 附加并调用
-        $options['url'] = $this->url->append($options['url'], ['access_token' => $this->accessToken]);
-        return $this->callWithoutToken($options);
-    }
+        // 2. 发送请求
+        $http = $this->http($this->prepareHttpOptions($options));
 
-    /**
-     * @param $options
-     * @param bool $retried
-     * @return Ret
-     */
-    public function callWithoutToken($options, bool $retried = false): Ret
-    {
-        // 1. 发送请求
-        $options['throwException'] = false;
-        $http = $this->http($options);
-
-        // 2. 成功直接返回
+        // 3. 成功直接返回
         $ret = $this->parseResponse($http);
         if ($ret->isSuc()) {
             return $ret;
         }
 
-        // 3. 处理接口返回错误
-        // 如果是 Access token 无效或过期,清除缓存数据，然后重试一次
-        if ($http['errcode'] == 40001 || $http['errcode'] == 42001) {
-            $this->removeAccessTokenByAuth();
-            if (!$retried) {
+        // 4. 处理接口返回错误
+        $this->logError($http, $ret);
+
+        // 如果是 Access token 无效或过期，清除缓存数据，然后重试一次
+        if (in_array($http['errcode'], [40001, 40014, 42001], true)) {
+            $this->removeAccessToken();
+            if ($retries < 2) {
                 $this->statsD->increment('wechat.credentialInvalid');
-                return $this->callWithoutToken($options, true);
+                return $this->request($options, ++$retries);
             }
         }
         return $ret;
     }
 
     /**
+     * @param string|array $options
+     * @return array
+     */
+    protected function prepareHttpOptions($options): array
+    {
+        $options['throwException'] = false;
+        $options['method'] ?? $options['method'] = 'POST';
+        $options['dataType'] ?? $options['dataType'] = 'json';
+        if (substr($options['url'], 0, 8) !== 'https://') {
+            $options['url'] = $this->baseUrl . $options['url'];
+        }
+
+        if ($options['method'] !== 'GET' && isset($options['data'])) {
+            $options['data'] = json_encode($options['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        }
+
+        if (isset($options['accessToken'])) {
+            unset($options['accessToken']);
+        }
+
+        return $options;
+    }
+
+    /**
+     * 将 HTTP 请求返回的内容，转换为 Ret 对象
+     *
      * @param Http $http
      * @return Ret
-     * @todo 可能换名称
      */
     protected function parseResponse(Http $http): Ret
     {
@@ -232,6 +403,13 @@ class WechatApi extends BaseService
         ]);
     }
 
+    /**
+     * 移除错误消息中的 `hint: xxx` 和 `rid: xxx`
+     *
+     * @param string $message
+     * @return array
+     * @internal
+     */
     protected function parseMessage(string $message): array
     {
         [$message, $detail] = $this->explodeMessage($message, ' hint:');
@@ -241,6 +419,12 @@ class WechatApi extends BaseService
         return $this->explodeMessage($message, ' rid:');
     }
 
+    /**
+     * @param string $message
+     * @param string $separator
+     * @return array
+     * @internal
+     */
     protected function explodeMessage(string $message, string $separator): array
     {
         $pos = strrpos($message, $separator);
@@ -254,254 +438,73 @@ class WechatApi extends BaseService
      * 告警微信接口失败
      *
      * @param Http $http
-     * @param array $credential
-     * @todo
+     * @param Ret $ret
+     * @internal
      */
-    protected function logError(Http $http, array $credential = [])
+    protected function logError(Http $http, Ret $ret)
     {
-        $credential['currentTime'] = time();
-
-        // 移除结尾的请求ID,使相同信息合并成一条
-        $message = explode(' hint', $http['errmsg'])[0];
-        $message = rtrim($message, ',');
-        $level = isset($this->logLevels[$http['errcode']]) ? $this->logLevels[$http['errcode']] : 'warning';
-        $this->logger->log($level, '微信接口失败: ' . $http['errcode'] . ' ' . $message, [
-            'url' => $http->getUrl(),
-            'data' => $http->getData(),
-            'res' => $http->getResponse(),
-            'ret' => $this->getResult(),
-            'credential' => $credential,
-        ]);
+        $this->logger->log(
+            $this->logLevels[$http['errcode']] ?? 'warning',
+            '微信接口失败：' . $ret['message'],
+            [
+                'url' => $http->getUrl(),
+                'data' => $http->getData(),
+                'res' => $http->getResponse(),
+                'ret' => $ret->toArray(),
+                'credential' => $this->getCredentialFromCache(),
+            ]
+        );
     }
 
     /**
-     * 根据帐号是否授权获取不同的Access token
-     *
-     * @return string
-     */
-    public function getAccessTokenByAuth()
-    {
-        if ($this->accessToken) {
-            return $this->accessToken;
-        }
-
-        if ($this->authed) {
-            $this->accessToken = $this->wechatComponentApi->getAuthorizerAccessToken(
-                $this->getAppId(),
-                $this->getRefreshToken()
-            );
-        } else {
-            $this->getAccessToken();
-        }
-
-        return $this->accessToken;
-    }
-
-    /**
-     * 根据帐号是否授权移除相应的Access token
+     * 移除 Access token 和相应的缓存
      *
      * @return $this
+     * @internal
      */
-    public function removeAccessTokenByAuth()
+    protected function removeAccessToken(): self
     {
         $this->accessToken = null;
+
         if ($this->authed) {
             $this->wechatComponentApi->removeAuthorizerAccessToken($this->getAppId());
-        } else {
-            $this->removeAccessToken();
+            return $this;
         }
 
+        $this->removeCredentialFromCache();
         return $this;
     }
 
     /**
-     * 获取Access token,如果过期,自动刷新
-     *
-     * @return string
+     * @return mixed
      */
-    public function getAccessToken()
-    {
-        if ($this->accessToken) {
-            return $this->accessToken;
-        }
-
-        $cacheKey = $this->getAccessTokenCacheKey();
-        $credential = $this->cache->get($cacheKey);
-
-        if (!$credential || $credential['expireTime'] - time() < 60) {
-            if (!$http = $this->getToken()) {
-                return false;
-            }
-
-            $this->accessToken = $http['access_token'];
-            $this->cache->set($cacheKey, [
-                'accessToken' => $http['access_token'],
-                'expireTime' => time() + $http['expires_in'],
-            ]);
-        } else {
-            $this->accessToken = $credential['accessToken'];
-        }
-
-        return $this->accessToken;
-    }
-
-    /**
-     * 移除Access token的值
-     */
-    public function removeAccessToken()
-    {
-        $this->cache->remove($this->getAccessTokenCacheKey());
-
-        return $this;
-    }
-
     protected function getCredentialFromCache()
     {
-        return $this->cache->get($this->getAccessTokenCacheKey());
+        return $this->cache->get($this->getCredentialCacheKey());
     }
 
-    protected function setCredentialToCache($credential)
+    /**
+     * @param array $credential
+     * @return bool
+     */
+    protected function setCredentialToCache(array $credential): bool
     {
-        return $this->cache->set($this->getAccessTokenCacheKey(), $credential);
+        return $this->cache->set($this->getCredentialCacheKey(), $credential);
+    }
+
+    /**
+     * @return bool
+     */
+    protected function removeCredentialFromCache(): bool
+    {
+        return $this->cache->remove($this->getCredentialCacheKey());
     }
 
     /**
      * @return string
      */
-    protected function getAccessTokenCacheKey(): string
+    protected function getCredentialCacheKey(): string
     {
-        return 'wechat:accessToken:' . $this->getAppId();
-    }
-
-    /**
-     * 获取token
-     *
-     * @return Ret
-     */
-    public function getToken(): Ret
-    {
-        // 加锁防止重复生成token
-        $lockKey = 'wechat:getToken:' . $this->getAppId();
-        if (!$this->cache->add($lockKey, 1, $this->http->getOption('timeout') / 1000)) {
-            return err('网络缓慢，请稍后再试');
-        }
-
-        $ret = $this->callWithoutToken([
-            'url' => $this->baseUrl . 'cgi-bin/token?grant_type=client_credential',
-            'dataType' => 'json',
-            'data' => [
-                'appid' => $this->getAppId(),
-                'secret' => $this->getAppSecret(),
-            ],
-        ]);
-        $this->cache->remove($lockKey);
-
-        return $ret;
-    }
-
-    /**
-     * 获取AppId参数
-     *
-     * @return string
-     */
-    public function getAppId(): string
-    {
-        return $this->appId;
-    }
-
-    /**
-     * 获取AppSecret参数
-     *
-     * @return string
-     */
-    public function getAppSecret(): string
-    {
-        return $this->appSecret;
-    }
-
-    /**
-     * 获取刷新令牌
-     *
-     * @return string
-     */
-    public function getRefreshToken(): string
-    {
-        return $this->refreshToken;
-    }
-
-    /**
-     * @param string $name
-     * @param array $args
-     * @return mixed|Ret
-     * @throws \ReflectionException
-     */
-    public function __call(string $name, array $args)
-    {
-        $config = $this->configs[$name] ?? $this->defaultConfigs[$name] ?? null;
-        if ($config) {
-            if (is_string($config)) {
-                $config = ['path' => $config];
-            }
-            return $this->call(array_merge([
-                'url' => $this->baseUrl . $config['path'],
-                'dataType' => 'json',
-                'method' => 'post',
-                'data' => $args ? json_encode($args[0], JSON_UNESCAPED_UNICODE) : [],
-            ], $config));
-        }
-
-        return parent::__call($name, $args);
-    }
-
-    /**
-     * 根据帐号是否授权获取不同的网页授权access_token
-     *
-     * @param array $data
-     * @return Ret
-     */
-    public function getOAuth2AccessTokenByAuth(array $data): Ret
-    {
-        if ($this->authed) {
-            if (!isset($data['appid']) || !$data['appid']) {
-                $data['appid'] = $this->appId;
-            }
-            return $this->wechatComponentApi->getOAuth2AccessToken($data);
-        } else {
-            return $this->getOAuth2AccessToken($data);
-        }
-    }
-
-    /**
-     * 通过OAuth2.0的code获取网页授权access_token
-     *
-     * @param array $data
-     * @return Ret
-     */
-    public function getOAuth2AccessToken(array $data): Ret
-    {
-        return $this->callWithoutToken([
-            'url' => $this->baseUrl . 'sns/oauth2/access_token',
-            'dataType' => 'json',
-            'throwException' => false,
-            'data' => array_merge([
-                'code' => '', // 需传入参数
-                'appid' => $this->appId,
-                'secret' => $this->appSecret,
-                'grant_type' => 'authorization_code',
-            ], $data),
-        ]);
-    }
-
-    public function jsCode2Session(array $data): Ret
-    {
-        return $this->callWithoutToken([
-            'dataType' => 'json',
-            'url' => $this->baseUrl . 'sns/jscode2session',
-            'data' => array_merge([
-                'appid' => $this->appId,
-                'secret' => $this->appSecret,
-                'grant_type' => 'authorization_code',
-            ], $data),
-        ]);
+        return 'wechat:credential:' . $this->getAppId();
     }
 }
