@@ -7,6 +7,15 @@ use Wei\Ret;
 class WechatApi
 {
     /**
+     * @param array{access_token: string, openid: string, lang: string} $data
+     * @return Ret|array{openid: string, nickname: string, sex: int, province: string, city: string, country: string, headimgurl: string, privilege: array<string>, unionid: string}
+     */
+    public function getSnsUserInfo(array $data): Ret
+    {
+        return suc();
+    }
+
+    /**
      * @param array{tag: array{name: string}} $data
      * @return Ret|array{tag?: array{id: int, name: string}, code: int, message: string, detail?: string}
      */
