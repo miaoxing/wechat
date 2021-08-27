@@ -108,6 +108,24 @@ class WechatApi extends BaseService
      * @var array
      */
     protected $defaultConfigs = [
+        'getToken' => [
+            'url' => 'cgi-bin/token?grant_type=client_credential',
+            'method' => 'GET',
+            'accessToken' => false,
+            'data' => [
+                'appid' => '',
+                'secret' => '',
+            ],
+        ],
+        'getSnsOAuth2AccessToken' => [
+            'url' => 'sns/oauth2/access_token?grant_type=authorization_code',
+            'method' => 'GET',
+            'accessToken' => false,
+            'data' => [
+                'appid' => '',
+                'secret' => '',
+            ],
+        ],
         'getSnsUserInfo' => [
             'url' => 'sns/userinfo',
             'accessToken' => false,
@@ -124,6 +142,16 @@ class WechatApi extends BaseService
         'batchTaggingMembers' => 'cgi-bin/tags/members/batchtagging',
         'batchUnTaggingMembers' => 'cgi-bin/tags/members/batchuntagging',
         'getTagIdList' => 'cgi-bin/tags/getidlist',
+        // 小程序
+        'snsJsCode2Session' => [
+            'url' => 'sns/jscode2session?grant_type=authorization_code',
+            'method' => 'GET',
+            'accessToken' => false,
+            'data' => [
+                'appid' => '',
+                'secret' => '',
+            ],
+        ],
     ];
 
     /**
@@ -243,70 +271,10 @@ class WechatApi extends BaseService
     }
 
     /**
-     * 获取 Token
-     *
-     * @param array{appid?: string, secret?: string} $data
-     * @return Ret|array{access_token: string, expires_in: int}
-     */
-    public function getToken(array $data = []): Ret
-    {
-        return $this->get([
-            'accessToken' => false,
-            'url' => 'cgi-bin/token?grant_type=client_credential',
-            'data' => array_merge([
-                'appid' => $this->getAppId(),
-                'secret' => $this->getAppSecret(),
-            ], $data),
-        ]);
-    }
-
-    /**
-     * 通过 OAuth2.0 的 code 获取网页授权 access_token
-     *
-     * @param array{code: string, appid?: string} $data
-     * @return Ret|array{access_token: string, expires_in: int, refresh_token: string, openid: string, scope: string}
-     */
-    public function getSnsOAuth2AccessToken(array $data): Ret
-    {
-        if ($this->authed) {
-            if (!isset($data['appid']) || !$data['appid']) {
-                $data['appid'] = $this->appId;
-            }
-            return $this->wechatComponentApi->getSnsOAuth2AccessToken($data);
-        }
-
-        return $this->get([
-            'accessToken' => false,
-            'url' => 'sns/oauth2/access_token?grant_type=authorization_code',
-            'data' => array_merge([
-                'appid' => $this->getAppId(),
-                'secret' => $this->getAppSecret(),
-            ], $data),
-        ]);
-    }
-
-    /**
-     * 获取小程序登录凭证校验
-     *
-     * @param array{js_code: string} $data
-     * @return Ret
-     */
-    public function snsJsCode2Session(array $data): Ret
-    {
-        return $this->get([
-            'accessToken' => false,
-            'url' => $this->baseUrl . 'sns/jscode2session?grant_type=authorization_code',
-            'data' => array_merge([
-                'appid' => $this->getAppId(),
-                'secret' => $this->getAppSecret(),
-            ], $data),
-        ]);
-    }
-
-    /**
      * @param array|string $options
      * @param int $retries
      * @return Ret
+     * @internal retries 改为使用 HTTP 服务的配置
      */
     protected function request($options, int $retries = 0): Ret
     {
@@ -352,6 +320,7 @@ class WechatApi extends BaseService
         $options['throwException'] = false;
         $options['method'] ?? $options['method'] = 'POST';
         $options['dataType'] ?? $options['dataType'] = 'json';
+
         if (substr($options['url'], 0, 8) !== 'https://') {
             $options['url'] = $this->baseUrl . $options['url'];
         }

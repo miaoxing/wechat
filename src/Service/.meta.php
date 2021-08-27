@@ -7,6 +7,28 @@ use Wei\Ret;
 class WechatApi
 {
     /**
+     * 获取凭证
+     *
+     * @param array{appid?: string, secret?: string} $data
+     * @return Ret|array{access_token: string, expires_in: int}
+     */
+    public function getToken(array $data = []): Ret
+    {
+        return suc();
+    }
+
+    /**
+     * 通过 OAuth2.0 的 code 获取网页授权 access_token
+     *
+     * @param array{code: string, appid?: string} $data
+     * @return Ret|array{access_token: string, expires_in: int, refresh_token: string, openid: string, scope: string}
+     */
+    public function getSnsOAuth2AccessToken(array $data): Ret
+    {
+        return suc();
+    }
+
+    /**
      * @param array{access_token: string, openid: string, lang: string} $data
      * @return Ret|array{openid: string, nickname: string, sex: int, province: string, city: string, country: string, headimgurl: string, privilege: array<string>, unionid: string}
      */
@@ -82,6 +104,17 @@ class WechatApi
      * @return Ret|array{tagid_list: array<int>}
      */
     public function getTagIdList(array $data): Ret
+    {
+        return suc();
+    }
+
+    /**
+     * 获取小程序登录凭证校验
+     *
+     * @param array{js_code: string} $data
+     * @return Ret|array{openid: string, session_key: string, unionid?: string, errcode: int, errmsg: string}
+     */
+    public function snsJsCode2Session(array $data): Ret
     {
         return suc();
     }
