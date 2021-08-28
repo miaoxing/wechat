@@ -2,7 +2,10 @@
 
 namespace MiaoxingTest\Wechat\Service;
 
+use Miaoxing\Wechat\Service\WechatApi;
+use Wei\ArrayCache;
 use Wei\Http;
+use Wei\StatsD;
 
 class WechatApiTest extends \Miaoxing\Plugin\Test\BaseTestCase
 {
@@ -125,14 +128,14 @@ class WechatApiTest extends \Miaoxing\Plugin\Test\BaseTestCase
 
     public function testCredentialInvalidAndRetry()
     {
-        $account = wei()->wechatAccount->getCurrentAccount();
-        $account->setData([
-            'authed' => false,
-        ]);
-        $api = $account->createApiService();
+        $http = $this->getServiceMock(Http::class, ['__invoke']);
 
-        $http = $this->getServiceMock('http', ['__invoke']);
-        $api->http = $http;
+        $api = new WechatApi([
+            'appId' => 'x',
+            'appSecret' => 'y',
+            'cache' => new ArrayCache(),
+            'http' => $http,
+        ]);
 
         // 先获取凭证
         $http->expects($this->at(0))
@@ -141,9 +144,10 @@ class WechatApiTest extends \Miaoxing\Plugin\Test\BaseTestCase
                 'url' => 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential',
                 'dataType' => 'json',
                 'throwException' => false,
+                'method' => 'GET',
                 'data' => [
-                    'appid' => $account['applicationId'],
-                    'secret' => $account['applicationSecret'],
+                    'appid' => 'x',
+                    'secret' => 'y',
                 ],
             ])
             ->willReturn(new Http([
@@ -160,13 +164,11 @@ class WechatApiTest extends \Miaoxing\Plugin\Test\BaseTestCase
         $http->expects($this->at(1))
             ->method('__invoke')
             ->with([
-                'timeout' => 10000,
                 'dataType' => 'json',
-                'url' => 'https://api.weixin.qq.com/cgi-bin/user/get',
-                'data' => [
-                    'access_token' => 'access_token',
-                    'next_openid' => null,
-                ],
+                'url' => 'https://api.weixin.qq.com/cgi-bin/tags/create?access_token=access_token',
+                'throwException' => false,
+                'method' => 'POST',
+                'data' => '{"tag":{"name":"tag1"}}',
             ])
             ->willReturn(new Http([
                 'wei' => $this->wei,
@@ -179,7 +181,7 @@ class WechatApiTest extends \Miaoxing\Plugin\Test\BaseTestCase
             ]));
 
         // 上报凭证无效
-        $statsD = $this->getServiceMock('statsD', ['increment']);
+        $statsD = $this->getServiceMock(StatsD::class, ['increment']);
         $statsD->expects($this->once())
             ->method('increment')
             ->with('wechat.credentialInvalid');
@@ -191,9 +193,10 @@ class WechatApiTest extends \Miaoxing\Plugin\Test\BaseTestCase
                 'url' => 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential',
                 'dataType' => 'json',
                 'throwException' => false,
+                'method' => 'GET',
                 'data' => [
-                    'appid' => $account['applicationId'],
-                    'secret' => $account['applicationSecret'],
+                    'appid' => 'x',
+                    'secret' => 'y',
                 ],
             ])
             ->willReturn(new Http([
@@ -210,28 +213,28 @@ class WechatApiTest extends \Miaoxing\Plugin\Test\BaseTestCase
         $http->expects($this->at(3))
             ->method('__invoke')
             ->with([
-                'timeout' => 10000,
                 'dataType' => 'json',
-                'url' => 'https://api.weixin.qq.com/cgi-bin/user/get',
-                'data' => [
-                    'access_token' => 'access_token_new',
-                    'next_openid' => null,
-                ],
+                'url' => 'https://api.weixin.qq.com/cgi-bin/tags/create?access_token=access_token&access_token=access_token_new',
+                'throwException' => false,
+                'method' => 'POST',
+                'data' => '{"tag":{"name":"tag1"}}',
             ])
             ->willReturn(new Http([
                 'wei' => $this->wei,
                 'result' => true,
                 'ch' => curl_init(),
                 'response' => [
-                    'count' => 1,
+                    'tag' => [
+                        'id' => 101,
+                        'name' => 'tag1',
+                    ],
                 ],
             ]));
 
-        $api->removeAccessTokenByAuth();
-        $http = $api->getUserOpenIds();
+        $ret = $api->createTag(['tag' => ['name' => 'tag1']]);
 
-        $this->assertRetSuc($api->getResult());
-        $this->assertSame(1, $http['count']);
+        $this->assertRetSuc($ret);
+        $this->assertSame(101, $ret['tag']['id']);
     }
 
     public function testGetTokenLock()
