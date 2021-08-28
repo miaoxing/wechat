@@ -9,20 +9,29 @@ use Wei\StatsD;
 
 class WechatApiTest extends \Miaoxing\Plugin\Test\BaseTestCase
 {
-    public function testGetAccessTokenByAuth()
+    public function testGetAccessToken()
     {
-        $account = wei()->wechatAccount->getCurrentAccount();
-        $account->setData([
-            'authed' => false,
+        $http = $this->getServiceMock(Http::class, ['__invoke']);
+
+        $api = new WechatApi([
+            'appId' => 'x',
+            'appSecret' => 'y',
+            'cache' => new ArrayCache(),
+            'http' => $http,
         ]);
 
-        $http = $this->getServiceMock('http', ['__invoke']);
-
-        $api = $account->createApiService();
-        $api->http = $http;
-
-        $http->expects($this->any())
+        $http->expects($this->once())
             ->method('__invoke')
+            ->with([
+                'url' => 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential',
+                'method' => 'GET',
+                'data' => [
+                    'appid' => 'x',
+                    'secret' => 'y',
+                ],
+                'throwException' => false,
+                'dataType' => 'json',
+            ])
             ->willReturn(new Http([
                 'wei' => $this->wei,
                 'result' => true,
@@ -33,10 +42,9 @@ class WechatApiTest extends \Miaoxing\Plugin\Test\BaseTestCase
                 ],
             ]));
 
-        $api->removeAccessTokenByAuth();
-        $token = $api->getAccessTokenByAuth();
-
-        $this->assertEquals('access_token', $token);
+        $ret = $api->getAccessToken();
+        $this->assertRetSuc($ret);
+        $this->assertSame('access_token', $ret['accessToken']);
     }
 
     public function testGetAccessTokenByAuthWhenAuthed()
