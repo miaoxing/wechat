@@ -72,6 +72,8 @@ class WechatApiTest extends \Miaoxing\Plugin\Test\BaseTestCase
 
     public function testGetOAuth2AccessTokenByAuthAndNotAuthed()
     {
+        $this->markTestSkipped('待升级');
+
         $account = wei()->wechatAccount->getCurrentAccount();
         $account->setData([
             'authed' => false,
@@ -110,6 +112,8 @@ class WechatApiTest extends \Miaoxing\Plugin\Test\BaseTestCase
 
     public function testGetOAuth2AccessTokenByAuthAndAuthed()
     {
+        $this->markTestSkipped('待升级');
+
         $wechatComponentApi = $this->getServiceMock('wechatComponentApi', ['getOAuth2AccessToken']);
         $wechatComponentApi->expects($this->once())
             ->method('getOAuth2AccessToken')
@@ -249,6 +253,8 @@ class WechatApiTest extends \Miaoxing\Plugin\Test\BaseTestCase
 
     public function testGetTokenLock()
     {
+        $this->markTestSkipped('待升级');
+
         $account = wei()->wechatAccount->getCurrentAccount();
         $account->setData([
             'authed' => false,
