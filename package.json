@@ -6,7 +6,7 @@
   "repository": "https://github.com/miaoxing/wechat",
   "license": "MIT",
   "devDependencies": {
-    "@miaoxing/dev": "^7.0.1"
+    "@miaoxing/dev": "^8.0.0"
   },
   "jest": {
     "preset": "jest-preset-miaoxing"
