@@ -152,6 +152,7 @@ class WechatApi extends BaseService
                 'secret' => '',
             ],
         ],
+        'sendSubscribeMessage' => 'cgi-bin/message/subscribe/send',
     ];
 
     /**

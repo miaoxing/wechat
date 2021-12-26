@@ -118,5 +118,15 @@ class WechatApi
     {
         return suc();
     }
-}
 
+    /**
+     * 发送订阅消息
+     *
+     * @param array{template_id: string, touser: string, miniprogram_state: string, data: array} $data
+     * @return Ret|array{openid: string, session_key: string, unionid?: string, errcode: int, errmsg: string}
+     */
+    public function sendSubscribeMessage(array $data): Ret
+    {
+        return suc();
+    }
+}
