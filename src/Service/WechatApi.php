@@ -153,6 +153,10 @@ class WechatApi extends BaseService
             ],
         ],
         'sendSubscribeMessage' => 'cgi-bin/message/subscribe/send',
+        'getWxaCodeUnlimited' => [
+            'url' => 'wxa/getwxacodeunlimit',
+            'dataType' => 'text',
+        ],
     ];
 
     /**

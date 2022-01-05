@@ -129,4 +129,15 @@ class WechatApi
     {
         return suc();
     }
+
+    /**
+     * 获取小程序码，永久有效，数量暂无限制
+     *
+     * @param array $data
+     * @return Ret
+     */
+    public function getWxaCodeUnlimited(array $data): Ret
+    {
+        return suc();
+    }
 }
