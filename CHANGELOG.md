@@ -1,3 +1,20 @@
+## [0.1.1](https://github.com/miaoxing/wechat/compare/v0.1.0...v0.1.1) (2022-01-12)
+
+
+### Features
+
+* **wechat:** 增加发送订阅消息接口 ([2fe71bb](https://github.com/miaoxing/wechat/commit/2fe71bb4e82af5714d9990fc0864862575291638))
+* **wechat:** 增加生成小程序码 `getWxaCodeUnlimited` 接口 ([e70a383](https://github.com/miaoxing/wechat/commit/e70a383a0d8158ccd9c9cd17bc9aba7b1eace8b5))
+
+
+
+
+
+### Dependencies
+
+* **@miaoxing/dev:** upgrade from `8.0.0` to `8.0.1`
+* **@miaoxing/app:** upgrade from `0.4.0` to `0.5.0`
+
 # 0.1.0 (2021-10-28)
 
 
