@@ -5,6 +5,9 @@
   "main": "index.js",
   "repository": "https://github.com/miaoxing/wechat",
   "license": "MIT",
+  "workspaces": [
+    "plugins/*"
+  ],
   "devDependencies": {
     "@miaoxing/dev": "^8.0.0"
   },
