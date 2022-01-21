@@ -229,7 +229,7 @@ class WeChatReply extends BaseService
     {
         // 从缓存中拉取数据
         $namespace = wei()->app->getNamespace();
-        $data = $this->cache->get($namespace . ':weChatReplyId' . $id, function () use ($id) {
+        $data = $this->cache->rememebr($namespace . ':weChatReplyId' . $id, function () use ($id) {
             $reply = $this->findById($id);
 
             return $reply ? $reply->toArray() : false;
@@ -255,7 +255,7 @@ class WeChatReply extends BaseService
     {
         $namespace = wei()->app->getNamespace();
 
-        return $this->cache->get($namespace . ':weChatReplySceneKeywords', function () {
+        return $this->cache->remember($namespace . ':weChatReplySceneKeywords', function () {
             $data = [];
             foreach ($this->findAll(['id' => $this->reservedIds]) as $reply) {
                 $data[$reply['id']] = $reply['keywords'];
