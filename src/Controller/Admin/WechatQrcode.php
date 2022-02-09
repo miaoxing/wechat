@@ -143,10 +143,8 @@ class WechatQrcode extends Base
         $qrcodeService = wei()->weChatQrcode;
 
         // 1. 创建目录
-        $dir = wei()->file->getUploadDir() . '/' . date('His') . '-qrcodes';
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
+        $dir = wei()->file->getRoot() . '/wechat-qrcodes/' . date('Ymd/His');
+        wei()->fs->ensureDir($dir);
 
         // 2. 写入二维码
         foreach ($qrcodes as $qrcode) {
