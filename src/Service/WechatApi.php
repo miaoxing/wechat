@@ -142,6 +142,14 @@ class WechatApi extends BaseService
         'batchTaggingMembers' => 'cgi-bin/tags/members/batchtagging',
         'batchUnTaggingMembers' => 'cgi-bin/tags/members/batchuntagging',
         'getTagIdList' => 'cgi-bin/tags/getidlist',
+        'userInfo' => [
+            'url' => 'cgi-bin/user/info',
+            'method' => 'GET',
+        ],
+        'userGet' => [
+            'url' => 'cgi-bin/user/get',
+            'method' => 'GET',
+        ],
         // 小程序
         'snsJsCode2Session' => [
             'url' => 'sns/jscode2session?grant_type=authorization_code',

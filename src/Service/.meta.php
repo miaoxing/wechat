@@ -109,6 +109,28 @@ class WechatApi
     }
 
     /**
+     * 获取用户列表
+     *
+     * @param array{next_openid?: string} $data
+     * @return Ret|array{total: int, count: int, data: array{openid: string[]}, next_openid: string}
+     */
+    public function userGet(array $data = []): Ret
+    {
+        return suc();
+    }
+
+    /**
+     * 获取用户基本信息
+     *
+     * @param array{openid: string, lang?: string} $data
+     * @return Ret|array{}
+     */
+    public function userInfo(array $data): Ret
+    {
+        return suc();
+    }
+
+    /**
      * 获取小程序登录凭证校验
      *
      * @param array{js_code: string} $data
