@@ -1,3 +1,18 @@
+## [0.1.4](https://github.com/miaoxing/wechat/compare/v0.1.3...v0.1.4) (2022-03-04)
+
+
+### Features
+
+* **wechat:** 增加获取用户列表和获取用户基本信息接口 ([c059b2c](https://github.com/miaoxing/wechat/commit/c059b2cc4c20aad3ed8d250b9dd6230a57f789bf))
+
+
+
+
+
+### Dependencies
+
+* **@miaoxing/app:** upgrade from `0.6.0` to `0.6.1`
+
 ## [0.1.3](https://github.com/miaoxing/wechat/compare/v0.1.2...v0.1.3) (2022-02-28)
 
 
