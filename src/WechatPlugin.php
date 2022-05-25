@@ -21,11 +21,6 @@ class WechatPlugin extends \Miaoxing\Plugin\BasePlugin
 
     public function onAdminNavGetNavs(&$navs, &$categories, &$subCategories)
     {
-        $categories['wechat'] = [
-            'name' => '微信',
-            'sort' => 700,
-        ];
-
         $subCategories['wechat-account'] = [
             'parentId' => 'wechat',
             'name' => '公众号',
