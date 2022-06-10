@@ -274,7 +274,7 @@ class WechatApiTest extends \Miaoxing\Plugin\Test\BaseTestCase
         $api->removeAccessTokenByAuth();
         $token = $api->getToken();
 
-        wei()->cache->remove($lockKey);
+        wei()->cache->delete($lockKey);
 
         $this->assertFalse($token);
     }

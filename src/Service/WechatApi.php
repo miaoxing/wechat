@@ -479,7 +479,7 @@ class WechatApi extends BaseService
      */
     protected function removeCredentialFromCache(): bool
     {
-        return $this->cache->remove($this->getCredentialCacheKey());
+        return $this->cache->delete($this->getCredentialCacheKey());
     }
 
     /**

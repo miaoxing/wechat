@@ -310,7 +310,7 @@ class WechatComponentApi extends BaseService
      */
     public function removeAuthorizerAccessToken($appId)
     {
-        $this->cache->remove($this->getAuthorizerAccessTokenCacheKey($appId));
+        $this->cache->delete($this->getAuthorizerAccessTokenCacheKey($appId));
 
         return $this;
     }
