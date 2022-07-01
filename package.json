@@ -1,6 +1,6 @@
 {
   "name": "@miaoxing/wechat",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": true,
   "main": "index.js",
   "repository": "https://github.com/miaoxing/wechat",
@@ -9,7 +9,7 @@
     "plugins/*"
   ],
   "devDependencies": {
-    "@miaoxing/dev": "^8.1.1"
+    "@miaoxing/dev": "^8.1.2"
   },
   "jest": {
     "preset": "jest-preset-miaoxing"
