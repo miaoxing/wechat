@@ -150,6 +150,8 @@ class WechatApi extends BaseService
             'url' => 'cgi-bin/user/get',
             'method' => 'GET',
         ],
+        // @link https://developers.weixin.qq.com/doc/offiaccount/Custom_Menus/Creating_Custom-Defined_Menu.html
+        'createMenu' => 'cgi-bin/menu/create',
         // 小程序
         'snsJsCode2Session' => [
             'url' => 'sns/jscode2session?grant_type=authorization_code',

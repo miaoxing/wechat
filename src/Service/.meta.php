@@ -162,4 +162,13 @@ class WechatApi
     {
         return suc();
     }
+
+    /**
+     * @param array{button:array<array{type:string, name:string, key:string, url:string, media_id:string, appid:string, pagepath: string, sub_button: array<array{type:string, name:string, key:string, url:string, media_id:string, appid:string, pagepath: string}>}>} $data
+     * @return Ret
+     */
+    public function createMenu(array $data): Ret
+    {
+        return suc();
+    }
 }
