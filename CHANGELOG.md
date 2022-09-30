@@ -1,3 +1,13 @@
+## [0.1.12](https://github.com/miaoxing/wechat/compare/v0.1.11...v0.1.12) (2022-09-30)
+
+
+
+
+
+### Dependencies
+
+* **@miaoxing/app:** upgrade from `0.6.8` to `0.6.9`
+
 ## [0.1.11](https://github.com/miaoxing/wechat/compare/v0.1.10...v0.1.11) (2022-09-03)
 
 
