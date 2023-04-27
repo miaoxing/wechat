@@ -7,7 +7,7 @@ use Wei\Http;
 use Wei\Ret;
 
 /**
- * @mixin \HttpMixin
+ * @mixin \HttpPropMixin
  * @mixin \CacheMixin
  * @mixin \LoggerMixin
  * @mixin \UrlMixin
@@ -228,7 +228,7 @@ trait WechatApiTrait
         }
 
         // 2. 发送请求
-        $http = $this->http($this->prepareHttpOptions($options));
+        $http = $this->http->request($this->prepareHttpOptions($options));
 
         // 3. 成功直接返回
         $ret = $this->parseResponse($http);

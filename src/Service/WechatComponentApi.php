@@ -8,9 +8,9 @@ use Wei\Http;
 /**
  * 公众号第三方平台服务
  *
- * @method Http http(array $options = [])
  * @property \Wei\Cache $cache
  * @property \Miaoxing\App\Service\Logger $logger
+ * @mixin \HttpPropMixin
  * @link https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318587&token=&lang=zh_CN
  */
 class WechatComponentApi extends BaseService
@@ -324,7 +324,7 @@ class WechatComponentApi extends BaseService
     public function getOAuth2AccessToken(array $data)
     {
         return $this->auth(function () use ($data) {
-            $http = $this->http([
+            $http = $this->http->request([
                 'method' => 'get',
                 'dataType' => 'json',
                 'throwException' => false,
@@ -358,7 +358,7 @@ class WechatComponentApi extends BaseService
         $options['url'] = $this->baseUrl . $options['url'];
         $options['data'] = json_encode($options['data'], JSON_UNESCAPED_UNICODE);
 
-        $http = $this->http($options);
+        $http = $this->http->request($options);
 
         return $this->parseResponse($http, $options);
     }
