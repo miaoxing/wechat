@@ -1,3 +1,18 @@
+## [0.1.19](https://github.com/miaoxing/wechat/compare/v0.1.18...v0.1.19) (2023-04-30)
+
+
+### Features
+
+* **wechat, experimental:** 增加 `WechatApiTrait`，用于小程序和公众号接口共用功能 ([038cc6a](https://github.com/miaoxing/wechat/commit/038cc6a1a0e4000a024e960a68e39db140d91d2c))
+
+
+
+
+
+### Dependencies
+
+* **@miaoxing/app:** upgrade from `0.7.1` to `0.7.2`
+
 ## [0.1.18](https://github.com/miaoxing/wechat/compare/v0.1.17...v0.1.18) (2023-04-15)
 
 
