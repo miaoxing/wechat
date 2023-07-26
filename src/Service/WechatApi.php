@@ -13,6 +13,7 @@ use Wei\Ret;
  * @mixin \UrlMixin
  * @mixin \StatsDMixin
  * @mixin \WechatComponentApiMixin
+ * @deprecated 改用 `WechatOaApi` 或 `WechatMpApi
  */
 class WechatApi extends BaseService
 {
