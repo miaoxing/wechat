@@ -1,3 +1,19 @@
+## [0.1.22](https://github.com/miaoxing/wechat/compare/v0.1.21...v0.1.22) (2023-07-31)
+
+
+### Features
+
+* **wechat:** 废弃 `WechatApi`，改用 `WechatOaApi` 或 `WechatMpApi` ([e51f238](https://github.com/miaoxing/wechat/commit/e51f23870efc1196be203641061e9c49805d240c))
+
+
+
+
+
+### Dependencies
+
+* **@miaoxing/dev:** upgrade from `8.2.1` to `8.2.2`
+* **@miaoxing/app:** upgrade from `0.7.4` to `0.7.5`
+
 ## [0.1.21](https://github.com/miaoxing/wechat/compare/v0.1.20...v0.1.21) (2023-06-30)
 
 
