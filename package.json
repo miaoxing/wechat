@@ -1,6 +1,6 @@
 {
   "name": "@miaoxing/wechat",
-  "version": "0.1.23",
+  "version": "0.1.24",
   "private": true,
   "main": "index.js",
   "repository": "https://github.com/miaoxing/wechat",
