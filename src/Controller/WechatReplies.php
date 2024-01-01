@@ -10,6 +10,7 @@ class WechatReplies extends Wechat
 
     /**
      * 验证Token是GET请求,引到index方法
+     * @param mixed $req
      */
     public function indexAction($req)
     {
@@ -18,6 +19,7 @@ class WechatReplies extends Wechat
 
     /**
      * 推送消息是POST请求,引到create方法
+     * @param mixed $req
      */
     public function createAction($req)
     {

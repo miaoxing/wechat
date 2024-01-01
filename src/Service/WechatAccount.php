@@ -8,28 +8,28 @@ use Miaoxing\Plugin\Service\User;
 
 /**
  * @property \Wei\Request $request
- * @property \Miaoxing\Wechat\Service\WechatComponentApi $wechatComponentApi
+ * @property WechatComponentApi $wechatComponentApi
  * @property \Wei\Logger $logger
  * @property bool enableTransferCustomerService
  */
 class WechatAccount extends BaseService
 {
-    //use ConfigTrait;
+    // use ConfigTrait;
 
-    const PLATFORM_ID = 1;
+    public const PLATFORM_ID = 1;
 
-    const SUBSCRIBE = 1;
+    public const SUBSCRIBE = 1;
 
-    const SERVICE = 2;
+    public const SERVICE = 2;
 
-    const TYPE_WXA = 3;
+    public const TYPE_WXA = 3;
 
     protected $autoId = true;
 
     protected $configs = [
         'enableTransferCustomerService' => [
             'default' => false,
-        ]
+        ],
     ];
 
     protected $data = [
@@ -213,7 +213,7 @@ class WechatAccount extends BaseService
 
     /**
      * 发送模板消息
-     * @param \Miaoxing\Plugin\Service\User $toUser
+     * @param User $toUser
      * @param $tplId
      * @param array $data
      * @param string $url
@@ -332,8 +332,8 @@ class WechatAccount extends BaseService
     /**
      * 同步一个指定的用户
      *
-     * @param \Miaoxing\Plugin\Service\User $user
-     * @param \Miaoxing\Wechat\Service\WechatApi $api
+     * @param User $user
+     * @param WechatApi $api
      * @return array
      */
     public function syncUser(User $user, WechatApi $api = null)
@@ -342,7 +342,7 @@ class WechatAccount extends BaseService
             $api = wei()->wechatAccount->getCurrentAccount()->createApiService();
         }
 
-        if (!$user['wechatOpenId'] || strlen($user['wechatOpenId']) != 28) {
+        if (!$user['wechatOpenId'] || 28 != strlen($user['wechatOpenId'])) {
             return ['code' => -1, 'message' => 'OpenID不合法'];
         }
 
@@ -353,7 +353,7 @@ class WechatAccount extends BaseService
             // 如果是OpenID无效,设置用户为无效
             // {"errcode":40003,"errmsg":"invalid openid hint: [xx]"}
             $ret = $api->getResult();
-            if ($ret['code'] == -40003) {
+            if (-40003 == $ret['code']) {
                 $user->save([
                     'wechatOpenId' => '', // 清空不正确的OpenID
                     'isValid' => false,
@@ -409,7 +409,7 @@ class WechatAccount extends BaseService
         $tagIds = [];
         $userTags = wei()->userTag->getAll();
         foreach ($userTags as $userTag) {
-            if (in_array($userTag->outId, $wechatTagIds)) {
+            if (in_array($userTag->outId, $wechatTagIds, true)) {
                 $tagIds[] = $userTag->id;
             }
         }

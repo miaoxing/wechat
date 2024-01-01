@@ -3,7 +3,6 @@
 namespace Miaoxing\Wechat;
 
 use Miaoxing\Article\Service\Article;
-use Miaoxing\Plugin\BaseController;
 use Miaoxing\Plugin\Service\User;
 use Miaoxing\Wechat\Service\WechatAccount;
 use Miaoxing\Wechat\Service\WeChatQrcode;
@@ -94,7 +93,7 @@ class WechatPlugin extends \Miaoxing\Plugin\BasePlugin
 
     public function onPreUserSearch(User $users, $req)
     {
-        if ($req['platform'] == 'wechat') {
+        if ('wechat' == $req['platform']) {
             $users->andWhere("wechatOpenId != ''");
         }
     }
@@ -126,7 +125,7 @@ class WechatPlugin extends \Miaoxing\Plugin\BasePlugin
             return;
         }
 
-        if ($app->getEvent() === 'subscribe') {
+        if ('subscribe' === $app->getEvent()) {
             $this->handleSubscribeReply($app, $user, $qrcode);
         } else {
             $this->handleScanReply($app, $user, $qrcode);
@@ -135,7 +134,7 @@ class WechatPlugin extends \Miaoxing\Plugin\BasePlugin
 
     protected function handleSubscribeReply(WeChatApp $app, User $user, WeChatQrcode $qrcode)
     {
-        $app->subscribe(function (WeChatApp $app) use ($user, $qrcode) {
+        $app->subscribe(static function (WeChatApp $app) use ($user, $qrcode) {
             wei()->weChatReply->updateSubscribeUser($app, $user);
 
             $reply = $qrcode->generateReply($app);
@@ -153,7 +152,7 @@ class WechatPlugin extends \Miaoxing\Plugin\BasePlugin
 
     protected function handleScanReply(WeChatApp $app, User $user, WeChatQrcode $qrcode)
     {
-        $app->scan(function (WeChatApp $app) use ($user, $qrcode) {
+        $app->scan(static function (WeChatApp $app) use ($user, $qrcode) {
             wei()->weChatReply->updateScanUser($app, $user);
 
             $reply = $qrcode->generateReply($app);
@@ -192,7 +191,7 @@ class WechatPlugin extends \Miaoxing\Plugin\BasePlugin
             $siteTitle = wei()->setting('site.title');
 
             // 附加站点名称
-            if (strpos($title, $siteTitle) === false) {
+            if (false === strpos($title, $siteTitle)) {
                 $title = $siteTitle . $title;
             }
             wei()->share->setTitle($title);

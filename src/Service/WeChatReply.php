@@ -12,9 +12,9 @@ use Wei\WeChatApp;
  */
 class WeChatReply extends BaseService
 {
-    const EXACT_MATCH = 1;
+    public const EXACT_MATCH = 1;
 
-    const PARTIAL_MATCH = 2;
+    public const PARTIAL_MATCH = 2;
 
     protected $autoId = true;
 
@@ -105,7 +105,7 @@ class WeChatReply extends BaseService
 
     public function isReserved()
     {
-        return in_array($this['id'], $this->reservedIds);
+        return in_array($this['id'], $this->reservedIds, true);
     }
 
     /**
@@ -115,7 +115,7 @@ class WeChatReply extends BaseService
      */
     public function isDefault()
     {
-        return $this['id'] == 'default';
+        return 'default' == $this['id'];
     }
 
     /**
@@ -136,7 +136,7 @@ class WeChatReply extends BaseService
         }
 
         // 如果是默认回复,说明未匹配到任何关键字
-        if ($this['id'] == 'default') {
+        if ('default' == $this['id']) {
             return false;
         }
 
@@ -191,7 +191,7 @@ class WeChatReply extends BaseService
      */
     public function findByKeyword($keyword)
     {
-        if ($keyword !== false) {
+        if (false !== $keyword) {
             $data = $this->getKeywordListFromCache();
 
             // 如果有完全匹配,直接返回
@@ -201,7 +201,7 @@ class WeChatReply extends BaseService
 
             // 判断是否有部分匹配
             foreach ($data[static::PARTIAL_MATCH] as $partialKeyword => $id) {
-                if (strpos($keyword, (string) $partialKeyword) !== false) {
+                if (false !== strpos($keyword, (string) $partialKeyword)) {
                     return $this->findByIdFromCache($id);
                 }
             }
@@ -275,13 +275,13 @@ class WeChatReply extends BaseService
      */
     public function send(WeChatApp $app, $search = [], $replace = [])
     {
-        if ($this['type'] == 'text') {
+        if ('text' == $this['type']) {
             if ($search) {
                 $this['content'] = str_replace($search, $replace, $this['content']);
             }
             // 直接返回content字段,由weChatApp服务构造XML.如果内容为空,weChatApp会自动输入空字符串,这样符合微信的要求
             return $this['content'];
-        } elseif ($this['type'] == 'article') {
+        } elseif ('article' == $this['type']) {
             return $app->sendArticle($this->toArticleArray($search, $replace));
         } else {
             $ret = wei()->wechatMedia->findOrCreateByPath($this['replies']['image']['url']);

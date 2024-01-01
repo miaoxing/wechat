@@ -148,7 +148,7 @@
     'css!comps/select2-bootstrap-css/select2-bootstrap',
     'plugins/admin/js/image-upload'
   ], function (reply, form) {
-    var data = <?= json_encode($data, JSON_UNESCAPED_SLASHES); ?>;
+    var data = <?= json_encode($data, \JSON_UNESCAPED_SLASHES); ?>;
     reply.initForm({
       data: data,
       returnUrl: $.url('admin/wechat-qrcode/index'),

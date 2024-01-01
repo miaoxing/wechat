@@ -64,7 +64,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
         }
 
         // 记录下次要同步的OpenID
-        $nextOpenId = $userOpenIds['count'] == 10000 ? $userOpenIds['next_openid'] : null;
+        $nextOpenId = 10000 == $userOpenIds['count'] ? $userOpenIds['next_openid'] : null;
         $wei->cache->set($cacheKey, $nextOpenId);
 
         if ($userOpenIds['count'] > 2000 && function_exists('fastcgi_finish_request')) {
@@ -81,7 +81,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
         foreach ($userOpenIds['data']['openid'] as $index => $openId) {
             $wei->cache->get(
                 'wechatOpenId' . $openId,
-                function () use ($wei, $openId, &$newCount, &$cacheMiss, $account) {
+                static function () use ($wei, $openId, &$newCount, &$cacheMiss) {
                     // 缓存未命中+1
                     ++$cacheMiss;
 
@@ -100,7 +100,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
             );
 
             // 3.4 每同步50个用户,稍作休息0.1秒
-            if ($index % 50 == 0) {
+            if (0 == $index % 50) {
                 $this->logger->debug('Synced 50 users');
                 time_nanosleep(0, 100000000);
             }
@@ -125,6 +125,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
      *
      * 频率: 每分钟1次
      * @todo 改为队列异步去同步
+     * @param mixed $req
      */
     public function syncNewUsersAction($req)
     {
@@ -147,13 +148,13 @@ class Wechat extends \Miaoxing\Plugin\BaseController
         if (!$syncUsers) {
             return $this->suc('同步完成,没有新用户');
         }
-        /** @var \Miaoxing\Plugin\Service\User $users */
+        /** @var User $users */
         $users = wei()->user()->findAll(['id' => wei()->coll->column($syncUsers, 'id')]);
 
         // 3. 同步用户
         foreach ($users as $user) {
             $ret = wei()->wechatAccount->syncUser($user, $api);
-            if ($ret['code'] === 1) {
+            if (1 === $ret['code']) {
                 ++$syncCount;
             }
             // 删除已同步的记录
@@ -171,6 +172,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
      * 循环同步所有的用户,未同步的用户优先同步
      *
      * 频率: 每分钟1次
+     * @param mixed $req
      */
     public function loopSyncAllUsersAction($req)
     {
@@ -194,7 +196,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
 
         // 2. 获取要同步的用户列表
         $userId = (int) $this->cache->get($cacheKey);
-        /** @var \Miaoxing\Plugin\Service\User|\Miaoxing\Plugin\Service\User $users */
+        /** @var User|\Miaoxing\Plugin\Service\User $users */
         $users = wei()->user()->where('id > ?', $userId)->asc('id')->limit($num)->findAll();
 
         // 如果用户数量不等于查询的数量,说明已经没有新用户,需要从头开始同步
@@ -207,7 +209,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
         // 3. 同步用户
         foreach ($users as $user) {
             $ret = wei()->wechatAccount->syncUser($user, $api);
-            if ($ret['code'] === 1) {
+            if (1 === $ret['code']) {
                 ++$syncCount;
             }
         }
@@ -229,6 +231,6 @@ class Wechat extends \Miaoxing\Plugin\BaseController
     {
         $argv = $this->request->getServer('argv');
 
-        return strpos($argv[0], 'phpunit') !== false;
+        return false !== strpos($argv[0], 'phpunit');
     }
 }

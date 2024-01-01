@@ -71,6 +71,7 @@ class WechatMenu extends Base
 
     /**
      * 批量更新菜单
+     * @param mixed $req
      */
     public function bulkUpdateAction($req)
     {

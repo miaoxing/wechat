@@ -3,7 +3,6 @@
 namespace plugins\wechat\docs
 
 {
-
     use Miaoxing\Wechat\Service\SafeUrl;
     use Miaoxing\Wechat\Service\WechatTemplate;
 
@@ -34,9 +33,8 @@ namespace plugins\wechat\docs
 }
 
 namespace {
-
     /**
-     * @return \plugins\wechat\docs\AutoComplete
+     * @return plugins\wechat\docs\AutoComplete
      */
     function wei()
     {

@@ -3,7 +3,6 @@
 namespace Miaoxing\Wechat\Service;
 
 use Miaoxing\Article\Service\Article;
-use Miaoxing\Plugin\BaseModel;
 use Miaoxing\Plugin\BaseService;
 use Miaoxing\Plugin\Service\User;
 use Wei\WeChatApp;
@@ -13,12 +12,12 @@ class WeChatQrcode extends BaseService
     /**
      * 扫描就可以获得奖励
      */
-    const AWARD_RULE_ANY_SCAN = 0;
+    public const AWARD_RULE_ANY_SCAN = 0;
 
     /**
      * 首次关注才可以获得奖励
      */
-    const AWARD_RULE_FIRST_SUBSCRIPTION = 1;
+    public const AWARD_RULE_FIRST_SUBSCRIPTION = 1;
 
     /**
      * {@inheritdoc}
@@ -81,7 +80,7 @@ class WeChatQrcode extends BaseService
     /**
      * Record: 为用户创建专属二维码
      *
-     * @param \Miaoxing\Plugin\Service\User $user
+     * @param User $user
      * @param string $name
      * @return $this
      */
@@ -137,7 +136,7 @@ class WeChatQrcode extends BaseService
      * @param WeChatQrcode $weChatQrcode
      * @return resource
      */
-    public function createImage(WeChatQrcode $weChatQrcode)
+    public function createImage(self $weChatQrcode)
     {
         $account = wei()->wechatAccount->getCurrentAccount();
         $api = $account->createApiService();
@@ -165,7 +164,7 @@ class WeChatQrcode extends BaseService
      *
      * @param WeChatQrcode $weChatQrcode
      */
-    public function displayImage(WeChatQrcode $weChatQrcode)
+    public function displayImage(self $weChatQrcode)
     {
         $qrcodeRes = $this->createImage($weChatQrcode);
         header('Content-type: image/jpeg');
@@ -295,11 +294,11 @@ class WeChatQrcode extends BaseService
 
     public function generateReply(WeChatApp $app)
     {
-        if ($this['type'] === 'text') {
+        if ('text' === $this['type']) {
             if ($this['content']) {
                 return $this['content'];
             }
-        } elseif ($this['type'] === 'image') {
+        } elseif ('image' === $this['type']) {
             $ret = wei()->wechatMedia->findOrCreateByPath($this['replies']['image']['url']);
             return $app->send('image', ['Image' => ['MediaId' => $ret['data']['wechatMediaId']]]);
         } elseif ($this['articleIds']) {

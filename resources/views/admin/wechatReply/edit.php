@@ -7,12 +7,12 @@
 <div class="page-header">
   <div class="float-right">
 
-    <?php if (!$reply->isNew()) : ?>
+    <?php if (!$reply->isNew()) { ?>
       <a class="btn btn-danger delete-record" href="javascript:;"
          data-href="<?= $url('admin/wechat-reply/destroy', ['id' => $reply['id']]) ?>">
         删除
       </a>
-    <?php endif ?>
+    <?php } ?>
 
     <a class="btn btn-secondary" href="<?= $url('admin/wechat-reply/index', ['accountId' => $req['accountId']]) ?>">返回列表</a>
   </div>
@@ -32,7 +32,7 @@
     <form class="reply-form form-horizontal" method="post" role="form"
           action="<?= $url('admin/wechat-reply/' . $reply->getFormAction()) ?>">
 
-      <?php if (isset($formConfig['showScene']) && $formConfig['showScene'] == true) : ?>
+      <?php if (isset($formConfig['showScene']) && true == $formConfig['showScene']) { ?>
         <div class="form-group">
           <label class="col-lg-2 control-label" for="scene">
             场景
@@ -42,11 +42,11 @@
             <p class="form-control-plaintext scene"></p>
           </div>
         </div>
-      <?php endif ?>
+      <?php } ?>
 
-      <?php if (isset($formConfig['hideKeywords']) && $formConfig['hideKeywords'] == true) : ?>
+      <?php if (isset($formConfig['hideKeywords']) && true == $formConfig['hideKeywords']) { ?>
         <input type="hidden" name="keywords" class="keywords">
-      <?php else : ?>
+      <?php } else { ?>
         <div class="form-group">
           <label class="col-lg-2 control-label" for="keywords">
             <span class="text-warning">*</span>
@@ -54,25 +54,25 @@
           </label>
 
           <div class="col-lg-4">
-            <?php if (isset($formConfig['showPlainKeywords']) && $formConfig['showPlainKeywords'] == true) : ?>
+            <?php if (isset($formConfig['showPlainKeywords']) && true == $formConfig['showPlainKeywords']) { ?>
               <p class="form-control-plaintext keywords"></p>
-            <?php else : ?>
+            <?php } else { ?>
               <input type="text" name="keywords" id="keywords" class="form-control">
-            <?php endif ?>
+            <?php } ?>
           </div>
           <label class="col-lg-6 help-text" for="keywords">
-            <?php if (isset($formConfig['keywordTips'])) : ?>
+            <?php if (isset($formConfig['keywordTips'])) { ?>
               <?= $formConfig['keywordTips'] ?>
-            <?php else : ?>
+            <?php } else { ?>
               多个请使用空格隔开
-            <?php endif ?>
+            <?php } ?>
           </label>
         </div>
-      <?php endif ?>
+      <?php } ?>
 
-      <?php if (isset($formConfig['hideMatchType']) && $formConfig['hideMatchType'] == true) : ?>
+      <?php if (isset($formConfig['hideMatchType']) && true == $formConfig['hideMatchType']) { ?>
         <input type="hidden" name="matchType" value="1">
-      <?php else : ?>
+      <?php } else { ?>
         <div class="form-group">
           <label class="col-lg-2 control-label" for="matchType">
             <span class="text-warning">*</span>
@@ -89,7 +89,7 @@
           </div>
         </div>
 
-      <?php endif ?>
+      <?php } ?>
 
       <div class="form-group">
         <label class="col-lg-2 control-label" for="matchType">
@@ -120,9 +120,9 @@
         </div>
 
         <label class="col-lg-6 help-text" for="content">
-          <?php if (isset($formConfig['contentTips'])) : ?>
+          <?php if (isset($formConfig['contentTips'])) { ?>
             <?= $formConfig['contentTips'] ?>
-          <?php endif ?>
+          <?php } ?>
         </label>
 
       </div>

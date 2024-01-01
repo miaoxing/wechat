@@ -2,11 +2,9 @@
 
 namespace MiaoxingTest\Wechat\Controller;
 
-use Wei\WeChatApp;
-
 class WechatTest extends \Miaoxing\Plugin\Test\BaseControllerTestCase
 {
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
         wei()->app->setNamespace('test');
@@ -105,7 +103,7 @@ class WechatTest extends \Miaoxing\Plugin\Test\BaseControllerTestCase
 
     public function testEncryptReply()
     {
-        //排序
+        // 排序
         $timestamp = '1414243737';
         $nonce = '1792106704';
         $msg_signature = '6147984331daf7a1a9eed6e0ec3ba69055256154';
@@ -131,11 +129,11 @@ class WechatTest extends \Miaoxing\Plugin\Test\BaseControllerTestCase
 
         $res = $this->dispatch('wechat', 'reply');
         $useErrors = libxml_use_internal_errors(true);
-        $attrs = simplexml_load_string($res->getContent(), 'SimpleXMLElement', LIBXML_NOCDATA);
+        $attrs = simplexml_load_string($res->getContent(), 'SimpleXMLElement', \LIBXML_NOCDATA);
         libxml_use_internal_errors($useErrors);
         $map = array_map('strval', (array) $attrs);
 
-        //测试后台有默认回复消息
+        // 测试后台有默认回复消息
         $this->assertTrue(isset($map['Encrypt']));
         $this->assertTrue(isset($map['MsgSignature']));
         $this->assertTrue(isset($map['TimeStamp']));

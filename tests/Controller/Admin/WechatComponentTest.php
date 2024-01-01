@@ -10,6 +10,8 @@ class WechatComponentTest extends \Miaoxing\Plugin\Test\BaseControllerTestCase
 
     /**
      * @dataProvider providerForActions
+     * @param mixed $action
+     * @param mixed|null $code
      */
     public function testActions($action, $code = null)
     {

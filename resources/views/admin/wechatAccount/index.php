@@ -154,12 +154,12 @@
           </a>
           &nbsp; &nbsp; &nbsp;
 
-          <?php if ($curUser->isSuperAdmin()) : ?>
+          <?php if ($curUser->isSuperAdmin()) { ?>
             <a class="btn btn-success" href="<?= $url('admin/wechat-component/auth') ?>">
               <i class="fa fa-wechat bigger-110"></i>
               <?= $account['authed'] ? '重新授权' : '微信公众号授权' ?>
             </a>
-          <?php endif ?>
+          <?php } ?>
         </div>
       </div>
     </form>

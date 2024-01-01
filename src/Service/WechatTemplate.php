@@ -77,7 +77,7 @@ class WechatTemplate extends BaseService
      */
     public function url($url)
     {
-        if (parse_url($url, PHP_URL_SCHEME) == '') {
+        if ('' == parse_url($url, \PHP_URL_SCHEME)) {
             $url = wei()->request->getUrlFor($url);
         }
 
@@ -121,7 +121,7 @@ class WechatTemplate extends BaseService
             }
 
             // 空值则显示默认值
-            if ($name !== 'remark' && !$this->wei->isPresent($data[$name]['value'])) {
+            if ('remark' !== $name && !$this->wei->isPresent($data[$name]['value'])) {
                 $data[$name]['value'] = '-';
             }
         }
@@ -214,7 +214,7 @@ class WechatTemplate extends BaseService
 
         $ret = $api->sendWxaTemplate($this->request);
 
-        if ($ret['code'] === 1 && $this->form) {
+        if (1 === $ret['code'] && $this->form) {
             $this->form->consume();
         }
 

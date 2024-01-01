@@ -2,7 +2,6 @@
 
 namespace Miaoxing\Wechat;
 
-use ReflectionException;
 use Wei\Http;
 use Wei\Ret;
 
@@ -125,7 +124,7 @@ trait WechatApiTrait
      * @param string $name
      * @param array $args
      * @return mixed|Ret
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function __call(string $name, array $args)
     {
@@ -260,12 +259,12 @@ trait WechatApiTrait
             $options['method'] ?? $options['method'] = 'POST';
             $options['dataType'] ?? $options['dataType'] = 'json';
 
-        if (substr($options['url'], 0, 8) !== 'https://') {
+        if ('https://' !== substr($options['url'], 0, 8)) {
             $options['url'] = $this->baseUrl . $options['url'];
         }
 
-        if ($options['method'] !== 'GET' && isset($options['data'])) {
-            $options['data'] = json_encode($options['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        if ('GET' !== $options['method'] && isset($options['data'])) {
+            $options['data'] = json_encode($options['data'], \JSON_UNESCAPED_UNICODE | \JSON_UNESCAPED_SLASHES);
         }
 
         if (isset($options['accessToken'])) {
@@ -287,7 +286,7 @@ trait WechatApiTrait
             return $http->toRet();
         }
 
-        if (isset($http['errcode']) && $http['errcode'] !== 0) {
+        if (isset($http['errcode']) && 0 !== $http['errcode']) {
             $code = $http['errcode'];
             $message = $http['errmsg'];
         } elseif (isset($http['base_resp'])) {
@@ -336,7 +335,7 @@ trait WechatApiTrait
     protected function explodeMessage(string $message, string $separator): array
     {
         $pos = strrpos($message, $separator);
-        if ($pos !== false) {
+        if (false !== $pos) {
             return [rtrim(substr($message, 0, $pos), ', '), trim(substr($message, $pos))];
         }
         return [$message, null];
@@ -416,4 +415,3 @@ trait WechatApiTrait
         return 'wechat:credential:' . $this->getAppId();
     }
 }
-

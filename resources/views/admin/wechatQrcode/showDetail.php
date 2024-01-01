@@ -91,7 +91,7 @@
       </tr>
       </thead>
       <tbody>
-      <?php foreach ($details as $detail) : ?>
+      <?php foreach ($details as $detail) { ?>
         <tr>
           <td><?= $detail['statDate'] ?></td>
           <td><?= $detail['addValidCount'] ?></td>
@@ -107,7 +107,7 @@
           <td><?= $detail['addCancelCount'] ?></td>
           <td><?= $detail['allCancelCount'] ?></td>
         </tr>
-      <?php endforeach ?>
+      <?php } ?>
       </tbody>
     </table>
 

@@ -9,7 +9,7 @@ class WechatComponent extends \Miaoxing\Plugin\BaseController
         // 1. 生成预授权码
         $api = wei()->wechatAccount->getCurrentAccount()->createComponentApiService();
         $ret = $api->createPreAuthCode();
-        if ($ret['code'] !== 1) {
+        if (1 !== $ret['code']) {
             return $this->err($ret);
         }
 
@@ -30,7 +30,7 @@ class WechatComponent extends \Miaoxing\Plugin\BaseController
         $authCode = $req['auth_code'];
         $api = wei()->wechatAccount->getCurrentAccount()->createComponentApiService();
         $authRet = $api->queryAuth($authCode);
-        if ($authRet['code'] !== 1) {
+        if (1 !== $authRet['code']) {
             return $this->err($authRet);
         }
 
@@ -47,16 +47,16 @@ class WechatComponent extends \Miaoxing\Plugin\BaseController
 
         // 5. 同步授权方的账户信息
         $ret = $api->getAuthorizerInfo($authInfo['authorizer_appid']);
-        if ($ret['code'] !== 1) {
+        if (1 !== $ret['code']) {
             return $this->err($ret);
         }
 
         // 授权方公众号类型，0代表订阅号，1代表由历史老帐号升级后的订阅号，2代表服务号
         // 本地,1表示订阅号,2表示服务号
-        $type = $ret['authorizer_info']['service_type_info']['id'] == 2 ? 2 : 1;
+        $type = 2 == $ret['authorizer_info']['service_type_info']['id'] ? 2 : 1;
 
         // 授权方认证类型，-1代表未认证，0代表微信认证，1代表新浪微博认证，2代表腾讯微博认证，3代表已资质认证通过但还未通过名称认证，4代表已资质认证通过、还未通过名称认证，但通过了新浪微博认证，5代表已资质认证通过、还未通过名称认证，但通过了腾讯微博认证
-        $verified = $ret['authorizer_info']['verify_type_info']['id'] == -1 ? 0 : 1;
+        $verified = -1 == $ret['authorizer_info']['verify_type_info']['id'] ? 0 : 1;
 
         $account->save([
             'type' => $type,
@@ -69,8 +69,8 @@ class WechatComponent extends \Miaoxing\Plugin\BaseController
             'qrcodeUrl' => $ret['authorizer_info']['qrcode_url'],
             'applicationId' => $authInfo['authorizer_appid'],
             'refreshToken' => $authInfo['authorizer_refresh_token'],
-            'funcInfo' => json_encode($authInfo['func_info'], JSON_UNESCAPED_SLASHES),
-            'businessInfo' => json_encode($ret['authorizer_info']['business_info'], JSON_UNESCAPED_SLASHES),
+            'funcInfo' => json_encode($authInfo['func_info'], \JSON_UNESCAPED_SLASHES),
+            'businessInfo' => json_encode($ret['authorizer_info']['business_info'], \JSON_UNESCAPED_SLASHES),
         ]);
 
         return $this->suc('授权成功');

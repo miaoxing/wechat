@@ -28,7 +28,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
 
         // 2. 重新解析请求数据
         $ret = $app->parse();
-        if ($ret['code'] !== 1) {
+        if (1 !== $ret['code']) {
             if ($content) {
                 $this->logger->warning($ret['message'], $ret + ['content' => $content]);
             }
@@ -57,17 +57,17 @@ class Wechat extends \Miaoxing\Plugin\BaseController
         $user = wei()->curUser->loginBy(['wechatOpenId' => $openId]);
 
         // 5. 发送前,将信息记录到数据库
-        $app->setOption('beforeSend', function (WeChatApp $app, &$response) use ($user, $reply, $account) {
+        $app->setOption('beforeSend', function (WeChatApp $app, &$response) use ($user, $reply) {
             $this->logger->debug('Wechat reply response', $response);
 
             // 记录用户输入的信息
-            if (!in_array(strtolower($app->getMsgType()), ['event'])) {
+            if (!in_array(strtolower($app->getMsgType()), ['event'], true)) {
                 wei()->message()->saveData([
                     'userId' => $user['id'],
                     'msgType' => $app->getMsgType(),
                     'platformId' => WechatAccount::PLATFORM_ID,
                     'platformMsgId' => $app->getMsgId(),
-                    'content' => $app->getMsgType() === 'text' ? $app->getContent() : json_encode($app->getAttrs()),
+                    'content' => 'text' === $app->getMsgType() ? $app->getContent() : json_encode($app->getAttrs()),
                     'source' => 1,
                     'fromKeyword' => (int) $reply->isFromKeyword(),
                     'createTimestamp' => $app->getCreateTime(),
@@ -77,7 +77,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
             // 没有匹配到任何规则为空数组
             if ($response) {
                 // 只保存回复的文本消息到数据库
-                if ($response['MsgType'] == 'text' && $response['Content']) {
+                if ('text' == $response['MsgType'] && $response['Content']) {
                     wei()->message()->saveData([
                         'platformId' => WechatAccount::PLATFORM_ID,
                         'userId' => $user['id'],
@@ -92,7 +92,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
         // 6. 各种场景的回复
 
         // 关注
-        $app->subscribe(function (WeChatApp $app) use ($user, $reply) {
+        $app->subscribe(static function (WeChatApp $app) use ($user, $reply) {
             wei()->weChatReply->updateSubscribeUser($app, $user);
 
             // 关注回复
@@ -102,7 +102,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
         });
 
         // 扫描
-        $app->scan(function (WeChatApp $app) use ($user, $reply) {
+        $app->scan(static function (WeChatApp $app) use ($user, $reply) {
             wei()->weChatReply->updateScanUser($app, $user);
 
             // 扫码回复
@@ -112,7 +112,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
         });
 
         // 取消关注,如果取消关注,将有效位置为0
-        $app->unsubscribe(function () use ($user) {
+        $app->unsubscribe(static function () use ($user) {
             $user->save(['isValid' => 0, 'unsubscribeTime' => date('Y-m-d H:i:s')]);
         });
 
@@ -121,8 +121,8 @@ class Wechat extends \Miaoxing\Plugin\BaseController
         $event = $app->getEvent();
 
         // 点击事件单独处理
-        if ($app->getEvent() && $event === 'CLICK') {
-            $app->click($keyword, function (WeChatApp $app) use ($reply, $keyword) {
+        if ($app->getEvent() && 'CLICK' === $event) {
+            $app->click($keyword, static function (WeChatApp $app) use ($reply, $keyword) {
                 if ($reply->findByKeyword($keyword) || $reply->findByDefault()) {
                     return $reply->send($app);
                 }
@@ -131,7 +131,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
 
         // 事件均不返回默认回复
         if (!$event) {
-            $app->defaults(function (WeChatApp $app) use ($reply, $keyword) {
+            $app->defaults(static function (WeChatApp $app) use ($reply, $keyword) {
                 if ($reply->findByKeyword($keyword) || $reply->findByDefault()) {
                     return $reply->send($app);
                 }
@@ -143,7 +143,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
 
         // 输入手机号码
         if (isset($sceneKeywords['phone'])) {
-            $app->match('/^1[34578][\d]{9}$/', function (WeChatApp $app) use ($user, $reply) {
+            $app->match('/^1[34578][\d]{9}$/', static function (WeChatApp $app) use ($user, $reply) {
                 // 记录用户手机号码
                 $user->save(['mobile' => $app->getContent()]);
                 $reply = $reply->findByIdFromCache('phone');
@@ -154,9 +154,9 @@ class Wechat extends \Miaoxing\Plugin\BaseController
 
         // 7. 是否开启多客服
         if ($account['transferCustomer']) {
-            $app->transferCustomer(function (WeChatApp $app) use ($reply, $keyword) {
+            $app->transferCustomer(static function (WeChatApp $app) use ($reply, $keyword) {
                 // 事件不接入多客服
-                if ($app->getMsgType() == 'event') {
+                if ('event' == $app->getMsgType()) {
                     return false;
                 }
 
@@ -174,13 +174,13 @@ class Wechat extends \Miaoxing\Plugin\BaseController
         $this->event->trigger('wechatMessage', [$app, $user, $account]);
 
         // 也允许只捕获某种事件
-        if (in_array($app->getMsgType(), ['event'])) {
+        if (in_array($app->getMsgType(), ['event'], true)) {
             $event = $this->classify($app->getEvent());
             $this->event->trigger('wechat' . $event, [$app, $user, $account]);
         }
 
         // 如果是订阅且包含扫描,同时调用扫描事件
-        if ($app->getEvent() == 'subscribe' && $app->getScanSceneId()) {
+        if ('subscribe' == $app->getEvent() && $app->getScanSceneId()) {
             $this->event->trigger('wechatScan', [$app, $user, $account]);
         }
 
@@ -210,7 +210,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
      * 单独处理来自第三方平台的通知
      *
      * @param WeChatApp $app
-     * @param \Miaoxing\Wechat\Service\WechatAccount $account
+     * @param WechatAccount $account
      * @return string
      */
     protected function runComponent(WeChatApp $app, WechatAccount $account)
@@ -224,7 +224,7 @@ class Wechat extends \Miaoxing\Plugin\BaseController
 
             case 'unauthorized':
                 $account = wei()->wechatAccount()->find(['applicationId' => $app->getAttr('AuthorizerAppid')]);
-                /** @var \Miaoxing\Wechat\Service\WechatAccount $account */
+                /** @var WechatAccount $account */
                 if ($account) {
                     $account->save(['authed' => false]);
                 } else {

@@ -2,8 +2,6 @@
 
 namespace Miaoxing\Wechat\Controller\Admin;
 
-use ZipArchive;
-
 class WechatQrcode extends Base
 {
     protected $controllerName = '微信二维码管理';
@@ -27,8 +25,8 @@ class WechatQrcode extends Base
                 $qrcodes = wei()->weChatQrcode();
                 $qrcodes->select('weChatQrcode.*')->leftJoin('user', 'user.id = weChatQrcode.userId');
                 // 类型
-                if (isset($req['type']) && $req['type'] != 0) {
-                    $qrcodes->where(($req['type'] == 1 ? 'userId != 0' : 'userId = 0'));
+                if (isset($req['type']) && 0 != $req['type']) {
+                    $qrcodes->where(1 == $req['type'] ? 'userId != 0' : 'userId = 0');
                 }
 
                 if ($req['search']) {
@@ -154,9 +152,9 @@ class WechatQrcode extends Base
         }
 
         // 3. 保存为压缩包
-        $zip = new ZipArchive();
+        $zip = new \ZipArchive();
         $zipName = $dir . '/qrcodes-' . date('Y-m-d-H-i-s') . '.zip';
-        $zip->open($zipName, ZipArchive::CREATE);
+        $zip->open($zipName, \ZipArchive::CREATE);
         foreach (glob($dir . '/*') as $file) {
             $zip->addFile($file, basename($file));
         }
@@ -215,7 +213,7 @@ class WechatQrcode extends Base
 
         // 3. 统计数据
         foreach ($qrcodeLogs as $qrcodeLog) {
-            if ($qrcodeLog['logType'] == 1) { // 关注
+            if (1 == $qrcodeLog['logType']) { // 关注
                 $details[$qrcodeLog['dateDay']]['addTotalCount'] = $qrcodeLog['addCount'];
                 $details[$qrcodeLog['dateDay']]['allTotalCount'] = $qrcodeLog['allCount'];
 
@@ -225,7 +223,7 @@ class WechatQrcode extends Base
                 $details[$qrcodeLog['dateDay']]['addValidCount'] += $qrcodeLog['addCount'];
                 $details[$qrcodeLog['dateDay']]['allValidCount'] += $qrcodeLog['allCount'];
             } else {
-                if ($qrcodeLog['logType'] == 0) { // 取关
+                if (0 == $qrcodeLog['logType']) { // 取关
                     $details[$qrcodeLog['dateDay']]['addCancelCount'] = $qrcodeLog['addCount'];
                     $details[$qrcodeLog['dateDay']]['allCancelCount'] = $qrcodeLog['allCount'];
 
@@ -264,10 +262,10 @@ class WechatQrcode extends Base
             // 次数
             $detail['allTotalCount'] = $detail['allTotalCount'] ?: $lastTotalCount;
             $detail['allCancelCount'] = $detail['allCancelCount'] ?: $lastCancelCount;
-            //人数
+            // 人数
             $detail['allTotalHeadCount'] = $detail['allTotalHeadCount'] ?: $lastTotalHeadCount;
             $detail['allCancelHeadCount'] = $detail['allCancelHeadCount'] ?: $lastCancelHeadCount;
-            //积累数
+            // 积累数
             $detail['allValidCount'] = $detail['allTotalCount'] - $detail['allCancelCount'];
 
             $lastTotalCount = $detail['allTotalCount'] - $detail['addTotalCount'];

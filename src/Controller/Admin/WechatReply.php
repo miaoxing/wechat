@@ -26,7 +26,7 @@ class WechatReply extends Base
                 $replies->limit($req['rows'])->page($req['page']);
 
                 // 只显示当前公众号
-                //$replies->andWhere(['accountId' => $req['accountId']]);
+                // $replies->andWhere(['accountId' => $req['accountId']]);
 
                 // 排序
                 $replies->desc('id');

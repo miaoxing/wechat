@@ -83,11 +83,11 @@ class WechatApi extends BaseService
         42001 => 'access_token 超时',
         46003 => '不存在菜单数据',
         // 卡券需展示具体的错误信息
-        //47001 => '解析JSON/XML内容错误',
+        // 47001 => '解析JSON/XML内容错误',
         48001 => 'api功能未授权',
         // 卡券
         40079 => '有效期中的时间不合法',
-        //41011 => '必填字段不完整或不合法，参考相应接口',
+        // 41011 => '必填字段不完整或不合法，参考相应接口',
     ];
 
     /**
@@ -337,12 +337,12 @@ class WechatApi extends BaseService
         $options['method'] ?? $options['method'] = 'POST';
         $options['dataType'] ?? $options['dataType'] = 'json';
 
-        if (substr($options['url'], 0, 8) !== 'https://') {
+        if ('https://' !== substr($options['url'], 0, 8)) {
             $options['url'] = $this->baseUrl . $options['url'];
         }
 
-        if ($options['method'] !== 'GET' && isset($options['data'])) {
-            $options['data'] = json_encode($options['data'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        if ('GET' !== $options['method'] && isset($options['data'])) {
+            $options['data'] = json_encode($options['data'], \JSON_UNESCAPED_UNICODE | \JSON_UNESCAPED_SLASHES);
         }
 
         if (isset($options['accessToken'])) {
@@ -364,7 +364,7 @@ class WechatApi extends BaseService
             return $http->toRet();
         }
 
-        if (isset($http['errcode']) && $http['errcode'] !== 0) {
+        if (isset($http['errcode']) && 0 !== $http['errcode']) {
             $code = $http['errcode'];
             $message = $http['errmsg'];
         } elseif (isset($http['base_resp'])) {
@@ -413,7 +413,7 @@ class WechatApi extends BaseService
     protected function explodeMessage(string $message, string $separator): array
     {
         $pos = strrpos($message, $separator);
-        if ($pos !== false) {
+        if (false !== $pos) {
             return [rtrim(substr($message, 0, $pos), ', '), trim(substr($message, $pos))];
         }
         return [$message, null];

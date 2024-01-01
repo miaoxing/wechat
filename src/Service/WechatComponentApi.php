@@ -119,7 +119,7 @@ class WechatComponentApi extends BaseService
             // 缓存丢失或超时则重新申请
             if (!$credential || $credential['expireTime'] - time() < 60) {
                 $ret = $this->getAccessToken();
-                if ($ret['code'] !== 1) {
+                if (1 !== $ret['code']) {
                     return $ret;
                 }
 
@@ -270,7 +270,7 @@ class WechatComponentApi extends BaseService
         $credential = $this->cache->get($cacheKey);
         if (!$credential || $credential['expireTime'] - time() < 60) {
             $ret = $this->authorizerToken($appId, $refreshToken);
-            if ($ret['code'] !== 1) {
+            if (1 !== $ret['code']) {
                 return $ret;
             } else {
                 $credential = [
@@ -356,7 +356,7 @@ class WechatComponentApi extends BaseService
             'throwException' => false,
         ];
         $options['url'] = $this->baseUrl . $options['url'];
-        $options['data'] = json_encode($options['data'], JSON_UNESCAPED_UNICODE);
+        $options['data'] = json_encode($options['data'], \JSON_UNESCAPED_UNICODE);
 
         $http = $this->http->request($options);
 
@@ -381,12 +381,12 @@ class WechatComponentApi extends BaseService
 
         // 2. 处理调用凭证过期
         $res = $http->getResponse();
-        if (isset($res['errcode']) && $res['errcode'] == 40001) {
+        if (isset($res['errcode']) && 40001 == $res['errcode']) {
             $this->setCredential([]);
         }
 
         // 3. 处理其他错误
-        if (isset($res['errcode']) && $res['errcode'] !== 0) {
+        if (isset($res['errcode']) && 0 !== $res['errcode']) {
             $this->logError($http, $options);
             $message = isset($this->messages[$res['errcode']]) ? $this->messages[$res['errcode']] : '很抱歉,请求失败,请重试';
 

@@ -2,7 +2,6 @@
 
 namespace MiaoxingTest\Wechat\Middleware;
 
-use Miaoxing\Wechat\Middleware\Auth;
 use Miaoxing\Wechat\Service\WechatAccount;
 
 class AuthTest extends \Miaoxing\Plugin\Test\BaseTestCase
@@ -65,7 +64,7 @@ class AuthTest extends \Miaoxing\Plugin\Test\BaseTestCase
         $response = $this->callMiddleware();
 
         $this->assertNotEmpty(wei()->cache->get('wechatOAuth2CodeTest'));
-        $this->assertEquals(true, wei()->curUser->isLogin());
+        $this->assertTrue(wei()->curUser->isLogin());
         $this->assertEquals($openId, wei()->curUser['wechatOpenId']);
     }
 
@@ -91,7 +90,7 @@ class AuthTest extends \Miaoxing\Plugin\Test\BaseTestCase
         $response = $this->callMiddleware();
 
         $this->assertContains('很抱歉,微信授权失败,请返回再试', $response->getContent());
-        $this->assertEquals(true, wei()->cache->get('wechatOAuth2CodeTest'));
+        $this->assertTrue(wei()->cache->get('wechatOAuth2CodeTest'));
     }
 
     public function testLoginByOAuth2CodeButCodeUsed()
@@ -134,7 +133,7 @@ class AuthTest extends \Miaoxing\Plugin\Test\BaseTestCase
     public function testGetInvalidCodeAndRetry($url, $redirectUrl)
     {
         // 1. 初始化请求的参数
-        $query = parse_url($url, PHP_URL_QUERY);
+        $query = parse_url($url, \PHP_URL_QUERY);
         parse_str($query, $queries);
         wei()->request->set($queries);
 
@@ -194,7 +193,7 @@ class AuthTest extends \Miaoxing\Plugin\Test\BaseTestCase
     protected function callMiddleware()
     {
         $middleware = new \Miaoxing\Wechat\Middleware\Auth();
-        $middleware(function () {
+        $middleware(static function () {
             throw new \Exception('Not call');
         });
 
