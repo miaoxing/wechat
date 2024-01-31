@@ -8,7 +8,7 @@
   ],
   "license": "MIT",
   "require": {
-    "miaoxing/app": "^0.7.11"
+    "miaoxing/app": "^0.8.0"
   },
   "autoload": {
     "psr-4": {
