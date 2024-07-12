@@ -10,7 +10,6 @@
 
 # php
 /vendor/
-composer.lock
 phpunit.xml
 .php_cs.cache
 .phpunit.result.cache
@@ -18,9 +17,11 @@ phpunit.xml
 # php-coveralls
 /build/logs/clover.xml
 
-# miaoxing
-/storage/
-/tests/config-local.php
-
 # wei
 /log/
+
+# miaoxing
+.env.php
+/tests/config-local.php
+/docs/auto-completion.php
+/docs/auto-completion-static-[0-9]*.php

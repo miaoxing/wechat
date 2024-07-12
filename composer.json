@@ -27,5 +27,10 @@
       "composer/installers": true,
       "phpstan/extension-installer": true
     }
+  },
+  "scripts": {
+    "post-update-cmd": [
+      "@php wei g:auto-completion"
+    ]
   }
 }
