@@ -1,3 +1,19 @@
+## [0.1.38](https://github.com/miaoxing/wechat/compare/v0.1.37...v0.1.38) (2024-09-01)
+
+
+### Features
+
+* 插件增加 wei 命令行入口 ([5731e15](https://github.com/miaoxing/wechat/commit/5731e15a09b85d8fab1a6f3a6175aa793f5582c6))
+
+
+
+
+
+### Dependencies
+
+* **@miaoxing/dev:** upgrade from `9.1.3` to `9.2.0`
+* **@miaoxing/app:** upgrade from `0.10.3` to `0.10.4`
+
 ## [0.1.37](https://github.com/miaoxing/wechat/compare/v0.1.36...v0.1.37) (2024-08-03)
 
 
